@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:velaris/UI/views/lista_sue%C3%B1os/list_dreams_view.dart';
 import 'package:velaris/UI/views/register/register_view.dart';
 
 class LoginView extends StatelessWidget {
@@ -31,7 +32,7 @@ class LoginView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(32),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                //mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     '¡Bienvenido!',
@@ -105,7 +106,7 @@ class LoginView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ListDreamsView()));},
                       child: Text(
                         'Iniciar sesión',
                         style: TextStyle(color: Colors.white, fontSize: 16),

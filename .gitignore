@@ -121,3 +121,4 @@ app.*.symbols
 .idea
 android/app/google-services.json
 firebase.json
+lib/firebase_options.dart

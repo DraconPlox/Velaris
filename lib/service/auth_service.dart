@@ -8,14 +8,13 @@ class AuthService {
   /// Registro con email y contraseña
   Future<User?> registerWithEmail(String email, String password) async {
     try {
-      final result = await _auth.createUserWithEmailAndPassword(
-        email: email,
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.trim(),
         password: password,
       );
-      return result.user;
+      print("¡Usuario creado con éxito!");
     } on FirebaseAuthException catch (e) {
-      print('Error en registro con email: ${e.code} - ${e.message}');
-      return null;
+      print("FirebaseAuth error: ${e.code} - ${e.message}");
     }
   }
 
@@ -23,7 +22,7 @@ class AuthService {
   Future<User?> loginWithEmail(String email, String password) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
       return result.user;

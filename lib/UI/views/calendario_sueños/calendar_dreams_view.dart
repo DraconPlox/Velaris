@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class ListDreamsView extends StatelessWidget {
-  const ListDreamsView({super.key});
+import '../../widgets/my_calendar_widget.dart';
+
+class CalendarDreamsView extends StatefulWidget {
+  CalendarDreamsView({super.key});
+
+  @override
+  State<CalendarDreamsView> createState() => _CalendarDreamsViewState();
+}
+
+class _CalendarDreamsViewState extends State<CalendarDreamsView> {
+  DateTime _focusedDay = DateTime.now();
+
+  DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +70,9 @@ class ListDreamsView extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
+                    children: [
                       SizedBox(height: 20),
-                      Text("data", style: TextStyle(color: Colors.white)),
+                      MyCalendarWidget()
                     ],
                   ),
                 ),

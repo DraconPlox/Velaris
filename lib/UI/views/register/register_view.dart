@@ -3,6 +3,7 @@ import 'package:velaris/UI/views/register/register_controller.dart';
 
 class RegisterView extends StatelessWidget {
   RegisterView({super.key});
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   RegisterController registerController = RegisterController();
@@ -40,19 +41,13 @@ class RegisterView extends StatelessWidget {
               const SizedBox(height: 16),
               const Text(
                 'Inserta tus datos:',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
               const SizedBox(height: 24),
 
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  "Correo:",
-                  style: TextStyle(color: Colors.white70),
-                ),
+                child: Text("Correo:", style: TextStyle(color: Colors.white70)),
               ),
               const SizedBox(height: 4),
               TextField(
@@ -67,7 +62,10 @@ class RegisterView extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -80,9 +78,8 @@ class RegisterView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              TextField(
+              const TextField(
                 style: TextStyle(color: Colors.white),
-                controller: password,
                 decoration: InputDecoration(
                   hintText: "Nombre de usuario",
                   hintStyle: TextStyle(color: Colors.white38),
@@ -92,7 +89,10 @@ class RegisterView extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -105,8 +105,9 @@ class RegisterView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              const TextField(
+              TextField(
                 obscureText: true,
+                controller: password,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: "Contraseña",
@@ -117,7 +118,10 @@ class RegisterView extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -142,7 +146,10 @@ class RegisterView extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -156,7 +163,9 @@ class RegisterView extends StatelessWidget {
                   ),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {registerController.register(email.text, password.text);},
+                  onPressed: () {
+                    registerController.register(email.text, password.text);
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: Colors.transparent,

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:velaris/UI/views/lista_sue%C3%B1os/list_dreams_view.dart';
+import 'package:velaris/UI/views/list_dreams/list_dreams_view.dart';
 import 'package:velaris/UI/views/login/login_controller.dart';
 import 'package:velaris/UI/views/register/register_view.dart';
 

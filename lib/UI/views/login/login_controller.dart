@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:velaris/UI/views/calendario_sue%C3%B1os/calendar_dreams_view.dart';
+import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
 import 'package:velaris/service/auth_service.dart';
 
 class LoginController {

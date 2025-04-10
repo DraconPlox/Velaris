@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
+import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
 
 class ListDreamsView extends StatelessWidget {
   const ListDreamsView({super.key});
@@ -8,7 +11,6 @@ class ListDreamsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF1D1033),
       extendBodyBehindAppBar: true,
-      // Para que la imagen cubra detrás del AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -26,7 +28,13 @@ class ListDreamsView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.add, color: Colors.white),
+              child: IconButton(
+                icon: Icon(Icons.add, color: Colors.white),
+                onPressed: () {Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDreamView()));
+                },
+              ),
             ),
           ),
         ],
@@ -38,7 +46,7 @@ class ListDreamsView extends StatelessWidget {
             width: double.infinity,
             height: 200,
             child: Image.asset(
-              'assets/images/background.png', // Cambia por tu ruta
+              'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -47,7 +55,8 @@ class ListDreamsView extends StatelessWidget {
           Column(
             children: [
               const SizedBox(height: kToolbarHeight + 24),
-              // Espacio para AppBar
+
+              // Zona violeta con la lista scrolleable
               Expanded(
                 child: Container(
                   decoration: const BoxDecoration(
@@ -56,11 +65,30 @@ class ListDreamsView extends StatelessWidget {
                       top: Radius.circular(30),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                      SizedBox(height: 20),
-                      Text("data", style: TextStyle(color: Colors.white)),
+                  child: ListView(
+                    padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
+                    children: [
+                      // Botón calendario arriba sin fondo
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.calendar_today, color: Colors.white, size: 20),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CalendarDreamsView(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Aquí irán las tarjetas de sueños
+                      // DreamCard(title: "Sueño #1", description: "Descripción...")
                     ],
                   ),
                 ),
@@ -72,7 +100,7 @@ class ListDreamsView extends StatelessWidget {
 
       // BottomNavigationBar
       bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF322548),
+        color: const Color(0xFF3E3657),
         shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
         child: Padding(

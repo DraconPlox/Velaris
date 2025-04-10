@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:velaris/UI/views/lista_sue%C3%B1os/list_dreams_view.dart';
+import 'package:velaris/UI/views/list_dreams/list_dreams_view.dart';
 
 class MyCalendarWidget extends StatefulWidget {
   @override
@@ -79,11 +79,11 @@ class _MyCalendarWidgetState extends State<MyCalendarWidget> {
           startingDayOfWeek: StartingDayOfWeek.monday,
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: Colors.orange,
+              color: Color(0xFF533F7E),
               shape: BoxShape.circle,
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color(0x80110F1C),
               shape: BoxShape.circle,
             ),
             defaultTextStyle: TextStyle(color: Colors.white),

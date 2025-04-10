@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
 
 import '../../widgets/my_calendar_widget.dart';
 
@@ -38,7 +38,13 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.add, color: Colors.white),
+              child: IconButton(
+                icon: Icon(Icons.add, color: Colors.white),
+                onPressed: () {Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDreamView()));
+                },
+              ),
             ),
           ),
         ],

@@ -40,7 +40,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
               padding: const EdgeInsets.all(8),
               child: IconButton(
                 icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () {Navigator.pushReplacement(
+                onPressed: () {Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CreateDreamView()));
                 },

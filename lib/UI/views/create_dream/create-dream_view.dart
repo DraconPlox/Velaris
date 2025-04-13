@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velaris/UI/views/create_dream/create-dream_controller.dart';
+import 'package:velaris/UI/views/view_dream/view_dream_view.dart';
 
 void main() {
   runApp(
@@ -286,7 +287,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                 Icon(
                                   Icons.calendar_today,
                                   color: Colors.white70,
-                                  size: 18,
+                                  size: 20,
                                 ),
                                 SizedBox(width: 8),
                                 Text(
@@ -467,7 +468,8 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                     lucido = newValue ?? false;
                                   });
                                 },
-                                activeColor: Colors.purpleAccent,
+                                activeColor: Colors.white,
+                                checkColor: Colors.black,
                               ),
                             ],
                           ),
@@ -492,6 +494,9 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                   calidad: estrellasSeleccionadas,
                                   lucido: lucido,
                                 );
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ViewDreamView()));
                               },
                               child: Text(
                                 'Guardar',

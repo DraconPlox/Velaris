@@ -1,9 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:velaris/UI/views/view_dream/view_dream_controller.dart';
+import 'package:velaris/model/entity/dream.dart';
+import 'package:intl/intl.dart';
 
-class ViewDreamView extends StatelessWidget {
-  ViewDreamView({super.key});
+class ViewDreamView extends StatefulWidget {
+  ViewDreamView({super.key, required this.dreamId});
+  final String dreamId;
+
+  @override
+  State<ViewDreamView> createState() => _ViewDreamViewState();
+}
+
+class _ViewDreamViewState extends State<ViewDreamView> {
+  ViewDreamController viewDreamController = ViewDreamController();
+  Dream? dream;
+  bool loading = true;
+
+  @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  initialize() async {
+    dream = await viewDreamController.getDream(widget.dreamId);
+    loading = false;
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,16 +93,16 @@ class ViewDreamView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(Icons.calendar_today, size: 20, color: Colors.white),
                         SizedBox(width: 8),
-                        Text('13 Abr, 2025', style: TextStyle(color: Colors.white)),
+                        Text(DateFormat('d MMM, y', 'es_ES').format(dream?.fecha??DateTime.now()), style: TextStyle(color: Colors.white)),
                       ],
                     ),
                     const SizedBox(height: 16),
                     Center(
-                      child: const Text(
-                        'Título',
+                      child: Text(
+                        dream?.titulo??"",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -91,13 +117,8 @@ class ViewDreamView extends StatelessWidget {
                       endIndent: 0,
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                          'Maecenas imperdiet fermentum augue vel accumsan. Vestibulum tempus pulvinar risus sit amet malesuada. '
-                          'Donec iaculis odio dolor, eu varius est facilisis sit amet. Donec sit amet arcu eget sem vehicula auctor quis non sem. '
-                          'Aliquam quis lectus semper, efficitur elit sit amet, accumsan enim. Integer ornare ut est at condimentum. '
-                          'Pellentesque eget odio sit amet eros fermentum venenatis. Phasellus nec lacus blandit, euismod orci vitae, pharetra est.\n\n'
-                          'Nam scelerisque turpis in magna placerat pellentesque. Vestibulum tincidunt tempus lacus nec laoreet.',
+                    Text(
+                      dream?.descripcion??"",
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     const SizedBox(height: 16),
@@ -107,16 +128,16 @@ class ViewDreamView extends StatelessWidget {
                       indent: 0,
                       endIndent: 0,
                     ),
-                    const Text(
-                      'Tags: Recurrente.',
+                    Text(
+                      'Tags: ${dream?.caracteristica??""}',
                       style: TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 12),
                     Row(
-                      children: const [
+                      children: [
                         Text('Lúcido:', style: TextStyle(color: Colors.white)),
                         SizedBox(width: 8),
-                        Icon(Icons.check_box, color: Colors.white),
+                        Checkbox(value: dream?.lucido??false, onChanged: (bool? value) {},),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -128,11 +149,9 @@ class ViewDreamView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: List.generate(5, (index) {
                         return GestureDetector(
-                          onTap: () {
-                            // onTap deshabilitado
-                          },
+                          onTap: () {},
                           child: Icon(
-                            index < 2 ? Icons.star : Icons.star_border,
+                            index < (dream?.calidad??0) ? Icons.star : Icons.star_border,
                             color: Colors.amber,
                             size: 32,
                           ),
@@ -140,8 +159,8 @@ class ViewDreamView extends StatelessWidget {
                       }),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Horario de sueño: 00:30 - 07:00',
+                    Text(
+                      'Horario de sueño: ${dream?.horaInicio?.hour??DateTime(0).hour}:${dream?.horaInicio?.minute??DateTime(0).minute} - ${dream?.horaFinal?.hour??DateTime(0).hour}:${dream?.horaFinal?.minute??DateTime(0).minute}',
                       style: TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 20),
@@ -150,6 +169,15 @@ class ViewDreamView extends StatelessWidget {
               ),
             )
           ],
+        ),
+        if (loading)
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black.withAlpha(150),
+          child: Center(
+              child: CircularProgressIndicator()
+          ),
         )
       ]),
     );

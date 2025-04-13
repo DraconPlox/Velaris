@@ -198,7 +198,6 @@ class _CreateDreamViewState extends State<CreateDreamView> {
     return Scaffold(
       backgroundColor: const Color(0xFF1D1033),
       extendBodyBehindAppBar: true,
-      // Para que la imagen cubra detrás del AppBar
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
@@ -484,9 +483,10 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: TextButton(
-                              onPressed: () {
-                                createDreamController.createDream(
+                              onPressed: () async {
+                                String id = await createDreamController.createDream(
                                   titulo: titulo.text,
+                                  fecha: selectedDate,
                                   descripcion: descripcion.text,
                                   horaInicio: horaInicio,
                                   horaFinal: horaFinal,
@@ -494,9 +494,10 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                   calidad: estrellasSeleccionadas,
                                   lucido: lucido,
                                 );
+
                                 Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => ViewDreamView()));
+                                    MaterialPageRoute(builder: (context) => ViewDreamView(dreamId: id)));
                               },
                               child: Text(
                                 'Guardar',

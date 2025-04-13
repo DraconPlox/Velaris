@@ -5,6 +5,7 @@ part 'dream.g.dart';
 @JsonSerializable()
 class Dream {
   String? id;
+  DateTime? fecha;
   String? titulo;
   String? descripcion;
   DateTime? horaInicio;
@@ -15,6 +16,7 @@ class Dream {
 
   Dream({
     this.id,
+    this.fecha,
     this.titulo,
     this.descripcion,
     this.horaInicio,
@@ -32,6 +34,7 @@ class Dream {
 
   Dream copyWith({
     String? id,
+    DateTime? fecha,
     String? titulo,
     String? descripcion,
     DateTime? horaInicio,
@@ -42,6 +45,7 @@ class Dream {
   }) {
     return Dream(
       id: id ?? this.id,
+      fecha: fecha ?? this.fecha,
       titulo: titulo ?? this.titulo,
       descripcion: descripcion ?? this.descripcion,
       horaInicio: horaInicio ?? this.horaInicio,

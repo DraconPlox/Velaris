@@ -5,8 +5,9 @@ import '../../../model/entity/dream.dart';
 class CreateDreamController {
   FirestoreService firestoreService = FirestoreService();
 
-  createDream({
+  Future<String> createDream({
     required String titulo,
+    required DateTime fecha,
     required String descripcion,
     required DateTime? horaInicio,
     required DateTime? horaFinal,
@@ -15,6 +16,7 @@ class CreateDreamController {
     required bool lucido,
   }) {
     Dream dream = Dream(
+      fecha: fecha,
       calidad: calidad,
       caracteristica: caracteristica,
       descripcion: descripcion,
@@ -23,6 +25,6 @@ class CreateDreamController {
       lucido: lucido,
       titulo: titulo,
     );
-    firestoreService.createDream(dream, "nWVi248EOz2dXpgx0dAz");
+    return firestoreService.createDream(dream, "nWVi248EOz2dXpgx0dAz");
   }
 }

@@ -8,6 +8,7 @@ part of 'dream.dart';
 
 Dream _$DreamFromJson(Map<String, dynamic> json) => Dream(
   id: json['id'] as String?,
+  fecha: json['fecha'] == null ? null : DateTime.parse(json['fecha'] as String),
   titulo: json['titulo'] as String?,
   descripcion: json['descripcion'] as String?,
   horaInicio:
@@ -25,6 +26,7 @@ Dream _$DreamFromJson(Map<String, dynamic> json) => Dream(
 
 Map<String, dynamic> _$DreamToJson(Dream instance) => <String, dynamic>{
   'id': instance.id,
+  'fecha': instance.fecha?.toIso8601String(),
   'titulo': instance.titulo,
   'descripcion': instance.descripcion,
   'horaInicio': instance.horaInicio?.toIso8601String(),

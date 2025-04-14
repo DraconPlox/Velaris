@@ -15,6 +15,16 @@ class FirestoreService {
     return id;
   }
 
+  Future<void> updateDream(Dream dream, String userId) async {
+    if (dream.id == null) {
+      throw Exception('El sueño debe tener un ID para poder actualizarlo.');
+    }
+
+    await _getDreamCollection(userId)
+        .doc(dream.id)
+        .update(dream.toJson());
+  }
+
   Future<Dream?> getDream(String userId, String dreamId) async {
     var doc = await _getDreamCollection(userId).doc(dreamId).get();
 
@@ -33,6 +43,10 @@ class FirestoreService {
     return querySnapshot.docs
         .map((doc) => Dream.fromJson(doc.data()))
         .toList();
+  }
+
+  Future deleteDream(String userId, String dreamId) async {
+    await _getDreamCollection(userId).doc(dreamId).delete();
   }
 
   CollectionReference<Map<String, dynamic>> _getDreamCollection(String userId) {

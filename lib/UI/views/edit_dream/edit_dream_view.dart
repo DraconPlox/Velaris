@@ -1,17 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:velaris/UI/views/create_dream/create-dream_controller.dart';
 import 'package:velaris/UI/views/view_dream/view_dream_view.dart';
 
-class CreateDreamView extends StatefulWidget {
-  const CreateDreamView({super.key});
+import '../../../model/entity/dream.dart';
+import 'edit_dream_controller.dart';
+
+class EditDreamView extends StatefulWidget {
+  final String dreamId;
+  const EditDreamView({Key? key, required this.dreamId}) : super(key: key);
 
   @override
-  _CreateDreamViewState createState() => _CreateDreamViewState();
+  _EditDreamViewState createState() => _EditDreamViewState();
 }
 
-class _CreateDreamViewState extends State<CreateDreamView> {
-  CreateDreamController createDreamController = CreateDreamController();
+class _EditDreamViewState extends State<EditDreamView> {
+  EditDreamController createDreamController = EditDreamController();
+  Dream? dream;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  initialize() async {
+    dream = await createDreamController.getDream(widget.dreamId);
+    loading = false;
+
+    selectedDate = dream?.fecha??DateTime.now();
+    titulo.text = dream?.titulo??"";
+    descripcion.text = dream?.descripcion??"";
+    horaInicio = dream?.horaInicio;
+    horaFinal = dream?.horaFinal;
+    caracteristica = dream?.caracteristica;
+    estrellasSeleccionadas = dream?.calidad??0;
+    lucido = dream?.lucido??false;
+
+    setState(() {
+
+    });
+  }
 
   DateTime selectedDate = DateTime.now();
   TextEditingController titulo = TextEditingController();
@@ -44,9 +73,9 @@ class _CreateDreamViewState extends State<CreateDreamView> {
   }
 
   Widget buildTimeTextField(
-    TextEditingController controller,
-    String placeholder,
-  ) {
+      TextEditingController controller,
+      String placeholder,
+      ) {
     return SizedBox(
       width: 60, // Tamaño del campo de texto
       child: TextField(
@@ -252,7 +281,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                                 initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
+                                DatePickerEntryMode.calendarOnly,
                                 builder: (context, child) {
                                   return Theme(
                                     data: Theme.of(context).copyWith(
@@ -285,7 +314,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                 SizedBox(width: 8),
                                 Text(
                                   '${selectedDate.day.toString().padLeft(2, '0')} '
-                                  '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
+                                      '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
                                   style: TextStyle(color: Colors.white70),
                                 ),
                               ],
@@ -314,11 +343,11 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             ),
                             buildCounter:
                                 (
-                                  BuildContext context, {
-                                  required int currentLength,
-                                  required bool isFocused,
-                                  required int? maxLength,
-                                }) => null,
+                                BuildContext context, {
+                              required int currentLength,
+                              required bool isFocused,
+                              required int? maxLength,
+                            }) => null,
                           ),
                           SizedBox(height: 10),
                           Divider(
@@ -478,7 +507,8 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             ),
                             child: TextButton(
                               onPressed: () async {
-                                String id = await createDreamController.createDream(
+                                await createDreamController.updateDream(
+                                  dreamId: dream?.id??"",
                                   titulo: titulo.text,
                                   fecha: selectedDate,
                                   descripcion: descripcion.text,
@@ -491,7 +521,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
 
                                 Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => ViewDreamView(dreamId: id)));
+                                    MaterialPageRoute(builder: (context) => ViewDreamView(dreamId: dream?.id??"")));
                               },
                               child: Text(
                                 'Guardar',
@@ -510,6 +540,15 @@ class _CreateDreamViewState extends State<CreateDreamView> {
               ),
             ],
           ),
+          if (loading)
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withAlpha(150),
+              child: Center(
+                  child: CircularProgressIndicator()
+              ),
+            )
         ],
       ),
     );

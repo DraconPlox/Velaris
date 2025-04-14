@@ -8,4 +8,8 @@ class ViewDreamController {
   Future<Dream?> getDream(String dreamId) {
     return firestoreService.getDream("nWVi248EOz2dXpgx0dAz", dreamId);
   }
+
+  Future deleteDream(String dreamId) async {
+    await firestoreService.deleteDream("nWVi248EOz2dXpgx0dAz", dreamId);
+  }
 }

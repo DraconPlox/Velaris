@@ -4,9 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:velaris/UI/views/list_dreams/list_dreams_view.dart';
 
 class MyCalendarWidget extends StatefulWidget {
+  final void Function(DateTime selectedDay)? onDaySelected;
+
+  const MyCalendarWidget({Key? key, this.onDaySelected}) : super(key: key);
+
   @override
   _MyCalendarWidgetState createState() => _MyCalendarWidgetState();
 }
+
 
 class _MyCalendarWidgetState extends State<MyCalendarWidget> {
   DateTime _focusedDay = DateTime.now();
@@ -74,7 +79,11 @@ class _MyCalendarWidgetState extends State<MyCalendarWidget> {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
             });
+
+            // Llama al callback que le pasamos desde el widget padre
+            widget.onDaySelected!(selectedDay);
           },
+
           headerVisible: false,
           startingDayOfWeek: StartingDayOfWeek.monday,
           calendarStyle: CalendarStyle(

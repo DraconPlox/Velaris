@@ -4,6 +4,7 @@ import 'package:velaris/UI/views/edit_dream/edit_dream_view.dart';
 import 'package:velaris/UI/views/view_dream/view_dream_controller.dart';
 import 'package:velaris/model/entity/dream.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewDreamView extends StatefulWidget {
   ViewDreamView({super.key, required this.dreamId});
@@ -98,7 +99,9 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                                 context,
                                 MaterialPageRoute(
                                   builder:
-                                      (context) => EditDreamView(dreamId: dream?.id??""),
+                                      (context) => EditDreamView(
+                                        dreamId: dream?.id ?? "",
+                                      ),
                                 ),
                               );
                             },
@@ -109,7 +112,11 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                               FontAwesomeIcons.share,
                               color: Colors.white,
                             ),
-                            onPressed: () {/*TODO: COMPARTIR SUEÑO*/},
+                            onPressed: () {
+                              Share.share(
+                                '${dream?.titulo ?? ""}\n\n${dream?.descripcion ?? ""}\n\nLucido: ${dream?.lucido}',
+                              );
+                            },
                           ),
                           SizedBox(width: 12),
                           IconButton(
@@ -117,9 +124,78 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                               FontAwesomeIcons.trashCan,
                               color: Colors.white,
                             ),
-                            onPressed: () async {
-                              await viewDreamController.deleteDream(dream?.id??"");
-                              Navigator.pop(context);
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return Center(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Container(
+                                        width: 300,
+                                        // Ajusta el ancho a lo que necesites
+                                        padding: const EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF433865),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Text(
+                                              '¿Estás seguro que deseas eliminar este sueño?',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            const SizedBox(height: 20),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'Cancelar',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    await viewDreamController.deleteDream(dream?.id??"");
+                                                    Navigator.pop(ctx);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                      ),
+                                                  child: const Text(
+                                                    'Eliminar',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         ],

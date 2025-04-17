@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velaris/service/firestore_service.dart';
 
 import '../../../model/entity/dream.dart';
@@ -25,6 +26,6 @@ class CreateDreamController {
       lucido: lucido,
       titulo: titulo,
     );
-    return firestoreService.createDream(dream, "nWVi248EOz2dXpgx0dAz");
+    return firestoreService.createDream(dream, FirebaseAuth.instance.currentUser!.uid);
   }
 }

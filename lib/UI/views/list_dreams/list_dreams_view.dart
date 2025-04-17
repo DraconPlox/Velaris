@@ -4,6 +4,7 @@ import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
 import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
 
 import '../../../model/entity/dream.dart';
+import '../../widgets/navbar.dart';
 import '../view_dream/view_dream_view.dart';
 import 'list_dreams_controller.dart';
 
@@ -240,28 +241,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
       ),
 
       // BottomNavigationBar
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF3E3657),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Icon(Icons.bedtime, color: Colors.white70),
-              Icon(Icons.bar_chart, color: Colors.white70),
-              CircleAvatar(
-                backgroundColor: Colors.deepPurple,
-                backgroundImage: AssetImage('assets/images/google.png'),
-                radius: 24,
-              ),
-              Icon(Icons.search, color: Colors.white70),
-              Icon(Icons.settings, color: Colors.white70),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: Navbar(),
     );
   }
 }

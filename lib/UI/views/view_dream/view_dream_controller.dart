@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velaris/service/firestore_service.dart';
 
 import '../../../model/entity/dream.dart';
@@ -6,10 +7,10 @@ class ViewDreamController {
   FirestoreService firestoreService = FirestoreService();
 
   Future<Dream?> getDream(String dreamId) {
-    return firestoreService.getDream("nWVi248EOz2dXpgx0dAz", dreamId);
+    return firestoreService.getDream(FirebaseAuth.instance.currentUser!.uid, dreamId);
   }
 
   Future deleteDream(String dreamId) async {
-    await firestoreService.deleteDream("nWVi248EOz2dXpgx0dAz", dreamId);
+    await firestoreService.deleteDream(FirebaseAuth.instance.currentUser!.uid, dreamId);
   }
 }

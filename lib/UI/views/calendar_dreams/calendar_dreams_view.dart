@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_controller.dart';
 import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
+import 'package:velaris/UI/widgets/navbar.dart';
 
 import '../../../model/entity/dream.dart';
 import '../../widgets/my_calendar_widget.dart';
@@ -187,28 +188,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
       ),
 
       // BottomNavigationBar
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF322548),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Icon(Icons.bedtime, color: Colors.white70),
-              Icon(Icons.bar_chart, color: Colors.white70),
-              CircleAvatar(
-                backgroundColor: Colors.deepPurple,
-                backgroundImage: AssetImage('assets/images/google.png'),
-                radius: 24,
-              ),
-              Icon(Icons.search, color: Colors.white70),
-              Icon(Icons.settings, color: Colors.white70),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: Navbar(),
     );
   }
 }

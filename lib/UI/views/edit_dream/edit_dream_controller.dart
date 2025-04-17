@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velaris/service/firestore_service.dart';
 
 import '../../../model/entity/dream.dart';
@@ -6,7 +7,7 @@ class EditDreamController {
   FirestoreService firestoreService = FirestoreService();
 
   Future<Dream?> getDream(String dreamId) {
-    return firestoreService.getDream("nWVi248EOz2dXpgx0dAz", dreamId);
+    return firestoreService.getDream(FirebaseAuth.instance.currentUser!.uid, dreamId);
   }
 
   Future updateDream({
@@ -31,6 +32,6 @@ class EditDreamController {
       lucido: lucido,
       titulo: titulo,
     );
-    await firestoreService.updateDream(dream, "nWVi248EOz2dXpgx0dAz");
+    await firestoreService.updateDream(dream, FirebaseAuth.instance.currentUser!.uid);
   }
 }

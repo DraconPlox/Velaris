@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_controller.dart';
 import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
 import 'package:velaris/UI/widgets/navbar.dart';
 
 import '../../../model/entity/dream.dart';
+import '../../widgets/dream_card.dart';
 import '../../widgets/my_calendar_widget.dart';
 import '../view_dream/view_dream_view.dart';
 
@@ -21,18 +24,30 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
   DateTime _selectedDay = DateTime.now();
   List<Dream> allDreams = []; // Todos los sueños
   List<Dream> selectedDreams = []; // Sueños del día seleccionado
+  StreamSubscription<List<Dream>>? dreamSubscription;
 
   @override
   void initState() {
     super.initState();
-    loadDreams();
-    filterDreamsByDate(_selectedDay);
+    //loadDreams();
+    dreamSubscription = calendarDreamsController.listenerDreams().listen((List<Dream> dreams) {
+      allDreams = dreams;
+      filterDreamsByDate(_selectedDay);
+    });
   }
 
+  @override
+  void dispose() {
+    dreamSubscription?.cancel();
+    super.dispose();
+  }
+
+  /*
   void loadDreams() async {
     allDreams = await calendarDreamsController.getDreams();
     filterDreamsByDate(DateTime.now());
   }
+   */
 
   void filterDreamsByDate(DateTime date) {
     setState(() {
@@ -45,57 +60,6 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
                 dream.fecha!.day == date.day;
           }).toList();
     });
-  }
-
-  Widget DreamCard({
-    required String id,
-    required String titulo,
-    required String descripcion,
-    required bool lucido,
-  }) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ViewDreamView(dreamId: id)),
-        );
-      },
-      child: Container(
-        width: 280,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF40396E), // Fondo morado oscuro
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              offset: const Offset(0, 4),
-              blurRadius: 8,
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              titulo,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              descripcion,
-              style: const TextStyle(color: Colors.white70, fontSize: 13),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override

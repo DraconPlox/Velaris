@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
 import 'package:velaris/UI/views/create_dream/create-dream_view.dart';
 
 import '../../../model/entity/dream.dart';
+import '../../widgets/dream_card.dart';
 import '../../widgets/navbar.dart';
 import '../view_dream/view_dream_view.dart';
 import 'list_dreams_controller.dart';
@@ -19,6 +22,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
   ListDreamsController listDreamsController = ListDreamsController();
   List<Dream> listaDreams = [];
   bool loading = true;
+  StreamSubscription<List<Dream>>? dreamSubscription;
 
   @override
   void initState() {
@@ -27,9 +31,21 @@ class _ListDreamsViewState extends State<ListDreamsView> {
   }
 
   initialize() async {
-    listaDreams = await listDreamsController.getDreams();
-    loading = false;
-    setState(() {});
+    //listaDreams = await listDreamsController.getDreams();
+    dreamSubscription = listDreamsController.listenerDreams().listen((
+      List<Dream> dreams,
+    ) {
+      loading = true;
+      listaDreams = dreams;
+      setState(() {});
+      loading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    dreamSubscription?.cancel();
+    super.dispose();
   }
 
   Map<DateTime, List<Dream>> groupDreamsByDate(List<Dream> dreams) {
@@ -48,58 +64,6 @@ class _ListDreamsViewState extends State<ListDreamsView> {
     }
 
     return grouped;
-  }
-
-  Widget DreamCard({
-    required String id,
-    required String titulo,
-    required String descripcion,
-    required bool lucido,
-  }) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(context,
-          MaterialPageRoute(
-            builder: (context) => ViewDreamView(dreamId: id),
-          ),
-        );
-      },
-      child: Container(
-        width: 280,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF40396E), // Fondo morado oscuro
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              offset: const Offset(0, 4),
-              blurRadius: 8,
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              titulo,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              descripcion,
-              style: const TextStyle(color: Colors.white70, fontSize: 13),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -201,26 +165,37 @@ class _ListDreamsViewState extends State<ListDreamsView> {
                           padding: const EdgeInsets.only(bottom: 8, top: 8),
                           child: Center(
                             child: Text(
-                              DateFormat("d MMM, yyyy", 'es_ES').format(mapDreams.keys.toList()[i]),
+                              DateFormat(
+                                "d MMM, yyyy",
+                                'es_ES',
+                              ).format(mapDreams.keys.toList()[i]),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                                 height: 1.5,
                                 letterSpacing: 1,
-
                               ),
                             ),
                           ),
                         ),
-                        for (int j = 0; j < mapDreams.values.toList()[i].length; j++ )
+                        for (
+                          int j = 0;
+                          j < mapDreams.values.toList()[i].length;
+                          j++
+                        )
                           Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 16),
                             child: DreamCard(
-                            id: mapDreams.values.toList()[i][j].id??"",
-                            titulo: mapDreams.values.toList()[i][j].titulo??"",
-                            descripcion: mapDreams.values.toList()[i][j].descripcion??"",
-                            lucido: mapDreams.values.toList()[i][j].lucido??false,
+                              id: mapDreams.values.toList()[i][j].id ?? "",
+                              titulo:
+                                  mapDreams.values.toList()[i][j].titulo ?? "",
+                              descripcion:
+                                  mapDreams.values.toList()[i][j].descripcion ??
+                                  "",
+                              lucido:
+                                  mapDreams.values.toList()[i][j].lucido ??
+                                  false,
                             ),
                           ),
                       ],

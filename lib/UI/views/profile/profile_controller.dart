@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:velaris/service/firestore_service.dart';
 
+import '../../../model/entity/dream.dart';
+
 class ProfileController {
   FirestoreService firestoreService = FirestoreService();
 
@@ -36,5 +38,27 @@ class ProfileController {
 
   Future<DateTime?> getDob() async {
     return firestoreService.getDob(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  Future<List<Dream>> getDreams() {
+    return firestoreService.getDreams(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  Map<String, int> getSuenosLucidos(List<Dream> dreams) {
+    int lucidos = 0;
+    int noLucidos = 0;
+
+    for (var dream in dreams) {
+      if (dream.lucido == true) {
+        lucidos++;
+      } else {
+        noLucidos++;
+      }
+    }
+
+    return {
+      'Lucido': lucidos,
+      'No lucido': noLucidos,
+    };
   }
 }

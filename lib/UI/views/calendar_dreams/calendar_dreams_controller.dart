@@ -9,4 +9,8 @@ class CalendarDreamsController {
   Future<List<Dream>> getDreams() {
     return firestoreService.getDreams(FirebaseAuth.instance.currentUser!.uid);
   }
+
+  Stream<List<Dream>> listenerDreams() {
+    return firestoreService.listenToDreams();
+  }
 }

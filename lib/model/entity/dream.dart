@@ -1,14 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../utils/timestamp_converter.dart';
+
 part 'dream.g.dart';
 
 @JsonSerializable()
 class Dream {
   String? id;
+  @TimestampConverter()
   DateTime? fecha;
   String? titulo;
   String? descripcion;
+  @TimestampConverter()
   DateTime? horaInicio;
+  @TimestampConverter()
   DateTime? horaFinal;
   String? caracteristica;
   int? calidad;

@@ -8,17 +8,11 @@ part of 'dream.dart';
 
 Dream _$DreamFromJson(Map<String, dynamic> json) => Dream(
   id: json['id'] as String?,
-  fecha: json['fecha'] == null ? null : DateTime.parse(json['fecha'] as String),
+  fecha: const TimestampConverter().fromJson(json['fecha']),
   titulo: json['titulo'] as String?,
   descripcion: json['descripcion'] as String?,
-  horaInicio:
-      json['horaInicio'] == null
-          ? null
-          : DateTime.parse(json['horaInicio'] as String),
-  horaFinal:
-      json['horaFinal'] == null
-          ? null
-          : DateTime.parse(json['horaFinal'] as String),
+  horaInicio: const TimestampConverter().fromJson(json['horaInicio']),
+  horaFinal: const TimestampConverter().fromJson(json['horaFinal']),
   caracteristica: json['caracteristica'] as String?,
   calidad: (json['calidad'] as num?)?.toInt(),
   lucido: json['lucido'] as bool?,
@@ -26,12 +20,26 @@ Dream _$DreamFromJson(Map<String, dynamic> json) => Dream(
 
 Map<String, dynamic> _$DreamToJson(Dream instance) => <String, dynamic>{
   'id': instance.id,
-  'fecha': instance.fecha?.toIso8601String(),
+  'fecha': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.fecha,
+    const TimestampConverter().toJson,
+  ),
   'titulo': instance.titulo,
   'descripcion': instance.descripcion,
-  'horaInicio': instance.horaInicio?.toIso8601String(),
-  'horaFinal': instance.horaFinal?.toIso8601String(),
+  'horaInicio': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.horaInicio,
+    const TimestampConverter().toJson,
+  ),
+  'horaFinal': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.horaFinal,
+    const TimestampConverter().toJson,
+  ),
   'caracteristica': instance.caracteristica,
   'calidad': instance.calidad,
   'lucido': instance.lucido,
 };
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);

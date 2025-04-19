@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../model/entity/dream.dart';
+import '../model/entity/dream_user.dart';
 
 class FirestoreService {
   final FirebaseFirestore _ref = FirebaseFirestore.instance;
@@ -120,4 +122,27 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> _getDreamCollection(String userId) {
     return _ref.collection("user").doc(userId).collection("dream");
   }
+
+  CollectionReference<Map<String, dynamic>> _getUserCollection() {
+    return _ref.collection("user");
+  }
+
+  Future<List<DreamUser>> searchUsers(String query) async {
+    final snapshot = await _getUserCollection()
+        .where('nickname', isGreaterThanOrEqualTo: query)
+        .where('nickname', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+
+    return snapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();
+  }
+
+
+  Stream<List<Dream>> listenToDreams() {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    return _getDreamCollection(uid)
+        .snapshots()
+        .map((snapshot) =>
+        snapshot.docs.map((doc) => Dream.fromJson(doc.data())).toList());
+  }
+
 }

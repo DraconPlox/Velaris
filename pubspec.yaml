@@ -50,6 +50,7 @@ dependencies:
   json_serializable: ^6.9.4
   freezed_annotation: ^3.0.0
   share_plus: ^10.1.4
+  fl_chart: ^0.71.0
 
 dev_dependencies:
   flutter_test:

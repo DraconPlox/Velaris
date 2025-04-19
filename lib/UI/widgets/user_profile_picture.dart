@@ -25,7 +25,10 @@ class UserProfilePicture extends StatelessWidget {
         } else {
           return CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(snapshot.data!),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: Image.network(snapshot.data!, fit: BoxFit.cover),
+            ),
           );
         }
       },

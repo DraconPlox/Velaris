@@ -6,13 +6,14 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   /// Registro con email y contraseña
-  Future<User?> registerWithEmail(String email, String password) async {
+  Future<UserCredential?> registerWithEmail(String email, String password) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
       print("¡Usuario creado con éxito!");
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       print("FirebaseAuth error: ${e.code} - ${e.message}");
     }

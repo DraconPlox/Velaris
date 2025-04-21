@@ -28,6 +28,10 @@ class ProfileController {
     }
   }
 
+  Future<String?> getNickname() async {
+    return firestoreService.getNickname(FirebaseAuth.instance.currentUser!.uid);
+  }
+
   Future<String?> getDescription() async {
     return firestoreService.getDescription(FirebaseAuth.instance.currentUser!.uid);
   }

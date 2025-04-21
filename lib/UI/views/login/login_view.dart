@@ -174,7 +174,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => RegisterView(),

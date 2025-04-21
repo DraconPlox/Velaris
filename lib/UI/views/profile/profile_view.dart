@@ -20,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   ProfileController profileController = ProfileController();
   String? descripcion;
+  String? nickname;
   String? genero;
   DateTime? dob;
   int? year;
@@ -38,6 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
     descripcion = await profileController.getDescription();
     genero = await profileController.getGender();
     dob = await profileController.getDob();
+    nickname = await profileController.getNickname();
     if (dob != null) {
       // Fecha actual
       DateTime currentDate = DateTime.now();
@@ -132,11 +134,11 @@ class _ProfileViewState extends State<ProfileView> {
                         // Avatar y nombre alineados a la izquierda
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             UserProfilePicture(),
                             SizedBox(width: 16),
                             Text(
-                              'DraconPlox',
+                              nickname ?? "",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -169,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
                             Text(
                               dob != null && year != null
                                   ? '${dob!.day.toString().padLeft(2, '0')}/${dob!.month.toString().padLeft(2, '0')}/${dob!.year} ($year años)'
-                                  : 'Cargando...',
+                                  : '',
                               style: TextStyle(color: Colors.white),
                             ),
                           ],

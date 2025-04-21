@@ -1,4 +1,12 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../widgets/user_profile_picture.dart';
+import 'edit_profile_controller.dart';
 
 class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});
@@ -8,17 +16,42 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileViewState extends State<EditProfileView> {
-  final TextEditingController _nameController = TextEditingController(text: "DraconPlox");
-  final TextEditingController _descController = TextEditingController(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...");
-  DateTime _selectedDate = DateTime(2004, 10, 15);
-  String _selectedGender = 'Hombre';
+  EditProfileController editProfileController = EditProfileController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  ImagePicker imagePicker = ImagePicker();
+  DateTime selectedDate = DateTime(2004, 10, 15);
+  String selectedGender = 'Hombre';
+  List<String> genderOptions = ['Hombre', 'Mujer', 'Otro'];
+  File? pickedImage;
 
-  final List<String> _genderOptions = ['Hombre', 'Mujer', 'Otro'];
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    User? user = editProfileController.getUser();
+    if (user == null) return;
+
+    final doc = await FirebaseFirestore.instance.collection('user').doc(user?.uid??"").get();
+
+    if (doc.exists) {
+      final data = doc.data()!;
+      setState(() {
+        nameController.text = data['nickname'] ?? '';
+        descController.text = data['description'] ?? '';
+        selectedDate = (data['dob'] as Timestamp).toDate();
+        selectedGender = data['gender'] ?? 'Otro';
+      });
+    }
+  }
 
   Future<void> _pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) {
@@ -37,9 +70,18 @@ class _EditProfileViewState extends State<EditProfileView> {
       },
     );
 
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        _selectedDate = picked;
+        selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> pickImage() async {
+    XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        pickedImage = File(image.path);
       });
     }
   }
@@ -60,33 +102,33 @@ class _EditProfileViewState extends State<EditProfileView> {
           children: [
             // Imagen de perfil
             Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const CircleAvatar(
-                    radius: 45,
-                    backgroundImage: AssetImage("assets/images/avatar_placeholder.png"),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.purpleAccent,
+              child: GestureDetector(
+                onTap: pickImage,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    UserProfilePicture(), // Puedes seguir usando este widget
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.purpleAccent,
+                        ),
+                        padding: const EdgeInsets.all(6),
+                        child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
                       ),
-                      padding: const EdgeInsets.all(6),
-                      child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 20),
 
             // Campo de nombre
             TextField(
-              controller: _nameController,
+              controller: nameController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Nombre',
@@ -100,7 +142,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 
             // Campo de descripción
             TextField(
-              controller: _descController,
+              controller: descController,
               style: const TextStyle(color: Colors.white),
               maxLines: 5,
               decoration: InputDecoration(
@@ -119,7 +161,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 const Text('Fecha de Nacimiento:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 const SizedBox(width: 8),
                 Text(
-                  '${_selectedDate.day.toString().padLeft(2, '0')}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year}',
+                  '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year}',
                   style: const TextStyle(color: Colors.white),
                 ),
                 const Spacer(),
@@ -138,7 +180,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedGender,
+                    value: selectedGender,
                     dropdownColor: const Color(0xFF2D2643),
                     decoration: InputDecoration(
                       filled: true,
@@ -147,7 +189,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                     icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                     style: const TextStyle(color: Colors.white),
-                    items: _genderOptions.map((String gender) {
+                    items: genderOptions.map((String gender) {
                       return DropdownMenuItem<String>(
                         value: gender,
                         child: Text(gender),
@@ -155,7 +197,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedGender = value!;
+                        selectedGender = value!;
                       });
                     },
                   ),
@@ -168,8 +210,30 @@ class _EditProfileViewState extends State<EditProfileView> {
             SizedBox(
               width: double.infinity,
               child: GestureDetector(
-                onTap: () {
-                  // Aquí va la lógica para guardar cambios
+                onTap: () async {
+                  User? user = editProfileController.getUser();
+                  if (user == null) return;
+
+                  if (pickedImage != null) {
+                    editProfileController.updateImage(user.uid, pickedImage!);
+                  }
+
+                  try {
+                    await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
+                      'nickname': nameController.text,
+                      'description': descController.text,
+                      'dob': Timestamp.fromDate(selectedDate),
+                      'gender': selectedGender,
+                    });
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Datos actualizados exitosamente!')),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error al actualizar los datos: $e')),
+                    );
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),

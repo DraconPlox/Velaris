@@ -26,5 +26,5 @@ class TimestampConverter implements JsonConverter<DateTime, dynamic> {
   }
 
   @override
-  dynamic toJson(DateTime date) => date.toIso8601String();
+  dynamic toJson(DateTime date) => date;
 }

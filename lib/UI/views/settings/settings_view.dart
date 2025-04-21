@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/settings/settings_controller.dart';
 
+import '../../widgets/ajustes_item.dart';
 import '../../widgets/navbar.dart';
 
 class SettingsView extends StatelessWidget {
-  const SettingsView({super.key});
+  SettingsView({super.key});
+  SettingsController settingsController = SettingsController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +44,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   child: ListView(
                     padding: const EdgeInsets.all(20),
-                    children: const [
-                      AjustesItem(texto: 'Cambiar contraseña'),
-                      AjustesItem(texto: 'Cambiar correo'),
-                      AjustesItem(texto: 'Exportar datos'),
-                      AjustesItem(texto: 'Importar datos'),
-                      AjustesItem(texto: 'Cambiar ajustes de notificaciones'),
-                      AjustesItem(texto: 'Cerrar sesión'),
-                      SizedBox(height: 10),
-                      Text(
+                    children: [
+                      const AjustesItem(texto: 'Cambiar contraseña'),
+                      const AjustesItem(texto: 'Cambiar correo'),
+                      const AjustesItem(texto: 'Exportar datos'),
+                      const AjustesItem(texto: 'Importar datos'),
+                      const AjustesItem(texto: 'Cambiar ajustes de notificaciones'),
+                      AjustesItem(
+                        texto: 'Cerrar sesión',
+                        onTap: () => settingsController.cerrarSesion(context),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
                         'Borrar cuenta',
                         style: TextStyle(color: Colors.redAccent),
                       ),
@@ -62,23 +68,6 @@ class SettingsView extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Navbar(),
-    );
-  }
-}
-
-class AjustesItem extends StatelessWidget {
-  final String texto;
-  const AjustesItem({super.key, required this.texto});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        texto,
-        style: const TextStyle(color: Colors.white),
-      ),
-      trailing: const Icon(Icons.chevron_right, color: Colors.white),
-      onTap: () {},
     );
   }
 }

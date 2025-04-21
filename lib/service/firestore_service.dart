@@ -75,6 +75,28 @@ class FirestoreService {
     }
   }
 
+  Future<String?> getNickname(String userId) async {
+    try {
+      // Espera que se complete la operación y obtén el documento
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("user")
+          .doc(userId)
+          .get();
+
+      // Verifica si el documento existe
+      if (userDoc.exists) {
+        // Retorna el valor de 'description' si existe
+        return userDoc['nickname'];
+      } else {
+        print('Usuario no encontrado');
+        return null;
+      }
+    } catch (e) {
+      print('Error al obtener la descripción: $e');
+      return null;
+    }
+  }
+
   Future<String> createDream(Dream dream, String userId) async {
     var reference = _getDreamCollection(userId).doc();
     var id = reference.id;
@@ -144,5 +166,4 @@ class FirestoreService {
         .map((snapshot) =>
         snapshot.docs.map((doc) => Dream.fromJson(doc.data())).toList());
   }
-
 }

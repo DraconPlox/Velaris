@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velaris/UI/views/profile/profile_controller.dart';
 import 'package:velaris/UI/widgets/user_profile_picture.dart';
+import 'package:velaris/model/entity/dream_user.dart';
 
 import '../../widgets/navbar.dart';
 import '../edit_profile/edit_profile_view.dart';
 
 class ProfileView extends StatefulWidget {
-  ProfileView({super.key});
+  ProfileView({super.key, this.dreamUser});
+
+  final DreamUser? dreamUser;
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -34,12 +37,13 @@ class _ProfileViewState extends State<ProfileView> {
 
   initialize() async {
     suenosLucidos = profileController.getSuenosLucidos(
-      await profileController.getDreams(),
+      await profileController.getDreams(userId: widget.dreamUser?.id),
     );
-    descripcion = await profileController.getDescription();
-    genero = await profileController.getGender();
-    dob = await profileController.getDob();
-    nickname = await profileController.getNickname();
+    await profileController.initialize();
+    descripcion = widget.dreamUser?.description ?? (profileController.getDescription());
+    genero = widget.dreamUser?.gender ?? (profileController.getGender());
+    dob = widget.dreamUser?.dob ?? (profileController.getDob());
+    nickname = widget.dreamUser?.nickname ?? (profileController.getNickname());
     if (dob != null) {
       // Fecha actual
       DateTime currentDate = DateTime.now();
@@ -59,6 +63,7 @@ class _ProfileViewState extends State<ProfileView> {
       backgroundColor: const Color(0xFF1D1033),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
@@ -110,32 +115,34 @@ class _ProfileViewState extends State<ProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Iconos superiores alineados a la derecha
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit, color: Colors.white),
-                              onPressed:
-                                  () => {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditProfileView(),
+                        if (widget.dreamUser == null)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.white),
+                                onPressed:
+                                    () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => EditProfileView(),
+                                        ),
                                       ),
-                                    ),
-                                  },
-                            ),
-                            SizedBox(width: 8),
-                            Icon(FontAwesomeIcons.user, color: Colors.white),
-                          ],
-                        ),
+                                    },
+                              ),
+                              SizedBox(width: 8),
+                              Icon(FontAwesomeIcons.user, color: Colors.white),
+                            ],
+                          ),
                         const SizedBox(height: 24),
 
                         // Avatar y nombre alineados a la izquierda
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            UserProfilePicture(),
+                            UserProfilePicture(url: widget.dreamUser?.profilePicture??profileController.getUser()?.profilePicture),
                             SizedBox(width: 16),
                             Text(
                               nickname ?? "",
@@ -223,57 +230,83 @@ class _ProfileViewState extends State<ProfileView> {
                                   flex: 2,
                                   child: PieChart(
                                     PieChartData(
-                                      sections: List.generate(labelsLucidez.length, (index) {
-                                        final label = labelsLucidez[index]; // Obtenemos la etiqueta
-                                        final value = suenosLucidos[label] ?? 0; // Obtenemos el número de sueños de esa etiqueta
+                                      sections: List.generate(labelsLucidez.length, (
+                                        index,
+                                      ) {
+                                        final label =
+                                            labelsLucidez[index]; // Obtenemos la etiqueta
+                                        final value =
+                                            suenosLucidos[label] ??
+                                            0; // Obtenemos el número de sueños de esa etiqueta
 
                                         return PieChartSectionData(
-                                          value: value.toDouble(), // Valor que corresponde a la sección del pastel
-                                          color: coloresLucidez[index], // Color correspondiente
-                                          title: value > 0 ? '$value' : '', // Solo mostramos el número si es mayor a 0
-                                          radius: 60, // Radio del gráfico
+                                          value: value.toDouble(),
+                                          // Valor que corresponde a la sección del pastel
+                                          color: coloresLucidez[index],
+                                          // Color correspondiente
+                                          title: value > 0 ? '$value' : '',
+                                          // Solo mostramos el número si es mayor a 0
+                                          radius: 60,
+                                          // Radio del gráfico
                                           titleStyle: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12, // Tamaño del texto del título
+                                            fontSize:
+                                                12, // Tamaño del texto del título
                                           ),
                                         );
                                       }),
-                                      sectionsSpace: 2, // Espacio entre secciones
-                                      centerSpaceRadius: 0, // Espacio en el centro del pastel
+                                      sectionsSpace: 2,
+                                      // Espacio entre secciones
+                                      centerSpaceRadius:
+                                          0, // Espacio en el centro del pastel
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 16), // Espacio entre el gráfico y la leyenda
+                                const SizedBox(width: 16),
+                                // Espacio entre el gráfico y la leyenda
                                 // Leyenda a la derecha
                                 Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(labelsLucidez.length, (index) {
-                                      final label = labelsLucidez[index]; // Obtenemos la etiqueta
-                                      final color = coloresLucidez[index]; // Obtenemos el color correspondiente
-                                      final count = suenosLucidos[label] ?? 0; // Obtenemos el número de sueños para esa etiqueta
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(labelsLucidez.length, (
+                                      index,
+                                    ) {
+                                      final label =
+                                          labelsLucidez[index]; // Obtenemos la etiqueta
+                                      final color =
+                                          coloresLucidez[index]; // Obtenemos el color correspondiente
+                                      final count =
+                                          suenosLucidos[label] ??
+                                          0; // Obtenemos el número de sueños para esa etiqueta
 
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 4),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 4,
+                                        ),
                                         child: Row(
                                           children: [
                                             Container(
-                                              width: 12, // Tamaño del círculo de color
+                                              width: 12,
+                                              // Tamaño del círculo de color
                                               height: 12,
                                               decoration: BoxDecoration(
-                                                color: color, // Color correspondiente a la etiqueta
+                                                color: color,
+                                                // Color correspondiente a la etiqueta
                                                 shape: BoxShape.circle,
                                               ),
                                             ),
                                             const SizedBox(width: 8),
                                             Text(
-                                              '$label ($count)', // Mostramos la etiqueta y el número de sueños
+                                              '$label ($count)',
+                                              // Mostramos la etiqueta y el número de sueños
                                               style: const TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 12, // Tamaño del texto
+                                                fontSize:
+                                                    12, // Tamaño del texto
                                               ),
                                             ),
                                           ],

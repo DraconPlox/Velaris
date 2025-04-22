@@ -97,6 +97,30 @@ class FirestoreService {
     }
   }
 
+  Future<DreamUser?> getDreamUser(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("user")
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          return DreamUser.fromJson(data);
+        } else {
+          return null;
+        }
+      } else {
+        print('Usuario no encontrado');
+        return null;
+      }
+    } catch (e) {
+      print('Error al obtener la descripción: $e');
+      return null;
+    }
+  }
+
   Future<String> createDream(Dream dream, String userId) async {
     var reference = _getDreamCollection(userId).doc();
     var id = reference.id;

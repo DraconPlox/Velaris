@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
 import 'package:velaris/UI/views/estadisticas/estadisticas_view.dart';
@@ -5,10 +6,32 @@ import 'package:velaris/UI/views/profile/profile_view.dart';
 import 'package:velaris/UI/views/search_user/search_user_view.dart';
 import 'package:velaris/UI/views/settings/settings_view.dart';
 import 'package:velaris/UI/widgets/user_profile_picture.dart';
+import 'package:velaris/model/entity/dream_user.dart';
+import 'package:velaris/service/firestore_service.dart';
 
-class Navbar extends StatelessWidget {
+class Navbar extends StatefulWidget {
   const Navbar({super.key});
 
+  @override
+  State<Navbar> createState() => _NavbarState();
+}
+
+class _NavbarState extends State<Navbar> {
+  DreamUser? user;
+  FirestoreService firestoreService = FirestoreService();
+
+  @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  Future<void> initialize() async {
+    user = await firestoreService.getDreamUser(FirebaseAuth.instance.currentUser?.uid??"");
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,11 +55,10 @@ class Navbar extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.bedtime, color: Colors.white70),
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => CalendarDreamsView(),
-                            ),
+                            MaterialPageRoute(builder: (context) => CalendarDreamsView()),
+                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -58,11 +80,10 @@ class Navbar extends StatelessWidget {
                           color: Colors.white70,
                         ),
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => EstadisticasView(),
-                            ),
+                            MaterialPageRoute(builder: (context) => EstadisticasView()),
+                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -82,11 +103,10 @@ class Navbar extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.search, color: Colors.white70),
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchUserView(),
-                            ),
+                            MaterialPageRoute(builder: (context) => SearchUserView()),
+                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -105,11 +125,10 @@ class Navbar extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.settings, color: Colors.white70),
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => SettingsView(),
-                            ),
+                            MaterialPageRoute(builder: (context) => SettingsView()),
+                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -132,9 +151,10 @@ class Navbar extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => ProfileView()),
+                        (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                   );
                 },
                 child: Container(
@@ -144,7 +164,7 @@ class Navbar extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Color(0xFF3E3657),
                   ),
-                  child: UserProfilePicture(),
+                  child: UserProfilePicture(url: user?.profilePicture),
                 ),
               ),
             ),

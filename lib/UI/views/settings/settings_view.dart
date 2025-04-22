@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/edit_password/edit_password_view.dart';
 import 'package:velaris/UI/views/settings/settings_controller.dart';
 
 import '../../widgets/ajustes_item.dart';
@@ -45,7 +46,15 @@ class SettingsView extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.all(20),
                     children: [
-                      const AjustesItem(texto: 'Cambiar contraseña'),
+                      AjustesItem(
+                        texto: 'Cambiar contraseña',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPasswordView(),
+                          ),
+                        ),
+                      ),
                       const AjustesItem(texto: 'Cambiar correo'),
                       const AjustesItem(texto: 'Exportar datos'),
                       const AjustesItem(texto: 'Importar datos'),

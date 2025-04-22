@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:velaris/UI/views/profile/profile_view.dart';
 import 'package:velaris/UI/views/search_user/search_user_controller.dart';
 import '../../../model/entity/dream_user.dart';
 import '../../widgets/navbar.dart';
+import '../../widgets/user_profile_picture.dart';
 
 class SearchUserView extends StatefulWidget {
   const SearchUserView({super.key});
@@ -105,8 +107,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                           children: [
                             searchQuery.isEmpty
                                 ? Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
                                     Icon(
                                       Icons.person,
@@ -117,9 +118,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                     Text(
                                       'Aquí aparecerán los usuarios que busques.\n¡Prueba a buscar alguno!',
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ],
                                 )
@@ -127,40 +126,41 @@ class _SearchUserViewState extends State<SearchUserView> {
                                 ? Center(
                                   child: Text(
                                     '¿Ya estás mezclando los sueños lúcidos con la realidad? No hemos encontrado ningún usuario con ese nombre.',
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                    ),
+                                    style: TextStyle(color: Colors.white70),
                                   ),
                                 )
                                 : ListView.separated(
                                   itemCount: dreamUserList.length,
                                   separatorBuilder:
-                                      (_, __) => const Divider(
-                                        color: Colors.white24,
-                                      ),
+                                      (_, __) =>
+                                          const Divider(color: Colors.white24),
                                   itemBuilder: (context, index) {
                                     DreamUser user = dreamUserList[index];
-                                    String nickname =
-                                        user.nickname ?? "-";
+                                    String nickname = user.nickname ?? "-";
                                     String? avatar;
 
                                     return ListTile(
-                                      leading:
-                                          avatar != null
-                                              ? CircleAvatar(
-                                                backgroundImage:
-                                                    NetworkImage(avatar),
-                                              )
-                                              : const CircleAvatar(
-                                                child: Icon(Icons.person),
-                                              ),
+                                      leading: UserProfilePicture(
+                                        url:
+                                            user.profilePicture,
+                                      ),
                                       title: Text(
                                         nickname,
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),
                                       ),
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => ProfileView(
+                                                  dreamUser: user,
+                                                ),
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
                                 ),

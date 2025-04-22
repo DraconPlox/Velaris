@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:velaris/model/entity/dream_user.dart';
 
 import '../../widgets/user_profile_picture.dart';
 import 'edit_profile_controller.dart';
@@ -32,10 +33,15 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Future<void> loadUserData() async {
-    User? user = editProfileController.getUser();
+    await editProfileController.initialize();
+    DreamUser? user = editProfileController.getDreamUser();
     if (user == null) return;
 
-    final doc = await FirebaseFirestore.instance.collection('user').doc(user?.uid??"").get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(user?.id ?? "")
+            .get();
 
     if (doc.exists) {
       final data = doc.data()!;
@@ -107,7 +113,21 @@ class _EditProfileViewState extends State<EditProfileView> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    UserProfilePicture(), // Puedes seguir usando este widget
+                    pickedImage == null
+                        ? CircleAvatar(
+                          radius: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(999),
+                            child: Image.network(editProfileController.getDreamUser()?.profilePicture??"https://firebasestorage.googleapis.com/v0/b/velaris-5a288.firebasestorage.app/o/profile_pictures%2Fdefault.png?alt=media&token=d6d2a455-c6f2-4870-80ec-ff4df67d1ddd", fit: BoxFit.cover),
+                          ),
+                        )
+                        : CircleAvatar(
+                          radius: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(999),
+                            child: Image.file(pickedImage!, fit: BoxFit.cover),
+                          ),
+                        ),
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -117,9 +137,13 @@ class _EditProfileViewState extends State<EditProfileView> {
                           color: Colors.purpleAccent,
                         ),
                         padding: const EdgeInsets.all(6),
-                        child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -135,7 +159,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                 labelStyle: const TextStyle(color: Colors.white70),
                 filled: true,
                 fillColor: const Color(0xFF2D2643),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -150,7 +176,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                 labelStyle: const TextStyle(color: Colors.white70),
                 filled: true,
                 fillColor: const Color(0xFF2D2643),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -158,7 +186,13 @@ class _EditProfileViewState extends State<EditProfileView> {
             // Fecha de nacimiento
             Row(
               children: [
-                const Text('Fecha de Nacimiento:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Fecha de Nacimiento:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 Text(
                   '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year}',
@@ -176,7 +210,13 @@ class _EditProfileViewState extends State<EditProfileView> {
             // Género
             Row(
               children: [
-                const Text('Género:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Género:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<String>(
@@ -185,16 +225,22 @@ class _EditProfileViewState extends State<EditProfileView> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xFF2D2643),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.white,
+                    ),
                     style: const TextStyle(color: Colors.white),
-                    items: genderOptions.map((String gender) {
-                      return DropdownMenuItem<String>(
-                        value: gender,
-                        child: Text(gender),
-                      );
-                    }).toList(),
+                    items:
+                        genderOptions.map((String gender) {
+                          return DropdownMenuItem<String>(
+                            value: gender,
+                            child: Text(gender),
+                          );
+                        }).toList(),
                     onChanged: (value) {
                       setState(() {
                         selectedGender = value!;
@@ -211,27 +257,23 @@ class _EditProfileViewState extends State<EditProfileView> {
               width: double.infinity,
               child: GestureDetector(
                 onTap: () async {
-                  User? user = editProfileController.getUser();
-                  if (user == null) return;
+                  bool result = await editProfileController.updateUser(
+                    pickedImage: pickedImage,
+                    nickname: nameController.text,
+                    description: descController.text,
+                    selectedDate: selectedDate,
+                    gender: selectedGender,
+                  );
 
-                  if (pickedImage != null) {
-                    editProfileController.updateImage(user.uid, pickedImage!);
-                  }
-
-                  try {
-                    await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
-                      'nickname': nameController.text,
-                      'description': descController.text,
-                      'dob': Timestamp.fromDate(selectedDate),
-                      'gender': selectedGender,
-                    });
-
+                  if (result) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Datos actualizados exitosamente!')),
+                      const SnackBar(
+                        content: Text('Datos actualizados exitosamente!'),
+                      ),
                     );
-                  } catch (e) {
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error al actualizar los datos: $e')),
+                      SnackBar(content: Text('Error al actualizar los datos')),
                     );
                   }
                 },
@@ -239,7 +281,8 @@ class _EditProfileViewState extends State<EditProfileView> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFFB04CFF), Color(0xFF7E5EFF)], // Puedes ajustar estos colores si es necesario
+                      colors: [Color(0xFFB04CFF), Color(0xFF7E5EFF)],
+                      // Puedes ajustar estos colores si es necesario
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

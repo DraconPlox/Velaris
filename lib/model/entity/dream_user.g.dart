@@ -12,6 +12,7 @@ DreamUser _$DreamUserFromJson(Map<String, dynamic> json) => DreamUser(
   gender: json['gender'] as String?,
   email: json['email'] as String?,
   description: json['description'] as String?,
+  profilePicture: json['profilePicture'] as String?,
   dob: const TimestampConverter().fromJson(json['dob']),
   friends:
       (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$DreamUserToJson(DreamUser instance) => <String, dynamic>{
   'gender': instance.gender,
   'email': instance.email,
   'description': instance.description,
+  'profilePicture': instance.profilePicture,
   'dob': _$JsonConverterToJson<dynamic, DateTime>(
     instance.dob,
     const TimestampConverter().toJson,

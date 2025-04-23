@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:velaris/UI/views/edit_password/edit_password_controller.dart';
+import 'package:velaris/UI/views/edit_email/edit_email_controller.dart';
 
-class EditPasswordView extends StatefulWidget {
-  const EditPasswordView({Key? key}) : super(key: key);
+class EditEmailView extends StatefulWidget {
+  const EditEmailView({Key? key}) : super(key: key);
 
   @override
-  State<EditPasswordView> createState() => _EditPasswordViewState();
+  State<EditEmailView> createState() => _EditEmailViewState();
 }
 
-class _EditPasswordViewState extends State<EditPasswordView> {
-  EditPasswordController editPasswordController = EditPasswordController();
+class _EditEmailViewState extends State<EditEmailView> {
+  final EditEmailController editEmailController = EditEmailController();
   bool _isLoading = false;
-  TextEditingController oldPassword = TextEditingController();
-  TextEditingController newPassword = TextEditingController();
-  TextEditingController repeatNewPassword = TextEditingController();
+  final TextEditingController currentEmail = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController newEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
         foregroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'Cambiar contraseña',
+          'Cambiar correo',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -58,17 +58,17 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                       children: [
                         const SizedBox(height: 10),
                         const Text(
-                          'Introduzca tu actual contraseña y la nueva.',
+                          'Introduce tu correo actual, tu contraseña y el nuevo correo electrónico.',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         const SizedBox(height: 30),
                         const Text(
-                          'Contraseña actual:',
+                          'Contraseña:',
                           style: TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          controller: oldPassword,
+                          controller: password,
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Contraseña actual',
@@ -84,15 +84,14 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                         ),
                         const SizedBox(height: 20),
                         const Text(
-                          'Nueva contraseña:',
+                          'Correo actual:',
                           style: TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          controller: newPassword,
-                          obscureText: true,
+                          controller: currentEmail,
                           decoration: InputDecoration(
-                            hintText: 'Nueva contraseña',
+                            hintText: 'Correo actual',
                             filled: true,
                             fillColor: const Color(0xFF1D1033),
                             border: OutlineInputBorder(
@@ -102,18 +101,18 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                             hintStyle: const TextStyle(color: Colors.white38),
                           ),
                           style: const TextStyle(color: Colors.white),
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 20),
                         const Text(
-                          'Repetir contraseña:',
+                          'Nuevo correo:',
                           style: TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          controller: repeatNewPassword,
-                          obscureText: true,
+                          controller: newEmail,
                           decoration: InputDecoration(
-                            hintText: 'Repetir contraseña',
+                            hintText: 'Nuevo correo electrónico',
                             filled: true,
                             fillColor: const Color(0xFF1D1033),
                             border: OutlineInputBorder(
@@ -123,8 +122,9 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                             hintStyle: const TextStyle(color: Colors.white38),
                           ),
                           style: const TextStyle(color: Colors.white),
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -147,12 +147,13 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                                         final (
                                           success,
                                           message,
-                                        ) = await editPasswordController.changePassword(
-                                          oldPassword: oldPassword.text.trim(),
-                                          newPassword: newPassword.text.trim(),
-                                          repeatPassword:
-                                              repeatNewPassword.text.trim(),
-                                        );
+                                        ) = await editEmailController
+                                            .changeEmail(
+                                              currentEmail:
+                                                  currentEmail.text.trim(),
+                                              password: password.text.trim(),
+                                              newEmail: newEmail.text.trim(),
+                                            );
 
                                         if (!mounted) return;
 
@@ -171,9 +172,9 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                                         setState(() => _isLoading = false);
 
                                         if (success) {
-                                          oldPassword.clear();
-                                          newPassword.clear();
-                                          repeatNewPassword.clear();
+                                          currentEmail.clear();
+                                          password.clear();
+                                          newEmail.clear();
                                         }
                                       },
                               style: TextButton.styleFrom(
@@ -184,7 +185,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                                 ),
                               ),
                               child: const Text(
-                                'Cambiar contraseña',
+                                'Cambiar correo',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,

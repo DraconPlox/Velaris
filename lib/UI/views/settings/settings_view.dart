@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/edit_email/edit_email_view.dart';
 import 'package:velaris/UI/views/edit_password/edit_password_view.dart';
 import 'package:velaris/UI/views/settings/settings_controller.dart';
 
@@ -55,7 +56,15 @@ class SettingsView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const AjustesItem(texto: 'Cambiar correo'),
+                      AjustesItem(
+                        texto: 'Cambiar correo',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditEmailView(),
+                          ),
+                        ),
+                      ),
                       const AjustesItem(texto: 'Exportar datos'),
                       const AjustesItem(texto: 'Importar datos'),
                       const AjustesItem(texto: 'Cambiar ajustes de notificaciones'),

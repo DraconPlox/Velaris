@@ -132,24 +132,12 @@ class _SearchUserViewState extends State<SearchUserView> {
                                 : ListView.separated(
                                   itemCount: dreamUserList.length,
                                   separatorBuilder:
-                                      (_, __) =>
-                                          const Divider(color: Colors.white24),
+                                      (_, __) => const SizedBox(height: 16),
                                   itemBuilder: (context, index) {
                                     DreamUser user = dreamUserList[index];
                                     String nickname = user.nickname ?? "-";
-                                    String? avatar;
 
-                                    return ListTile(
-                                      leading: UserProfilePicture(
-                                        url:
-                                            user.profilePicture,
-                                      ),
-                                      title: Text(
-                                        nickname,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                    return GestureDetector(
                                       onTap: () {
                                         Navigator.push(
                                           context,
@@ -161,6 +149,67 @@ class _SearchUserViewState extends State<SearchUserView> {
                                           ),
                                         );
                                       },
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF3E2D66),
+                                          // fondo morado oscuro
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(
+                                                0.25,
+                                              ),
+                                              blurRadius: 8,
+                                              offset: Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 24,
+                                              backgroundColor:
+                                                  Colors.grey.shade400,
+                                              backgroundImage:
+                                                  user.profilePicture != null
+                                                      ? NetworkImage(
+                                                        user.profilePicture!,
+                                                      )
+                                                      : null,
+                                              child:
+                                                  user.profilePicture == null
+                                                      ? const Icon(
+                                                        Icons.person,
+                                                        color: Colors.white,
+                                                      )
+                                                      : null,
+                                            ),
+                                            const SizedBox(width: 16),
+                                            Expanded(
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  nickname,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),

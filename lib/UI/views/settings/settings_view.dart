@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/delete_account/delete_account_view.dart';
+import 'package:velaris/UI/views/dream_notification_setting/dream_notification_setting_view.dart';
 import 'package:velaris/UI/views/edit_email/edit_email_view.dart';
 import 'package:velaris/UI/views/edit_password/edit_password_view.dart';
+import 'package:velaris/UI/views/export_data/export_data_view.dart';
+import 'package:velaris/UI/views/import_data/import_data_view.dart';
 import 'package:velaris/UI/views/settings/settings_controller.dart';
 
 import '../../widgets/ajustes_item.dart';
@@ -9,7 +13,7 @@ import '../../widgets/navbar.dart';
 
 class SettingsView extends StatelessWidget {
   SettingsView({super.key});
-  SettingsController settingsController = SettingsController();
+  final SettingsController settingsController = SettingsController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,31 +55,63 @@ class SettingsView extends StatelessWidget {
                         texto: 'Cambiar contraseña',
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => EditPasswordView(),
-                          ),
+                          MaterialPageRoute(builder: (context) => EditPasswordView()),
                         ),
                       ),
                       AjustesItem(
                         texto: 'Cambiar correo',
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => EditEmailView(),
-                          ),
+                          MaterialPageRoute(builder: (context) => EditEmailView()),
                         ),
                       ),
-                      const AjustesItem(texto: 'Exportar datos'),
-                      const AjustesItem(texto: 'Importar datos'),
-                      const AjustesItem(texto: 'Cambiar ajustes de notificaciones'),
+                      AjustesItem(
+                        texto: 'Exportar datos',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ExportDataView()),
+                        ),
+                      ),
+                      AjustesItem(
+                        texto: 'Importar datos',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ImportDataView()),
+                        ),
+                      ),
+                      AjustesItem(
+                        texto: 'Cambiar ajustes de notificaciones',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DreamNotificationSettingView()),
+                        ),
+                      ),
                       AjustesItem(
                         texto: 'Cerrar sesión',
                         onTap: () => settingsController.cerrarSesion(context),
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Borrar cuenta',
-                        style: TextStyle(color: Colors.redAccent),
+                      const SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.warning_amber, color: Colors.redAccent),
+                          title: const Text(
+                            'Borrar cuenta',
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DeleteAccountView()),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
-import 'package:velaris/UI/views/estadisticas/estadisticas_view.dart';
+import 'package:velaris/UI/views/statistics/statistics_view.dart';
 import 'package:velaris/UI/views/profile/profile_view.dart';
 import 'package:velaris/UI/views/search_user/search_user_view.dart';
 import 'package:velaris/UI/views/settings/settings_view.dart';
@@ -82,7 +82,7 @@ class _NavbarState extends State<Navbar> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => EstadisticasView()),
+                            MaterialPageRoute(builder: (context) => StatisticsView()),
                                 (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
                           );
                         },

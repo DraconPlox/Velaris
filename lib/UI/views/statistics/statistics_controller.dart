@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../model/entity/dream.dart';
 import '../../../service/firestore_service.dart';
 
-class EstadisticasController {
+class StatisticsController {
   FirestoreService firestoreService = FirestoreService();
 
   Future<List<Dream>> getDreams() {

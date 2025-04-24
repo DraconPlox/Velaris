@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:velaris/UI/views/estadisticas/estadisticas_controller.dart';
+import 'package:velaris/UI/views/statistics/statistics_controller.dart';
 import 'package:velaris/UI/widgets/navbar.dart';
 
 import '../../../model/entity/dream.dart'; // Reemplaza con tu navbar si es personalizado
 
-class EstadisticasView extends StatefulWidget {
-  EstadisticasView({super.key});
+class StatisticsView extends StatefulWidget {
+  StatisticsView({super.key});
 
   @override
-  State<EstadisticasView> createState() => _EstadisticasViewState();
+  State<StatisticsView> createState() => _StatisticsViewState();
 }
 
-class _EstadisticasViewState extends State<EstadisticasView> {
-  EstadisticasController estadisticasController = EstadisticasController();
+class _StatisticsViewState extends State<StatisticsView> {
+  StatisticsController statisticsController = StatisticsController();
   List<Dream> listaDreams = [];
   int selectedYear = DateTime.now().year;
   Map<String, int> tagCounts = new Map<String, int>();
@@ -42,8 +42,8 @@ class _EstadisticasViewState extends State<EstadisticasView> {
   }
 
   Future initialize() async {
-    listaDreams = await estadisticasController.getDreams();
-    tagCounts = estadisticasController.getDreamsPorTag(listaDreams);
+    listaDreams = await statisticsController.getDreams();
+    tagCounts = statisticsController.getDreamsPorTag(listaDreams);
     setState(() {});
   }
 
@@ -138,7 +138,7 @@ class _EstadisticasViewState extends State<EstadisticasView> {
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
-                                  estadisticasController.getMonthLabel(
+                                  statisticsController.getMonthLabel(
                                     value.toInt(),
                                   ),
                                   style: TextStyle(
@@ -172,7 +172,7 @@ class _EstadisticasViewState extends State<EstadisticasView> {
                       ),
                       gridData: FlGridData(show: false),
                       borderData: FlBorderData(show: false),
-                      barGroups: estadisticasController.getChartDataPorMes(
+                      barGroups: statisticsController.getChartDataPorMes(
                         listaDreams,
                         selectedYear,
                       ),

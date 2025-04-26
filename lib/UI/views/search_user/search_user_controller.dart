@@ -9,6 +9,6 @@ class SearchUserController {
       return [];
     }
 
-    return await firestoreService.searchUsers(query);
+    return await firestoreService.searchUsersByNickname(query);
   }
 }

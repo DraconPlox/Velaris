@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velaris/UI/views/profile/profile_controller.dart';
+import 'package:velaris/UI/views/view_friends/view_friends_view.dart';
 import 'package:velaris/UI/widgets/user_profile_picture.dart';
 import 'package:velaris/model/entity/dream_user.dart';
 
@@ -28,6 +29,8 @@ class _ProfileViewState extends State<ProfileView> {
   DateTime? dob;
   int? year;
   Map<String, int> suenosLucidos = new Map<String, int>();
+  bool pendingRequest = false;
+  bool isFriend = false;
 
   @override
   void initState() {
@@ -40,7 +43,8 @@ class _ProfileViewState extends State<ProfileView> {
       await profileController.getDreams(userId: widget.dreamUser?.id),
     );
     await profileController.initialize();
-    descripcion = widget.dreamUser?.description ?? (profileController.getDescription());
+    descripcion =
+        widget.dreamUser?.description ?? (profileController.getDescription());
     genero = widget.dreamUser?.gender ?? (profileController.getGender());
     dob = widget.dreamUser?.dob ?? (profileController.getDob());
     nickname = widget.dreamUser?.nickname ?? (profileController.getNickname());
@@ -54,6 +58,10 @@ class _ProfileViewState extends State<ProfileView> {
       // Obtener años, meses y días
       year = (difference.inDays / 365).floor();
     }
+    pendingRequest = await profileController.getIfExistsPendingRequest(
+      widget.dreamUser?.id ?? "",
+    );
+    isFriend = await profileController.getIfFriend(widget.dreamUser?.id ?? "");
     setState(() {});
   }
 
@@ -115,34 +123,159 @@ class _ProfileViewState extends State<ProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Iconos superiores alineados a la derecha
-                        if (widget.dreamUser == null)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.edit, color: Colors.white),
-                                onPressed:
-                                    () => {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => EditProfileView(),
+                        widget.dreamUser == null
+                            ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: Colors.white),
+                                  onPressed:
+                                      () => {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => EditProfileView(),
+                                          ),
                                         ),
+                                      },
+                                ),
+                                SizedBox(width: 8),
+                                IconButton(
+                                  icon: Icon(
+                                    FontAwesomeIcons.user,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed:
+                                      () => {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ViewFriends(),
+                                          ),
+                                        ),
+                                      },
+                                ),
+                              ],
+                            )
+                            : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                isFriend
+                                    ? IconButton(
+                                      icon: Icon(
+                                        FontAwesomeIcons.userCheck,
+                                        color: Colors.white,
                                       ),
-                                    },
-                              ),
-                              SizedBox(width: 8),
-                              Icon(FontAwesomeIcons.user, color: Colors.white),
-                            ],
-                          ),
+                                      onPressed: () async {
+                                        if (await profileController
+                                            .deleteFriend(
+                                              widget.dreamUser?.id ?? "",
+                                            )) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Se ha eliminado el amigo de tu lista de amigos',
+                                              ),
+                                            ),
+                                          );
+                                          initialize();
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Ha habido un error al eliminar el amigo de tu lista de amigos',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    )
+                                    : pendingRequest
+                                    ? IconButton(
+                                      icon: Icon(
+                                        Icons.person_off_outlined,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                      onPressed: () async {
+                                        if (await profileController
+                                            .cancelFriendRequest(
+                                              widget.dreamUser?.id ?? "",
+                                            )) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Se ha eliminado la solicitud',
+                                              ),
+                                            ),
+                                          );
+                                          initialize();
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Ha habido un error al eliminar la solicitud',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    )
+                                    : IconButton(
+                                      icon: Icon(
+                                        FontAwesomeIcons.userPlus,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () async {
+                                        if (await profileController
+                                            .sendFriendRequest(
+                                              widget.dreamUser?.id ?? "",
+                                            )) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Se ha enviado la solicitud',
+                                              ),
+                                            ),
+                                          );
+                                          initialize();
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Ha habido un error al enviar la solicitud',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                              ],
+                            ),
                         const SizedBox(height: 24),
 
                         // Avatar y nombre alineados a la izquierda
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            UserProfilePicture(url: widget.dreamUser?.profilePicture??profileController.getUser()?.profilePicture),
+                            UserProfilePicture(
+                              url:
+                                  widget.dreamUser?.profilePicture ??
+                                  profileController.getUser()?.profilePicture,
+                            ),
                             SizedBox(width: 16),
                             Text(
                               nickname ?? "",

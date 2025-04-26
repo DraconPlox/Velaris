@@ -89,4 +89,24 @@ class ProfileController {
       'No lucido': noLucidos,
     };
   }
+
+  sendFriendRequest(String id) async {
+    return await firestoreService.createFriendRequest(id);
+  }
+
+  Future<bool>cancelFriendRequest(String id) async {
+    return await firestoreService.deleteFriendRequest(id);
+  }
+
+  Future<bool> deleteFriend(String id) async {
+    return await firestoreService.deleteFriend(id);
+  }
+
+  Future<bool> getIfExistsPendingRequest(String id) async {
+    return await firestoreService.getIfExistsPendingRequest(id);
+  }
+
+  Future<bool> getIfFriend(String id) async {
+    return await firestoreService.getIfFriend(id);
+  }
 }

@@ -1,101 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:velaris/model/entity/friend_request.dart';
 
 import '../model/entity/dream.dart';
 import '../model/entity/dream_user.dart';
 
 class FirestoreService {
   final FirebaseFirestore _ref = FirebaseFirestore.instance;
-
-  Future<String?> getDescription(String userId) async {
-    try {
-      // Espera que se complete la operación y obtén el documento
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection("user")
-          .doc(userId)
-          .get();
-
-      // Verifica si el documento existe
-      if (userDoc.exists) {
-        // Retorna el valor de 'description' si existe
-        return userDoc['description'];
-      } else {
-        print('Usuario no encontrado');
-        return null;
-      }
-    } catch (e) {
-      print('Error al obtener la descripción: $e');
-      return null;
-    }
-  }
-
-  Future<String?> getGender(String userId) async {
-    try {
-      // Espera que se complete la operación y obtén el documento
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection("user")
-          .doc(userId)
-          .get();
-
-      // Verifica si el documento existe
-      if (userDoc.exists) {
-        // Retorna el valor de 'description' si existe
-        return userDoc['gender'];
-      } else {
-        print('Usuario no encontrado');
-        return null;
-      }
-    } catch (e) {
-      print('Error al obtener la descripción: $e');
-      return null;
-    }
-  }
-
-  Future<DateTime?> getDob(String userId) async {
-    try {
-      // Espera que se complete la operación y obtén el documento
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection("user")
-          .doc(userId)
-          .get();
-
-      // Verifica si el documento existe
-      if (userDoc.exists) {
-        // Si el campo 'dob' es un Timestamp, conviértelo a DateTime
-        Timestamp dobTimestamp = userDoc['dob'];
-        DateTime dob = dobTimestamp.toDate();
-        return dob;
-      } else {
-        print('Usuario no encontrado');
-        return null;
-      }
-    } catch (e) {
-      print('Error al obtener la fecha de nacimiento: $e');
-      return null;
-    }
-  }
-
-  Future<String?> getNickname(String userId) async {
-    try {
-      // Espera que se complete la operación y obtén el documento
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection("user")
-          .doc(userId)
-          .get();
-
-      // Verifica si el documento existe
-      if (userDoc.exists) {
-        // Retorna el valor de 'description' si existe
-        return userDoc['nickname'];
-      } else {
-        print('Usuario no encontrado');
-        return null;
-      }
-    } catch (e) {
-      print('Error al obtener la descripción: $e');
-      return null;
-    }
-  }
 
   Future<DreamUser?> getDreamUser(String userId) async {
     try {
@@ -121,6 +32,15 @@ class FirestoreService {
     }
   }
 
+  Future<List<DreamUser>> getDreamUserFriends(List<String> listaIds) async {
+    final usersSnapshot = await _getUserCollection()
+        .where('id', whereIn: listaIds)
+        .get();
+
+    // Luego puedes recorrer:
+    return usersSnapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();
+  }
+
   Future<String> createDream(Dream dream, String userId) async {
     var reference = _getDreamCollection(userId).doc();
     var id = reference.id;
@@ -139,6 +59,12 @@ class FirestoreService {
     await _getDreamCollection(userId)
         .doc(dream.id)
         .update(dream.toJson());
+  }
+
+  Future<void> updateDreamUser(DreamUser dreamUser) async {
+    await _getUserCollection()
+        .doc(dreamUser.id)
+        .update(dreamUser.toJson());
   }
 
   Future<Dream?> getDream(String userId, String dreamId) async {
@@ -173,7 +99,11 @@ class FirestoreService {
     return _ref.collection("user");
   }
 
-  Future<List<DreamUser>> searchUsers(String query) async {
+  CollectionReference<Map<String, dynamic>> _getFriendRequestCollection() {
+    return _ref.collection("friendRequest");
+  }
+
+  Future<List<DreamUser>> searchUsersByNickname(String query) async {
     final snapshot = await _getUserCollection()
         .where('nickname', isGreaterThanOrEqualTo: query)
         .where('nickname', isLessThanOrEqualTo: query + '\uf8ff')
@@ -182,12 +112,132 @@ class FirestoreService {
     return snapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();
   }
 
-
   Stream<List<Dream>> listenToDreams() {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     return _getDreamCollection(uid)
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Dream.fromJson(doc.data())).toList());
+  }
+
+  Future<List<FriendRequest>> getFriendRequestReceiver(String userId) async {
+    final usersSnapshot = await _getFriendRequestCollection()
+        .where('receiverId', isEqualTo: userId)
+        .get();
+
+    return usersSnapshot.docs.map((doc) => FriendRequest.fromJson(doc.data())).toList();
+  }
+
+  Future<List<FriendRequest>> getFriendRequestSender(String userId) async {
+    final usersSnapshot = await _getFriendRequestCollection()
+        .where('senderId', isEqualTo: userId)
+        .get();
+
+    return usersSnapshot.docs.map((doc) => FriendRequest.fromJson(doc.data())).toList();
+  }
+
+  Future<bool> createFriendRequest(String? receiveId) async {
+    try {
+      final docRef = _getFriendRequestCollection().doc();
+
+      final friendRequest = FriendRequest(
+        id: docRef.id,
+        senderId: FirebaseAuth.instance.currentUser!.uid,
+        receiverId: receiveId,
+      );
+
+      await docRef.set(friendRequest.toJson());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> getIfExistsPendingRequest(String receiveId) async {
+    final querySnapshot = await _getFriendRequestCollection()
+        .where('senderId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('receiverId', isEqualTo: receiveId)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> getIfFriend(String id) async {
+    DreamUser? user = await getDreamUser(id);
+    List<String> listaAmigos = user?.friends??[];
+
+    return listaAmigos.contains(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  Future<bool> deleteFriendRequest(String id) async {
+    var querySnapshot = await _getFriendRequestCollection()
+        .where('senderId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('receiverId', isEqualTo: id)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      await querySnapshot.docs.first.reference.delete();
+      return true;
+    } else {
+      querySnapshot = await _getFriendRequestCollection()
+          .where('senderId', isEqualTo: id)
+          .where('receiverId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.delete();
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  Future<bool> acceptFriendRequest(String id) async {
+    try {
+      await deleteFriendRequest(id);
+
+      DreamUser? dreamUser = await getDreamUser(id);
+      DreamUser? me = await getDreamUser(FirebaseAuth.instance.currentUser!.uid);
+
+      if (dreamUser == null || me == null) return false;
+
+      List<String> listaFriendsDreamUser = dreamUser.friends??[];
+      List<String> listaFriendsMe = me.friends??[];
+
+      if (!listaFriendsDreamUser.contains(FirebaseAuth.instance.currentUser!.uid)) listaFriendsDreamUser.add(FirebaseAuth.instance.currentUser!.uid);
+      if (!listaFriendsMe.contains(dreamUser.id??"")) listaFriendsMe.add(dreamUser.id??"");
+
+      await updateDreamUser(dreamUser.copyWith(friends: listaFriendsDreamUser));
+      await updateDreamUser(me.copyWith(friends: listaFriendsMe));
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteFriend(String id) async {
+    try {
+      DreamUser? dreamUser = await getDreamUser(id);
+      DreamUser? me = await getDreamUser(FirebaseAuth.instance.currentUser!.uid);
+
+      if (dreamUser == null || me == null) return false;
+
+      List<String> listaFriendsDreamUser = dreamUser.friends??[];
+      List<String> listaFriendsMe = me.friends??[];
+
+      if (listaFriendsDreamUser.contains(FirebaseAuth.instance.currentUser!.uid)) listaFriendsDreamUser.remove(FirebaseAuth.instance.currentUser!.uid);
+      if (listaFriendsMe.contains(dreamUser.id??"")) listaFriendsMe.remove(dreamUser.id??"");
+
+      await updateDreamUser(dreamUser.copyWith(friends: listaFriendsDreamUser));
+      await updateDreamUser(me.copyWith(friends: listaFriendsMe));
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

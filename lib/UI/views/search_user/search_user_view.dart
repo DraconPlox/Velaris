@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:velaris/UI/views/profile/profile_view.dart';
 import 'package:velaris/UI/views/search_user/search_user_controller.dart';
 import '../../../model/entity/dream_user.dart';
 import '../../widgets/navbar.dart';
-import '../../widgets/user_profile_picture.dart';
+import '../../widgets/user_card.dart';
 
 class SearchUserView extends StatefulWidget {
   const SearchUserView({super.key});
@@ -58,7 +57,6 @@ class _SearchUserViewState extends State<SearchUserView> {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      // Input de búsqueda
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
@@ -80,7 +78,6 @@ class _SearchUserViewState extends State<SearchUserView> {
                                   searchQuery = value.trim();
                                   loading = true;
                                   setState(() {});
-                                  searchQuery = value.trim();
                                   dreamUserList = await searchUserController
                                       .searchUsers(searchQuery);
                                   loading = false;
@@ -101,7 +98,6 @@ class _SearchUserViewState extends State<SearchUserView> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Resultados
                       Expanded(
                         child: Stack(
                           children: [
@@ -116,7 +112,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                     ),
                                     SizedBox(height: 20),
                                     Text(
-                                      'Aquí aparecerán los usuarios que busques.\n¡Prueba a buscar alguno!',
+                                      'Aqui apareceran los usuarios que busques.\n¡Prueba a buscar alguno!',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -125,7 +121,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                 : dreamUserList.isEmpty
                                 ? Center(
                                   child: Text(
-                                    '¿Ya estás mezclando los sueños lúcidos con la realidad? No hemos encontrado ningún usuario con ese nombre.',
+                                    '¿Ya estas mezclando los sueños lucidos con la realidad? No hemos encontrado ningun usuario con ese nombre.',
                                     style: TextStyle(color: Colors.white70),
                                   ),
                                 )
@@ -135,7 +131,6 @@ class _SearchUserViewState extends State<SearchUserView> {
                                       (_, __) => const SizedBox(height: 16),
                                   itemBuilder: (context, index) {
                                     DreamUser user = dreamUserList[index];
-                                    String nickname = user.nickname ?? "-";
 
                                     return GestureDetector(
                                       onTap: () {
@@ -158,8 +153,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                           vertical: 12,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Color(0xFF3E2D66),
-                                          // fondo morado oscuro
+                                          color: const Color(0xFF3E2D66),
                                           borderRadius: BorderRadius.circular(
                                             16,
                                           ),
@@ -169,46 +163,11 @@ class _SearchUserViewState extends State<SearchUserView> {
                                                 0.25,
                                               ),
                                               blurRadius: 8,
-                                              offset: Offset(0, 4),
+                                              offset: const Offset(0, 4),
                                             ),
                                           ],
                                         ),
-                                        child: Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 24,
-                                              backgroundColor:
-                                                  Colors.grey.shade400,
-                                              backgroundImage:
-                                                  user.profilePicture != null
-                                                      ? NetworkImage(
-                                                        user.profilePicture!,
-                                                      )
-                                                      : null,
-                                              child:
-                                                  user.profilePicture == null
-                                                      ? const Icon(
-                                                        Icons.person,
-                                                        color: Colors.white,
-                                                      )
-                                                      : null,
-                                            ),
-                                            const SizedBox(width: 16),
-                                            Expanded(
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  nickname,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        child: UserCard(user: user, showButtons: false,),
                                       ),
                                     );
                                   },
@@ -218,7 +177,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                 width: double.infinity,
                                 height: double.infinity,
                                 color: Colors.black.withAlpha(150),
-                                child: Center(
+                                child: const Center(
                                   child: CircularProgressIndicator(),
                                 ),
                               ),

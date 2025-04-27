@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import 'import_data_controller.dart';
+
 class ImportDataView extends StatelessWidget {
-  const ImportDataView({super.key});
+  ImportDataView({super.key});
+  ImportDataController importDataController = ImportDataController();
+  File? file;
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +80,19 @@ class ImportDataView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1D1033),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Center(
-                          child: Icon(Icons.note_add, size: 50, color: Colors.white),
+                      InkWell(
+                        onTap: () async {
+                          file = await importDataController.getFile();
+                        },
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1D1033),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.note_add, size: 50, color: Colors.white),
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -89,8 +100,11 @@ class ImportDataView extends StatelessWidget {
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Acción al pulsar
+                          onPressed: file==null?null: () {
+                            print("eeee");
+                            if (file != null) {
+                              importDataController.importDreamsFromFile(file!);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -102,7 +116,7 @@ class ImportDataView extends StatelessWidget {
                           ),
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(
+                              gradient: file==null?null: const LinearGradient(
                                 colors: [Color(0xFFAE6CFF), Color(0xFF7F5BFE)],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,

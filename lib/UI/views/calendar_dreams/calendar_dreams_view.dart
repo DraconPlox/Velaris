@@ -29,6 +29,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
   @override
   void initState() {
     super.initState();
+    calendarDreamsController.initialize();
     //loadDreams();
     dreamSubscription = calendarDreamsController.listenerDreams().listen((List<Dream> dreams) {
       allDreams = dreams;

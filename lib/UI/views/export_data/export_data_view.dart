@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'export_data_controller.dart';
+
 class ExportDataView extends StatefulWidget {
-  const ExportDataView({super.key});
+  ExportDataView({super.key});
+  ExportDataController exportDataController = ExportDataController();
 
   @override
   State<ExportDataView> createState() => _ExportDataViewState();
 }
 
 class _ExportDataViewState extends State<ExportDataView> {
-  String selectedFormat = 'json'; // Valores posibles: 'txt' o 'json'
+  String selectedFormat = 'txt'; // Valores posibles: 'txt' o 'json'
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +54,103 @@ class _ExportDataViewState extends State<ExportDataView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Actualmente guardamos tus datos en Firebase pero siempre están disponibles para cuando los desees. '
-                            'Se exportarán los sueños en tu dispositivo en este formato:',
+                        'Actualmente guardamos tus datos en Firebase pero siempre estan disponibles para cuando los desees. '
+                            'Se exportaran los sueños en tu dispositivo en este formato:',
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                       const SizedBox(height: 30),
-                      _buildOption('txt', 'Texto plano (.txt)', Colors.grey.shade400),
+
+                      // Opcion txt
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedFormat = 'txt';
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(10),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 22,
+                              height: 22,
+                              decoration: BoxDecoration(
+                                color: selectedFormat == 'txt' ? const Color(0xFFDB63FF) : const Color(0xFF1D1033),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFDB63FF),
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const Text(
+                              'Texto plano (.txt)',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 16),
-                      _buildOption('json', 'Json (.json)', const Color(0xFFDB63FF)),
+
+                      // Opcion json
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedFormat = 'json';
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(10),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 22,
+                              height: 22,
+                              decoration: BoxDecoration(
+                                color: selectedFormat == 'json' ? const Color(0xFFDB63FF) : const Color(0xFF1D1033),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFDB63FF),
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const Text(
+                              'Json (.json)',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
                       const Spacer(),
+
                       SizedBox(
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Acción de exportación
+                          onPressed: () async {
+                            bool success = await widget.exportDataController.exportDreams(selectedFormat);
+
+                            if (!mounted) return;
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  success
+                                      ? 'Datos exportados correctamente.'
+                                      : 'Error al exportar los datos. Intentalo de nuevo.',
+                                ),
+                                backgroundColor: success ? Colors.green : Colors.red,
+                                duration: const Duration(seconds: 3),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -103,43 +188,6 @@ class _ExportDataViewState extends State<ExportDataView> {
                 ),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOption(String value, String label, Color dotColor) {
-    final bool isSelected = selectedFormat == value;
-
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedFormat = value;
-        });
-      },
-      borderRadius: BorderRadius.circular(10),
-      child: Row(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            decoration: BoxDecoration(
-              color: isSelected ? dotColor : const Color(0xFF1D1033),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: dotColor,
-                width: 2,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            ),
           ),
         ],
       ),

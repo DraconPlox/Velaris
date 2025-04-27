@@ -159,45 +159,68 @@ class _ListDreamsViewState extends State<ListDreamsView> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Aquí irán las tarjetas de sueños
-                      for (int i = 0; i < mapDreams.length; i++) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8, top: 8),
-                          child: Center(
-                            child: Text(
-                              DateFormat(
-                                "d MMM, yyyy",
-                                'es_ES',
-                              ).format(mapDreams.keys.toList()[i]),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                height: 1.5,
-                                letterSpacing: 1,
+                      if (mapDreams.isNotEmpty) ...[
+                        // Aqui iran las tarjetas de sueños
+                        for (int i = 0; i < mapDreams.length; i++) ...[
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8, top: 8),
+                            child: Center(
+                              child: Text(
+                                DateFormat(
+                                  "d MMM, yyyy",
+                                  'es_ES',
+                                ).format(mapDreams.keys.toList()[i]),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  height: 1.5,
+                                  letterSpacing: 1,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        for (
-                          int j = 0;
-                          j < mapDreams.values.toList()[i].length;
-                          j++
-                        )
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8, bottom: 16),
-                            child: DreamCard(
-                              id: mapDreams.values.toList()[i][j].id ?? "",
-                              titulo:
-                                  mapDreams.values.toList()[i][j].titulo ?? "",
-                              descripcion:
-                                  mapDreams.values.toList()[i][j].descripcion ??
-                                  "",
-                              lucido:
-                                  mapDreams.values.toList()[i][j].lucido ??
-                                  false,
+                          for (
+                            int j = 0;
+                            j < mapDreams.values.toList()[i].length;
+                            j++
+                          )
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 16,
+                              ),
+                              child: DreamCard(
+                                id: mapDreams.values.toList()[i][j].id ?? "",
+                                titulo:
+                                    mapDreams.values.toList()[i][j].titulo ??
+                                    "",
+                                descripcion:
+                                    mapDreams.values
+                                        .toList()[i][j]
+                                        .descripcion ??
+                                    "",
+                                lucido:
+                                    mapDreams.values.toList()[i][j].lucido ??
+                                    false,
+                              ),
+                            ),
+                        ],
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Center(
+                            child: Text(
+                              "Todavia no hay sueños apuntados, ¡prueba creando uno nuevo!",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white70,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
+                        ),
                       ],
                     ],
                   ),

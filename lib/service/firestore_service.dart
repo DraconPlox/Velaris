@@ -95,6 +95,25 @@ class FirestoreService {
     return _ref.collection("user").doc(userId).collection("dream");
   }
 
+  Future<void> deleteDreamCollection(String userId) async {
+    try {
+      // Obtener la colección de sueños del usuario
+      var dreamCollection = _getDreamCollection(userId);
+
+      // Obtener todos los documentos de la colección
+      var snapshot = await dreamCollection.get();
+
+      // Eliminar cada documento
+      for (var doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      print('Todos los sueños han sido eliminados con éxito.');
+    } catch (e) {
+      print('Error al eliminar los sueños: $e');
+    }
+  }
+
   CollectionReference<Map<String, dynamic>> _getUserCollection() {
     return _ref.collection("user");
   }

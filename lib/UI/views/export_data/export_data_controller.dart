@@ -58,7 +58,7 @@ class ExportDataController {
       }).toList();
 
       // Convertir la lista de mapas en un String JSON manualmente
-      String content = '[\n';
+      content = '[\n';
       for (var dreamJson in dreamsJson) {
         content += '  {\n';
         dreamJson.forEach((key, value) {
@@ -127,9 +127,9 @@ class ExportDataController {
 
     // Crear el nombre del archivo con fecha actual (ejemplo: export_dreams_2025_04_27.txt)
     String formattedDate = DateFormat('yyyy_MM_dd').format(DateTime.now());
-    final fileName = 'export_dreams_$formattedDate.$format';
-    final filePath = '${directory.path}/$fileName';
-    final file = File(filePath);
+    String fileName = 'export_dreams_$formattedDate-${DateTime.now().millisecondsSinceEpoch}.$format';
+    String filePath = '${directory.path}/$fileName';
+    File file = File(filePath);
 
     // Guardar el archivo
     if (format == 'txt') {

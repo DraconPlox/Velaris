@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:velaris/UI/views/list_dreams/list_dreams_view.dart';
 import 'package:velaris/UI/views/login/login_controller.dart';
 import 'package:velaris/UI/views/register/register_view.dart';
 
@@ -123,8 +122,17 @@ class _LoginViewState extends State<LoginView> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextButton(
-                      onPressed: () {
-                        loginController.login(email.text, password.text);
+                      onPressed: () async {
+                        User? result = await loginController.login(email.text, password.text);
+                        if (result == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Ha habido un error en el login, comprueba los datos o intentelo más tarde.'),
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                        }
                       },
                       child: Text(
                         'Iniciar sesión',

@@ -125,6 +125,13 @@ class _CreateDreamViewState extends State<CreateDreamView> {
     _focusNodeTitulo.unfocus();
   }
 
+  bool _isToday(DateTime date) {
+    final now = DateTime.now();
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+  }
+
   Widget buildIconBox(IconData icon, String label, String feature) {
     bool isSelected = caracteristica == feature;
 
@@ -136,6 +143,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
       },
       child: Column(
         children: [
+          SizedBox(height: 5),
           Container(
             width: 48,
             height: 48,
@@ -147,13 +155,18 @@ class _CreateDreamViewState extends State<CreateDreamView> {
             child: Icon(icon, color: Colors.white),
           ),
           SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.white70,
-              fontSize: 10,
+          SizedBox(
+            height: 30,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.white70,
+                fontSize: 10,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -249,8 +262,8 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                               DateTime? picked = await showDatePicker(
                                 context: context,
                                 initialDate: selectedDate,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
+                                firstDate: DateTime(1980),
+                                lastDate: DateTime.now(),
                                 initialEntryMode:
                                     DatePickerEntryMode.calendarOnly,
                                 builder: (context, child) {
@@ -284,8 +297,10 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '${selectedDate.day.toString().padLeft(2, '0')} '
-                                  '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
+                                  _isToday(selectedDate)
+                                      ? 'Hoy'
+                                      : '${selectedDate.day.toString().padLeft(2, '0')} '
+                                      '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
                                   style: TextStyle(color: Colors.white70),
                                 ),
                               ],
@@ -309,7 +324,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide.none,
                               ),
-                              hintText: 'Titulo',
+                              hintText: 'Título',
                               hintStyle: TextStyle(color: Colors.white38),
                             ),
                             buildCounter:
@@ -353,7 +368,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                   scrollPhysics: BouncingScrollPhysics(),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Descripcion',
+                                    hintText: 'Descripción',
                                     hintStyle: TextStyle(color: Colors.white38),
                                   ),
                                 ),
@@ -398,27 +413,34 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             style: TextStyle(color: Colors.white),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildIconBox(
-                                FontAwesomeIcons.rotateLeft,
-                                'Recurrente',
-                                'Recurrente',
+                              Expanded(
+                                child: buildIconBox(
+                                  FontAwesomeIcons.rotateLeft,
+                                  'Recurrente',
+                                  'Recurrente',
+                                ),
                               ),
-                              buildIconBox(
-                                FontAwesomeIcons.ghost,
-                                'Pesadilla',
-                                'Pesadilla',
+                              Expanded(
+                                child: buildIconBox(
+                                  FontAwesomeIcons.ghost,
+                                  'Pesadilla',
+                                  'Pesadilla',
+                                ),
                               ),
-                              buildIconBox(
-                                Icons.accessibility,
-                                'Parálisis del sueño',
-                                'Parálisis del sueño',
+                              Expanded(
+                                child: buildIconBox(
+                                  Icons.accessibility,
+                                  'Parálisis del sueño',
+                                  'Parálisis del sueño',
+                                ),
                               ),
-                              buildIconBox(
-                                FontAwesomeIcons.clock,
-                                'Falso despertar',
-                                'Falso despertar',
+                              Expanded(
+                                child: buildIconBox(
+                                  FontAwesomeIcons.clock,
+                                  'Falso despertar',
+                                  'Falso despertar',
+                                ),
                               ),
                             ],
                           ),
@@ -478,7 +500,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             ),
                             child: TextButton(
                               onPressed: () async {
-                                String id = await createDreamController.createDream(
+                                await createDreamController.createDream(
                                   titulo: titulo.text,
                                   fecha: selectedDate,
                                   descripcion: descripcion.text,
@@ -489,9 +511,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                   lucido: lucido,
                                 );
 
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => ViewDreamView(dreamId: id)));
+                                Navigator.pop(context);
                               },
                               child: Text(
                                 'Guardar',

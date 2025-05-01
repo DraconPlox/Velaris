@@ -71,7 +71,7 @@ class _StatisticsViewState extends State<StatisticsView> {
           child: Column(
             children: [
               const Text(
-                'Horas de sueño',
+                'Número de sueños al mes',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

@@ -228,7 +228,7 @@ class _RegisterViewState extends State<RegisterView> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide.none,
                     ),
-                    hintText: "YYYY-MM-DD",
+                    hintText: "DD-MM-YYYY",
                     hintStyle: TextStyle(color: Colors.white54),
                     contentPadding: EdgeInsets.symmetric(
                       vertical: 12,
@@ -258,7 +258,7 @@ class _RegisterViewState extends State<RegisterView> {
                       setState(() {
                         selectedDate = picked;
                         dob.text =
-                            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                            "${picked.day.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.year}";
                       });
                     }
                   },

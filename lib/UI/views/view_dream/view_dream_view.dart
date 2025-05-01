@@ -114,7 +114,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                             ),
                             onPressed: () {
                               Share.share(
-                                '${dream?.titulo ?? ""}\n\n${dream?.descripcion ?? ""}\n\nLucido: ${dream?.lucido}',
+                                'Título: ${dream?.titulo ?? ""}\n\nDescripción: ${dream?.descripcion ?? ""}\n\nLucido: ${dream?.lucido}',
                               );
                             },
                           ),

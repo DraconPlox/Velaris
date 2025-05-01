@@ -9,6 +9,7 @@ part of 'dream_user.dart';
 DreamUser _$DreamUserFromJson(Map<String, dynamic> json) => DreamUser(
   id: json['id'] as String?,
   nickname: json['nickname'] as String?,
+  search_nickname: json['search_nickname'] as String?,
   gender: json['gender'] as String?,
   email: json['email'] as String?,
   description: json['description'] as String?,
@@ -21,6 +22,7 @@ DreamUser _$DreamUserFromJson(Map<String, dynamic> json) => DreamUser(
 Map<String, dynamic> _$DreamUserToJson(DreamUser instance) => <String, dynamic>{
   'id': instance.id,
   'nickname': instance.nickname,
+  'search_nickname': instance.search_nickname,
   'gender': instance.gender,
   'email': instance.email,
   'description': instance.description,

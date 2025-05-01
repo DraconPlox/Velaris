@@ -123,9 +123,11 @@ class FirestoreService {
   }
 
   Future<List<DreamUser>> searchUsersByNickname(String query) async {
+    final lowerQuery = query.toLowerCase();
+
     final snapshot = await _getUserCollection()
-        .where('nickname', isGreaterThanOrEqualTo: query)
-        .where('nickname', isLessThanOrEqualTo: query + '\uf8ff')
+        .where('search_nickname', isGreaterThanOrEqualTo: lowerQuery)
+        .where('search_nickname', isLessThanOrEqualTo: lowerQuery + '\uf8ff')
         .get();
 
     return snapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();

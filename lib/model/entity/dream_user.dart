@@ -7,6 +7,7 @@ part 'dream_user.g.dart';
 class DreamUser {
   String? id;
   String? nickname;
+  String? search_nickname;
   String? gender;
   String? email;
   String? description;
@@ -18,6 +19,7 @@ class DreamUser {
   DreamUser({
     this.id,
     this.nickname,
+    this.search_nickname,
     this.gender,
     this.email,
     this.description,
@@ -36,6 +38,7 @@ class DreamUser {
   DreamUser copyWith({
     String? id,
     String? nickname,
+    String? search_nickname,
     String? gender,
     String? email,
     String? description,
@@ -46,6 +49,7 @@ class DreamUser {
     return DreamUser(
       id: id ?? this.id,
       nickname: nickname ?? this.nickname,
+      search_nickname: search_nickname ?? this.search_nickname,
       gender: gender ?? this.gender,
       email: email ?? this.email,
       description: description ?? this.description,

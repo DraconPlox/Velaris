@@ -28,14 +28,14 @@ class _EditDreamViewState extends State<EditDreamView> {
     dream = await createDreamController.getDream(widget.dreamId);
     loading = false;
 
-    selectedDate = dream?.fecha??DateTime.now();
-    titulo.text = dream?.titulo??"";
-    descripcion.text = dream?.descripcion??"";
-    horaInicio = dream?.horaInicio;
-    horaFinal = dream?.horaFinal;
-    caracteristica = dream?.caracteristica;
-    estrellasSeleccionadas = dream?.calidad??0;
-    lucido = dream?.lucido??false;
+    selectedDate = dream?.date??DateTime.now();
+    titulo.text = dream?.title??"";
+    descripcion.text = dream?.description??"";
+    horaInicio = dream?.dreamStart;
+    horaFinal = dream?.dreamEnd;
+    caracteristica = dream?.tag;
+    estrellasSeleccionadas = dream?.rating??0;
+    lucido = dream?.lucid??false;
 
     setState(() {
 
@@ -154,6 +154,13 @@ class _EditDreamViewState extends State<EditDreamView> {
     _focusNodeTitulo.unfocus();
   }
 
+  bool _isToday(DateTime date) {
+    final now = DateTime.now();
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+  }
+
   Widget buildIconBox(IconData icon, String label, String feature) {
     bool isSelected = caracteristica == feature;
 
@@ -226,7 +233,7 @@ class _EditDreamViewState extends State<EditDreamView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'Diario de sueños',
+          'Editar sueño',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -279,19 +286,19 @@ class _EditDreamViewState extends State<EditDreamView> {
                                 context: context,
                                 initialDate: selectedDate,
                                 firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
+                                lastDate: DateTime.now(),
                                 initialEntryMode:
                                 DatePickerEntryMode.calendarOnly,
                                 builder: (context, child) {
                                   return Theme(
-                                    data: Theme.of(context).copyWith(
-                                      colorScheme: ColorScheme.dark(
-                                        primary: Color(0xFFB45CFF),
-                                        surface: Color(0xFF1D1432),
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Colors.deepPurple,
                                         onPrimary: Colors.white,
-                                        onSurface: Colors.white70,
+                                        surface: Color(0xFF2D2643),
+                                        onSurface: Colors.white,
                                       ),
-                                      dialogBackgroundColor: Color(0xFF2A1E4C),
+                                      dialogBackgroundColor: const Color(0xFF1D1033),
                                     ),
                                     child: child!,
                                   );
@@ -313,7 +320,9 @@ class _EditDreamViewState extends State<EditDreamView> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '${selectedDate.day.toString().padLeft(2, '0')} '
+                                  _isToday(selectedDate)
+                                      ? 'Hoy'
+                                      : '${selectedDate.day.toString().padLeft(2, '0')} '
                                       '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
                                   style: TextStyle(color: Colors.white70),
                                 ),
@@ -509,14 +518,14 @@ class _EditDreamViewState extends State<EditDreamView> {
                               onPressed: () async {
                                 await createDreamController.updateDream(
                                   dreamId: dream?.id??"",
-                                  titulo: titulo.text,
-                                  fecha: selectedDate,
-                                  descripcion: descripcion.text,
-                                  horaInicio: horaInicio,
-                                  horaFinal: horaFinal,
-                                  caracteristica: caracteristica,
-                                  calidad: estrellasSeleccionadas,
-                                  lucido: lucido,
+                                  title: titulo.text,
+                                  date: selectedDate,
+                                  description: descripcion.text,
+                                  dreamStart: horaInicio,
+                                  dreamEnd: horaFinal,
+                                  tag: caracteristica,
+                                  rating: estrellasSeleccionadas,
+                                  lucid: lucido,
                                 );
 
                                 Navigator.pushReplacement(

@@ -140,22 +140,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         ),
                                       },
                                 ),
-                                SizedBox(width: 8),
-                                IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.user,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed:
-                                      () => {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ViewFriends(),
-                                          ),
-                                        ),
-                                      },
-                                ),
                               ],
                             )
                             : Row(

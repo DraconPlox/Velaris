@@ -114,7 +114,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                             ),
                             onPressed: () {
                               Share.share(
-                                'Título: ${dream?.titulo ?? ""}\n\nDescripción: ${dream?.descripcion ?? ""}\n\nLucido: ${dream?.lucido}',
+                                'Título: ${dream?.title ?? ""}\n\nDescripción: ${dream?.description ?? ""}\n\nLucido: ${dream?.lucid}',
                               );
                             },
                           ),
@@ -214,7 +214,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                             DateFormat(
                               'd MMM, y',
                               'es_ES',
-                            ).format(dream?.fecha ?? DateTime.now()),
+                            ).format(dream?.date ?? DateTime.now()),
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -222,7 +222,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                       const SizedBox(height: 16),
                       Center(
                         child: Text(
-                          dream?.titulo ?? "",
+                          dream?.title ?? "",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -238,7 +238,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        dream?.descripcion ?? "",
+                        dream?.description ?? "",
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                       const SizedBox(height: 16),
@@ -249,7 +249,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                         endIndent: 0,
                       ),
                       Text(
-                        'Tags: ${dream?.caracteristica ?? ""}',
+                        'Tags: ${dream?.tag ?? ""}',
                         style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 12),
@@ -261,7 +261,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                           ),
                           SizedBox(width: 8),
                           Checkbox(
-                            value: dream?.lucido ?? false,
+                            value: dream?.lucid ?? false,
                             onChanged: (bool? value) {},
                           ),
                         ],
@@ -277,7 +277,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                           return GestureDetector(
                             onTap: () {},
                             child: Icon(
-                              index < (dream?.calidad ?? 0)
+                              index < (dream?.rating ?? 0)
                                   ? Icons.star
                                   : Icons.star_border,
                               color: Colors.amber,
@@ -288,7 +288,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Horario de sueño: ${dream?.horaInicio?.hour ?? DateTime(0).hour}:${dream?.horaInicio?.minute ?? DateTime(0).minute} - ${dream?.horaFinal?.hour ?? DateTime(0).hour}:${dream?.horaFinal?.minute ?? DateTime(0).minute}',
+                        'Horario de sueño: ${dream?.dreamStart?.hour ?? DateTime(0).hour}:${dream?.dreamStart?.minute ?? DateTime(0).minute} - ${dream?.dreamEnd?.hour ?? DateTime(0).hour}:${dream?.dreamEnd?.minute ?? DateTime(0).minute}',
                         style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 20),

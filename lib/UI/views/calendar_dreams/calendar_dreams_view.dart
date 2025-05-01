@@ -55,10 +55,10 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
       _selectedDay = date;
       selectedDreams =
           allDreams.where((dream) {
-            return dream.fecha != null &&
-                dream.fecha!.year == date.year &&
-                dream.fecha!.month == date.month &&
-                dream.fecha!.day == date.day;
+            return dream.date != null &&
+                dream.date!.year == date.year &&
+                dream.date!.month == date.month &&
+                dream.date!.day == date.day;
           }).toList();
     });
   }
@@ -68,7 +68,6 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
     return Scaffold(
       backgroundColor: const Color(0xFF1D1033),
       extendBodyBehindAppBar: true,
-      // Para que la imagen cubra detrás del AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -77,28 +76,8 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white12,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateDreamView()),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
       ),
+      bottomNavigationBar: Navbar(),
       body: Stack(
         children: [
           // Imagen de fondo
@@ -106,7 +85,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
             width: double.infinity,
             height: 200,
             child: Image.asset(
-              'assets/images/background.png', // Cambia por tu ruta
+              'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -115,7 +94,6 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
           Column(
             children: [
               const SizedBox(height: kToolbarHeight + 24),
-              // Espacio para AppBar
               Expanded(
                 child: Container(
                   decoration: const BoxDecoration(
@@ -127,7 +105,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       MyCalendarWidget(
                         onDaySelected: (DateTime date) {
                           setState(() {
@@ -136,24 +114,52 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
                           });
                         },
                       ),
-                      for (int i = 0; i < selectedDreams.length; i++)
-                        DreamCard(
-                          id: selectedDreams[i].id ?? "",
-                          titulo: selectedDreams[i].titulo ?? "",
-                          descripcion: selectedDreams[i].descripcion ?? "",
-                          lucido: selectedDreams[i].lucido ?? false,
+                      const SizedBox(height: 10),
+                      Expanded(
+                        child: ListView.separated(
+                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 80, top: 4),
+                          itemCount: selectedDreams.length,
+                          itemBuilder: (context, i) {
+                            return DreamCard(
+                              id: selectedDreams[i].id ?? "",
+                              titulo: selectedDreams[i].title ?? "",
+                              descripcion: selectedDreams[i].description ?? "",
+                              lucido: selectedDreams[i].lucid ?? false,
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(height: 12),
                         ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
           ),
+
+          // Boton flotante en la esquina inferior derecha
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white12,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: IconButton(
+                icon: const Icon(Icons.add, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateDreamView()),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
-
-      // BottomNavigationBar
-      bottomNavigationBar: Navbar(),
     );
   }
 }

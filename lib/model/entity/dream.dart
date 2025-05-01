@@ -8,58 +8,54 @@ part 'dream.g.dart';
 class Dream {
   String? id;
   @TimestampConverter()
-  DateTime? fecha;
-  String? titulo;
-  String? descripcion;
+  DateTime? date;
+  String? title;
+  String? description;
   @TimestampConverter()
-  DateTime? horaInicio;
+  DateTime? dreamStart;
   @TimestampConverter()
-  DateTime? horaFinal;
-  String? caracteristica;
-  int? calidad;
-  bool? lucido;
+  DateTime? dreamEnd;
+  String? tag;
+  int? rating;
+  bool? lucid;
 
   Dream({
     this.id,
-    this.fecha,
-    this.titulo,
-    this.descripcion,
-    this.horaInicio,
-    this.horaFinal,
-    this.caracteristica,
-    this.calidad,
-    this.lucido,
+    this.date,
+    this.title,
+    this.description,
+    this.dreamStart,
+    this.dreamEnd,
+    this.tag,
+    this.rating,
+    this.lucid,
   });
 
-  @override
   factory Dream.fromJson(Map<String, dynamic> json) => _$DreamFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$DreamToJson(this);
 
   Dream copyWith({
     String? id,
-    DateTime? fecha,
-    String? titulo,
-    String? descripcion,
-    DateTime? horaInicio,
-    DateTime? horaFinal,
-    String? caracteristica,
-    int? calidad,
-    bool? lucido,
+    DateTime? date,
+    String? title,
+    String? description,
+    DateTime? dreamStart,
+    DateTime? dreamEnd,
+    String? tag,
+    int? rating,
+    bool? lucid,
   }) {
     return Dream(
       id: id ?? this.id,
-      fecha: fecha ?? this.fecha,
-      titulo: titulo ?? this.titulo,
-      descripcion: descripcion ?? this.descripcion,
-      horaInicio: horaInicio ?? this.horaInicio,
-      horaFinal: horaFinal ?? this.horaFinal,
-      caracteristica: caracteristica ?? this.caracteristica,
-      calidad: calidad ?? this.calidad,
-      lucido: lucido ?? this.lucido,
+      date: date ?? this.date,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      dreamStart: dreamStart ?? this.dreamStart,
+      dreamEnd: dreamEnd ?? this.dreamEnd,
+      tag: tag ?? this.tag,
+      rating: rating ?? this.rating,
+      lucid: lucid ?? this.lucid,
     );
   }
-
-
 }

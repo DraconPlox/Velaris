@@ -50,9 +50,9 @@ class ExportDataController {
         Map<String, dynamic> dreamJson = dream.toJson();
 
         // Asegúrate de convertir las fechas antes de agregarlas al mapa
-        dreamJson['fecha'] = formatDateTime(dream.fecha);
-        dreamJson['horaInicio'] = formatDateTime(dream.horaInicio);
-        dreamJson['horaFinal'] = formatDateTime(dream.horaFinal);
+        dreamJson['fecha'] = formatDateTime(dream.date);
+        dreamJson['horaInicio'] = formatDateTime(dream.dreamStart);
+        dreamJson['horaFinal'] = formatDateTime(dream.dreamEnd);
 
         return dreamJson;
       }).toList();
@@ -76,9 +76,9 @@ class ExportDataController {
         Map<String, dynamic> dreamJson = dream.toJson();
 
         // Formatear las fechas y horas antes de agregar a la cadena
-        String formattedFecha = DateFormat('d MMM, yyyy', 'es_ES').format(dream.fecha!);
-        String formattedHoraInicio = dream.horaInicio != null ? DateFormat('HH:mm', 'es_ES').format(dream.horaInicio!) : 'Sin hora de inicio';
-        String formattedHoraFinal = dream.horaFinal != null ? DateFormat('HH:mm', 'es_ES').format(dream.horaFinal!) : 'Sin hora de finalización';
+        String formattedFecha = DateFormat('d MMM, yyyy', 'es_ES').format(dream.date!);
+        String formattedHoraInicio = dream.dreamStart != null ? DateFormat('HH:mm', 'es_ES').format(dream.dreamStart!) : 'Sin hora de inicio';
+        String formattedHoraFinal = dream.dreamEnd != null ? DateFormat('HH:mm', 'es_ES').format(dream.dreamEnd!) : 'Sin hora de finalización';
 
         return '''
                 Titulo: ${dreamJson['titulo'] ?? 'Sin titulo'}

@@ -210,7 +210,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'Diario de sueños',
+          'Crear sueño',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -268,14 +268,14 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                                     DatePickerEntryMode.calendarOnly,
                                 builder: (context, child) {
                                   return Theme(
-                                    data: Theme.of(context).copyWith(
-                                      colorScheme: ColorScheme.dark(
-                                        primary: Color(0xFFB45CFF),
-                                        surface: Color(0xFF1D1432),
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Colors.deepPurple,
                                         onPrimary: Colors.white,
-                                        onSurface: Colors.white70,
+                                        surface: Color(0xFF2D2643),
+                                        onSurface: Colors.white,
                                       ),
-                                      dialogBackgroundColor: Color(0xFF2A1E4C),
+                                      dialogBackgroundColor: const Color(0xFF1D1033),
                                     ),
                                     child: child!,
                                   );
@@ -501,14 +501,14 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             child: TextButton(
                               onPressed: () async {
                                 await createDreamController.createDream(
-                                  titulo: titulo.text,
-                                  fecha: selectedDate,
-                                  descripcion: descripcion.text,
-                                  horaInicio: horaInicio,
-                                  horaFinal: horaFinal,
-                                  caracteristica: caracteristica,
-                                  calidad: estrellasSeleccionadas,
-                                  lucido: lucido,
+                                  title: titulo.text,
+                                  date: selectedDate,
+                                  description: descripcion.text,
+                                  dreamStart: horaInicio,
+                                  dreamEnd: horaFinal,
+                                  tag: caracteristica,
+                                  rating: estrellasSeleccionadas,
+                                  lucid: lucido,
                                 );
 
                                 Navigator.pop(context);

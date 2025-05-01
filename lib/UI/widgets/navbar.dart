@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velaris/UI/views/calendar_dreams/calendar_dreams_view.dart';
 import 'package:velaris/UI/views/statistics/statistics_view.dart';
 import 'package:velaris/UI/views/profile/profile_view.dart';
 import 'package:velaris/UI/views/search_user/search_user_view.dart';
 import 'package:velaris/UI/views/settings/settings_view.dart';
+import 'package:velaris/UI/views/view_friends/view_friends_view.dart';
 import 'package:velaris/UI/widgets/user_profile_picture.dart';
 import 'package:velaris/model/entity/dream_user.dart';
 import 'package:velaris/service/firestore_service.dart';
@@ -27,11 +29,12 @@ class _NavbarState extends State<Navbar> {
   }
 
   Future<void> initialize() async {
-    user = await firestoreService.getDreamUser(FirebaseAuth.instance.currentUser?.uid??"");
-    setState(() {
-
-    });
+    user = await firestoreService.getDreamUser(
+      FirebaseAuth.instance.currentUser?.uid ?? "",
+    );
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,8 +60,11 @@ class _NavbarState extends State<Navbar> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => CalendarDreamsView()),
-                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
+                            MaterialPageRoute(
+                              builder: (context) => CalendarDreamsView(),
+                            ),
+                            (Route<dynamic> route) =>
+                                false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -82,8 +88,11 @@ class _NavbarState extends State<Navbar> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => StatisticsView()),
-                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
+                            MaterialPageRoute(
+                              builder: (context) => StatisticsView(),
+                            ),
+                            (Route<dynamic> route) =>
+                                false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -94,7 +103,31 @@ class _NavbarState extends State<Navbar> {
                     ],
                   ),
 
-                  const SizedBox(width: 70), // Espacio para el avatar
+                  //const SizedBox(width: 70), // Espacio para el avatar
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(FontAwesomeIcons.user, color: Colors.white70),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewFriendsView(),
+                            ),
+                            (Route<dynamic> route) =>
+                                false, // esto elimina todas las rutas anteriores
+                          );
+                        },
+                      ),
+                      const Text(
+                        "Lista amigos",
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                    ],
+                  ),
+
                   // Buscar
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -105,8 +138,11 @@ class _NavbarState extends State<Navbar> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => SearchUserView()),
-                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
+                            MaterialPageRoute(
+                              builder: (context) => SearchUserView(),
+                            ),
+                            (Route<dynamic> route) =>
+                                false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -127,8 +163,11 @@ class _NavbarState extends State<Navbar> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => SettingsView()),
-                                (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
+                            MaterialPageRoute(
+                              builder: (context) => SettingsView(),
+                            ),
+                            (Route<dynamic> route) =>
+                                false, // esto elimina todas las rutas anteriores
                           );
                         },
                       ),
@@ -144,6 +183,7 @@ class _NavbarState extends State<Navbar> {
           ),
 
           // Avatar en el centro, sobresaliente
+          /*
           Positioned(
             top: -45,
             left: 0,
@@ -168,7 +208,7 @@ class _NavbarState extends State<Navbar> {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

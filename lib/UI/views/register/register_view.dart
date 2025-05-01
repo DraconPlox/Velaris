@@ -296,6 +296,13 @@ class _RegisterViewState extends State<RegisterView> {
                         );
                         return;
                       }
+
+                      if (await registerController.existeNickname(nickname.text)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Ya existe un usuario con ese nickname')),
+                        );
+                        return;
+                      }
           
                       bool comprobacion = await registerController.register(
                         email.text,

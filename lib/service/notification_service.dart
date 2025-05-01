@@ -8,10 +8,10 @@ import '../main.dart';
 class NotificationService {
   Future<void> scheduleDailyNotification() async {
     tz.initializeTimeZones();
-
+    await Permission.notification.request();
     if (await Permission.notification.isGranted) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        0, // id
+        DateTime.now().millisecondsSinceEpoch, // id
         'Recordatorio', // título
         '¡Es hora de revisar la app!', // cuerpo
         _nextInstanceOfEightAM(),
@@ -25,6 +25,7 @@ class NotificationService {
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'daily_payload',
       );
     }
   }
@@ -36,8 +37,8 @@ class NotificationService {
       now.year,
       now.month,
       now.day,
-      18,
-      44
+      19,
+      37
     );
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));

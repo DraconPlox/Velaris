@@ -12,25 +12,25 @@ class EditDreamController {
 
   Future updateDream({
     required String dreamId,
-    required String titulo,
-    required DateTime fecha,
-    required String descripcion,
-    required DateTime? horaInicio,
-    required DateTime? horaFinal,
-    required String? caracteristica,
-    required int calidad,
-    required bool lucido,
+    required String title,
+    required DateTime date,
+    required String description,
+    required DateTime? dreamStart,
+    required DateTime? dreamEnd,
+    required String? tag,
+    required int rating,
+    required bool lucid,
   }) async {
     Dream dream = Dream(
       id: dreamId,
-      fecha: fecha,
-      calidad: calidad,
-      caracteristica: caracteristica,
-      descripcion: descripcion,
-      horaFinal: horaFinal,
-      horaInicio: horaInicio,
-      lucido: lucido,
-      titulo: titulo,
+      date: date,
+      rating: rating,
+      tag: tag,
+      description: description,
+      dreamStart: dreamStart,
+      dreamEnd: dreamEnd,
+      lucid: lucid,
+      title: title,
     );
     await firestoreService.updateDream(dream, FirebaseAuth.instance.currentUser!.uid);
   }

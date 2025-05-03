@@ -156,8 +156,6 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                               separatorBuilder:
                                   (_, __) => const SizedBox(height: 16),
                               itemBuilder: (context, index) {
-                                // Preparado para cuando tengas los datos
-                                DreamUser user = listaAmigos![index];
 
                                 return GestureDetector(
                                   onTap: () {
@@ -166,7 +164,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) =>
-                                                ProfileView(dreamUser: user),
+                                                ProfileView(dreamUser: listaAmigos![index]),
                                       ),
                                     );
                                   },
@@ -190,7 +188,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       ],
                                     ),
                                     child: UserCard(
-                                      user: user,
+                                      user: listaAmigos![index],
                                       showButtons: requestPending,
                                     ),
                                   ),
@@ -209,7 +207,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) =>
-                                                ProfileView(dreamUser: user),
+                                                ProfileView(dreamUser: listaReceive![i]),
                                       ),
                                     );
                                   },
@@ -264,7 +262,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         MaterialPageRoute(
                                           builder:
                                               (context) =>
-                                              ProfileView(dreamUser: user),
+                                              ProfileView(dreamUser: listaSender![i]),
                                         ),
                                       );
                                     },

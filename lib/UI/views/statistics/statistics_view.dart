@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
 import 'package:velaris/UI/views/statistics/statistics_controller.dart';
 import 'package:velaris/UI/widgets/navbar.dart';
 
-import '../../../model/entity/dream.dart'; // Reemplaza con tu navbar si es personalizado
+import '../../../model/entity/dream.dart';
 
 class StatisticsView extends StatefulWidget {
   StatisticsView({super.key});

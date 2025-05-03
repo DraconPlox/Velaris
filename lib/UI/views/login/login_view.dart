@@ -148,20 +148,33 @@ class _LoginViewState extends State<LoginView> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Iniciar con Google',
-                          style: TextStyle(color: Colors.black87, fontSize: 16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8), // menos padding vertical
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        SizedBox(width: 15),
-                        SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: Image.asset("assets/images/google.png"),
-                        ),
-                      ],
+                        elevation: 2,
+                      ),
+                      onPressed: () async {
+                        await loginController.loginWithGoogle();
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Iniciar con Google',
+                            style: TextStyle(color: Colors.black87, fontSize: 16),
+                          ),
+                          SizedBox(width: 12),
+                          SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: Image.asset("assets/images/google.png"),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),

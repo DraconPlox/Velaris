@@ -17,8 +17,8 @@ class StatisticsController {
     final Map<String, int> dreamsPerMonth = {};
 
     for (var dream in dreams) {
-      if (dream.fecha != null && dream.fecha!.year == year) {
-        final key = "${dream.fecha!.year}-${dream.fecha!.month.toString().padLeft(2, '0')}";
+      if (dream.date != null && dream.date!.year == year) {
+        final key = "${dream.date!.year}-${dream.date!.month.toString().padLeft(2, '0')}";
         dreamsPerMonth[key] = (dreamsPerMonth[key] ?? 0) + 1;
       }
     }
@@ -60,7 +60,7 @@ class StatisticsController {
     };
 
     for (var dream in dreams) {
-      final tag = dream.caracteristica?.toLowerCase().trim();
+      final tag = dream.tag?.toLowerCase().trim();
 
       if (tag == null || tag.isEmpty) {
         tagCounts['Sin caracteristica'] = tagCounts['Sin caracteristica']! + 1;

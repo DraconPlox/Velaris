@@ -3,17 +3,18 @@ import 'package:velaris/UI/views/view_friends/view_friends_controller.dart';
 import 'package:velaris/model/entity/dream_user.dart';
 
 import '../../../model/entity/dream_user.dart';
+import '../../widgets/navbar.dart';
 import '../../widgets/user_card.dart';
 import '../profile/profile_view.dart';
 
-class ViewFriends extends StatefulWidget {
-  const ViewFriends({Key? key}) : super(key: key);
+class ViewFriendsView extends StatefulWidget {
+  const ViewFriendsView({Key? key}) : super(key: key);
 
   @override
-  State<ViewFriends> createState() => _ViewFriendsState();
+  State<ViewFriendsView> createState() => _ViewFriendsViewState();
 }
 
-class _ViewFriendsState extends State<ViewFriends> {
+class _ViewFriendsViewState extends State<ViewFriendsView> {
   ViewFriendsController viewFriendsController = ViewFriendsController();
   bool showFriends = true;
   bool requestPending = false;
@@ -56,6 +57,7 @@ class _ViewFriendsState extends State<ViewFriends> {
         ),
         centerTitle: false,
       ),
+      bottomNavigationBar: Navbar(),
       body: Stack(
         children: [
           SizedBox(
@@ -154,8 +156,6 @@ class _ViewFriendsState extends State<ViewFriends> {
                               separatorBuilder:
                                   (_, __) => const SizedBox(height: 16),
                               itemBuilder: (context, index) {
-                                // Preparado para cuando tengas los datos
-                                DreamUser user = listaAmigos![index];
 
                                 return GestureDetector(
                                   onTap: () {
@@ -164,7 +164,7 @@ class _ViewFriendsState extends State<ViewFriends> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) =>
-                                                ProfileView(dreamUser: user),
+                                                ProfileView(dreamUser: listaAmigos![index]),
                                       ),
                                     );
                                   },
@@ -188,7 +188,7 @@ class _ViewFriendsState extends State<ViewFriends> {
                                       ],
                                     ),
                                     child: UserCard(
-                                      user: user,
+                                      user: listaAmigos![index],
                                       showButtons: requestPending,
                                     ),
                                   ),
@@ -207,7 +207,7 @@ class _ViewFriendsState extends State<ViewFriends> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) =>
-                                                ProfileView(dreamUser: user),
+                                                ProfileView(dreamUser: listaReceive![i]),
                                       ),
                                     );
                                   },
@@ -262,7 +262,7 @@ class _ViewFriendsState extends State<ViewFriends> {
                                         MaterialPageRoute(
                                           builder:
                                               (context) =>
-                                              ProfileView(dreamUser: user),
+                                              ProfileView(dreamUser: listaSender![i]),
                                         ),
                                       );
                                     },

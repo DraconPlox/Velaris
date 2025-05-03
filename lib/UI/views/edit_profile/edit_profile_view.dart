@@ -102,7 +102,7 @@ class _EditProfileViewState extends State<EditProfileView> {
         foregroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'Ajustes de notificaciones',
+          'Editar perfil',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,

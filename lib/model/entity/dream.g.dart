@@ -8,35 +8,35 @@ part of 'dream.dart';
 
 Dream _$DreamFromJson(Map<String, dynamic> json) => Dream(
   id: json['id'] as String?,
-  fecha: const TimestampConverter().fromJson(json['fecha']),
-  titulo: json['titulo'] as String?,
-  descripcion: json['descripcion'] as String?,
-  horaInicio: const TimestampConverter().fromJson(json['horaInicio']),
-  horaFinal: const TimestampConverter().fromJson(json['horaFinal']),
-  caracteristica: json['caracteristica'] as String?,
-  calidad: (json['calidad'] as num?)?.toInt(),
-  lucido: json['lucido'] as bool?,
+  date: const TimestampConverter().fromJson(json['date']),
+  title: json['title'] as String?,
+  description: json['description'] as String?,
+  dreamStart: const TimestampConverter().fromJson(json['dreamStart']),
+  dreamEnd: const TimestampConverter().fromJson(json['dreamEnd']),
+  tag: json['tag'] as String?,
+  rating: (json['rating'] as num?)?.toInt(),
+  lucid: json['lucid'] as bool?,
 );
 
 Map<String, dynamic> _$DreamToJson(Dream instance) => <String, dynamic>{
   'id': instance.id,
-  'fecha': _$JsonConverterToJson<dynamic, DateTime>(
-    instance.fecha,
+  'date': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.date,
     const TimestampConverter().toJson,
   ),
-  'titulo': instance.titulo,
-  'descripcion': instance.descripcion,
-  'horaInicio': _$JsonConverterToJson<dynamic, DateTime>(
-    instance.horaInicio,
+  'title': instance.title,
+  'description': instance.description,
+  'dreamStart': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.dreamStart,
     const TimestampConverter().toJson,
   ),
-  'horaFinal': _$JsonConverterToJson<dynamic, DateTime>(
-    instance.horaFinal,
+  'dreamEnd': _$JsonConverterToJson<dynamic, DateTime>(
+    instance.dreamEnd,
     const TimestampConverter().toJson,
   ),
-  'caracteristica': instance.caracteristica,
-  'calidad': instance.calidad,
-  'lucido': instance.lucido,
+  'tag': instance.tag,
+  'rating': instance.rating,
+  'lucid': instance.lucid,
 };
 
 Json? _$JsonConverterToJson<Json, Value>(

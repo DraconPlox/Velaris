@@ -16,7 +16,15 @@ Future<void> main() async {
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) {
+    final String? payload = response.payload;
+    if (payload != null) {
+      print('Usuario tocó la notificación con payload: $payload');
+      // Aquí puedes hacer navegación con Navigator o lógica personalizada
+    } else {
+      print("No hay payload");
+    }
+  },);
   runApp(const MyApp());
 }
 

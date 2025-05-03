@@ -79,7 +79,7 @@ class FirestoreService {
 
   Future<List<Dream>> getDreams(String userId) async {
     var querySnapshot = await _getDreamCollection(userId)
-        .orderBy('fecha', descending: true)
+        .orderBy('date', descending: true)
         .get();
 
     return querySnapshot.docs

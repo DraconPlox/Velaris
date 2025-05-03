@@ -50,15 +50,15 @@ class _ListDreamsViewState extends State<ListDreamsView> {
 
   Map<DateTime, List<Dream>> groupDreamsByDate(List<Dream> dreams) {
     // Ordenar de más reciente a más antiguo
-    dreams.sort((a, b) => b.fecha!.compareTo(a.fecha!));
+    dreams.sort((a, b) => b.date!.compareTo(a.date!));
 
     final Map<DateTime, List<Dream>> grouped = {};
 
     for (var dream in dreams) {
       final date = DateTime(
-        dream.fecha!.year,
-        dream.fecha!.month,
-        dream.fecha!.day,
+        dream.date!.year,
+        dream.date!.month,
+        dream.date!.day,
       );
       grouped.putIfAbsent(date, () => []).add(dream);
     }
@@ -193,15 +193,15 @@ class _ListDreamsViewState extends State<ListDreamsView> {
                               child: DreamCard(
                                 id: mapDreams.values.toList()[i][j].id ?? "",
                                 titulo:
-                                    mapDreams.values.toList()[i][j].titulo ??
+                                    mapDreams.values.toList()[i][j].title ??
                                     "",
                                 descripcion:
                                     mapDreams.values
                                         .toList()[i][j]
-                                        .descripcion ??
+                                        .description ??
                                     "",
                                 lucido:
-                                    mapDreams.values.toList()[i][j].lucido ??
+                                    mapDreams.values.toList()[i][j].lucid ??
                                     false,
                               ),
                             ),

@@ -77,7 +77,7 @@ class ProfileController {
     int noLucidos = 0;
 
     for (var dream in dreams) {
-      if (dream.lucido == true) {
+      if (dream.lucid == true) {
         lucidos++;
       } else {
         noLucidos++;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/delete_confirm_login/delete_confirm_login_view.dart';
 import 'package:velaris/UI/views/login/login_view.dart';
 
 import 'delete_account_controller.dart';
@@ -89,6 +90,7 @@ class DeleteAccountView extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () async {
+                            /*
                             bool resultado = await deleteAccountController.eliminarUsuario();
 
                             if (resultado) {
@@ -107,6 +109,12 @@ class DeleteAccountView extends StatelessWidget {
                                 ),
                               );
                             }
+                           */
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DeleteConfirmLoginView()),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,

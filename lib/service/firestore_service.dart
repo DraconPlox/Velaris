@@ -261,4 +261,19 @@ class FirestoreService {
       return false;
     }
   }
+
+  Future<void> deleteUser(String uid) async {
+    // Eliminar todos los documentos de la subcoleccion 'dream'
+    final dreamCollection = _getUserCollection()
+        .doc(uid)
+        .collection('dream');
+
+    final dreamsSnapshot = await dreamCollection.get();
+    for (var doc in dreamsSnapshot.docs) {
+      await doc.reference.delete();
+    }
+
+    // Eliminar el documento del usuario
+    await FirebaseFirestore.instance.collection('user').doc(uid).delete();
+  }
 }

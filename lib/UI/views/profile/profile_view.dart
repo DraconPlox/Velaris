@@ -249,7 +249,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                               ],
                             ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 6),
 
                         // Avatar y nombre alineados a la izquierda
                         Row(

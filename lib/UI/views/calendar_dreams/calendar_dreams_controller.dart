@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:velaris/service/notification_service.dart';
+import 'package:velaris/service/shared_preferences_service.dart';
 
 import '../../../main.dart';
 import '../../../model/entity/dream.dart';
@@ -11,9 +13,19 @@ class CalendarDreamsController {
   FirestoreService firestoreService = FirestoreService();
   NotificationService notificationService = NotificationService(FlutterLocalNotificationsPlugin());
   static bool subscribedToUser = false;
+  SharedPreferencesService sharedPreferencesService = SharedPreferencesService();
 
-  void initialize() {
-    notificationService.scheduleDailyNotification();
+  Future<TimeOfDay> getHour() async {
+    String stringTod = sharedPreferencesService.hour??"08:00";
+    List<String> lista = stringTod.split(":");
+    return TimeOfDay(hour: int.parse(lista[0]), minute: int.parse(lista[1]));
+  }
+
+  void initialize() async {
+    sharedPreferencesService.init();
+    if (sharedPreferencesService.hourActivation??true) {
+      notificationService.scheduleDailyNotification(await getHour());
+    }
     if (!subscribedToUser) subscribeToUserTopic();
 
     /*flutterLocalNotificationsPlugin.show(

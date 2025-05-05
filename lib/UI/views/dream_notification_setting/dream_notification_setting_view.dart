@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dream_notification_setting_controller.dart';
+
 class DreamNotificationSettingView extends StatefulWidget {
   const DreamNotificationSettingView({super.key});
 
@@ -10,8 +12,22 @@ class DreamNotificationSettingView extends StatefulWidget {
 
 class _DreamNotificationSettingViewState
     extends State<DreamNotificationSettingView> {
+  DreamNotificationSettingController dreamNotificationSettingController = DreamNotificationSettingController();
   bool notificationsEnabled = true;
   TimeOfDay selectedTime = const TimeOfDay(hour: 8, minute: 0);
+
+  @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  void initialize() async {
+    await dreamNotificationSettingController.initialize();
+    selectedTime = await dreamNotificationSettingController.getHour();
+    notificationsEnabled = (await dreamNotificationSettingController.getHourActivation())??true;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +125,15 @@ class _DreamNotificationSettingViewState
                         height: 56,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Aqui puedes guardar la hora seleccionada si es necesario
+                            dreamNotificationSettingController.setHour(selectedTime);
+                            dreamNotificationSettingController.setHourActivation(notificationsEnabled);
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(
+                              SnackBar(
+                                content: Text("Ajustes actualizados correctamente."),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,

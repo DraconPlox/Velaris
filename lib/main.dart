@@ -31,6 +31,14 @@ Future<void> main() async {
   if (await Permission.notification.isDenied) {
     await Permission.notification.request();
   }
+
+  if (await Permission.manageExternalStorage.isDenied) {
+    await Permission.manageExternalStorage.request();
+  }
+
+  if (await Permission.storage.isDenied) {
+    await Permission.storage.request();
+  }
   runApp(const MyApp());
 }
 

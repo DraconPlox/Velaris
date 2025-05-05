@@ -12,34 +12,8 @@ class LoginController {
     return authService.loginWithEmail(email, password);
   }
 
-  Future<void> loginWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      print("COSO1: GoogleSignIn().signIn()");
-      if (googleUser == null) {
-        print("CANCEL");
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      print("COSO2: googleUser.authentication");
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-      print("COSO3: FirebaseAuth.instance.signInWithCredential(credential)");
-      // Usuario autenticado correctamente
-      final user = userCredential.user;
-      print("Usuario autenticado: ${user?.displayName}");
-
-      // Aqui puedes navegar o guardar datos si hace falta
-
-    } catch (e) {
-      print("Error al iniciar sesion con Google: $e");
-      // Muestra un mensaje al usuario si quieres
-    }
+  Future<User?> loginWithGoogle() async {
+    return authService.loginWithGoogle();
   }
 
 

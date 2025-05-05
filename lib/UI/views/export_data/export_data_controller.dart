@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:intl/intl.dart';
@@ -16,10 +17,12 @@ class ExportDataController {
   Future<Directory?> getDirectory() async {
     Directory? directory;
     if (Platform.isAndroid) {
-      if (await Permission.manageExternalStorage.request().isGranted) {
-        directory = Directory('/storage/emulated/0/Download');
+      await Permission.storage.request();
+      directory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      if (await Permission.storage.isGranted) {
+
       } else {
-        throw Exception('No se concedió el permiso de almacenamiento.');
+        //throw Exception('No se concedió el permiso de almacenamiento.');
       }
     } else {
       directory = await getApplicationDocumentsDirectory();
@@ -48,11 +51,6 @@ class ExportDataController {
       List<Map<String, dynamic>> dreamsJson = dreams.map((dream) {
         // Utilizamos el toJson() para convertir el objeto Dream en un mapa
         Map<String, dynamic> dreamJson = dream.toJson();
-
-        // Asegúrate de convertir las fechas antes de agregarlas al mapa
-        dreamJson['fecha'] = formatDateTime(dream.date);
-        dreamJson['horaInicio'] = formatDateTime(dream.dreamStart);
-        dreamJson['horaFinal'] = formatDateTime(dream.dreamEnd);
 
         return dreamJson;
       }).toList();
@@ -86,7 +84,7 @@ class ExportDataController {
                 Caracteristica: ${dreamJson['caracteristica'] ?? 'Sin caracteristica'}
                 Fecha: $formattedFecha
                 Hora de Inicio: $formattedHoraInicio
-                Hora de Finalización: $formattedHoraFinal
+                Hora de Final: $formattedHoraFinal
                 Calidad: ${dreamJson['calidad'] ?? 'Sin calidad'}
                 Lucido: ${dreamJson['lucido'] == true ? 'Sí' : 'No'}
                 ---------------
@@ -95,13 +93,13 @@ class ExportDataController {
           .join('\n');
     }
 
-    if (await Permission.storage.request().isGranted) {
-      file = await _saveToFile(content, format);
-    }
+    file = await _saveToFile(content, format);
 
     if (file != null) {
       // Si el archivo se guardó correctamente, puedes abrirlo
       print('Archivo exportado exitosamente.');
+      final params = SaveFileDialogParams(sourceFilePath: file.path);
+      await FlutterFileDialog.saveFile(params: params);
       OpenFile.open(file.path); // Abrir el archivo
       return true; // Retorna true si todo salió bien
     } else {

@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
   NotificationService(this.flutterLocalNotificationsPlugin);
 
-  Future<void> scheduleDailyNotification() async {
+  Future<void> scheduleDailyNotification(TimeOfDay hour) async {
     tz.initializeTimeZones();
     final madrid = tz.getLocation('Europe/Madrid');
 
@@ -15,7 +15,7 @@ class NotificationService {
       100,
       'Recordatorio',
       '¡Es hora de revisar la app!',
-      _nextInstanceOfHourMadrid(08, 00, madrid),
+      _nextInstanceOfHourMadrid(hour.hour, hour.minute, madrid),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'daily_notification_channel_id',

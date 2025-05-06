@@ -43,13 +43,6 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
     super.dispose();
   }
 
-  /*
-  void loadDreams() async {
-    allDreams = await calendarDreamsController.getDreams();
-    filterDreamsByDate(DateTime.now());
-  }
-   */
-
   void filterDreamsByDate(DateTime date) {
     setState(() {
       _selectedDay = date;

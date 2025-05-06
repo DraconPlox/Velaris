@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:velaris/UI/views/complete_login_google/complete_login_google_view.dart';
 import 'package:velaris/UI/views/login/login_controller.dart';
 import 'package:velaris/UI/views/register/register_view.dart';
+
+import '../../../model/entity/dream_user.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({super.key});

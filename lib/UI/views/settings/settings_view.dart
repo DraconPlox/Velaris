@@ -27,6 +27,7 @@ class _SettingsViewState extends State<SettingsView> {
   DreamUser? dreamUser;
   String? nickname;
   String? email;
+  bool? hasProviderGoogle;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _SettingsViewState extends State<SettingsView> {
     dreamUser = settingsController.getUser();
     nickname = dreamUser?.nickname??"";
     email = dreamUser?.email??"";
+    hasProviderGoogle = await settingsController.hasProviderGoogle();
     setState(() {});
   }
 
@@ -124,26 +126,26 @@ class _SettingsViewState extends State<SettingsView> {
                         indent: 0,
                         endIndent: 0,
                       ),
-                      AjustesItem(
-                        texto: 'Cambiar contraseña',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditPasswordView(),
-                              ),
+                      if (!(hasProviderGoogle??false)) ...[
+                        AjustesItem(
+                          texto: 'Cambiar contraseña',
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPasswordView(),
                             ),
-                      ),
-                      AjustesItem(
-                        texto: 'Cambiar correo',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditEmailView(),
-                              ),
+                          ),
+                        ),
+                        AjustesItem(
+                          texto: 'Cambiar correo',
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditEmailView(),
                             ),
-                      ),
+                          ),
+                        ),
+                      ],
                       AjustesItem(
                         texto: 'Exportar datos',
                         onTap:

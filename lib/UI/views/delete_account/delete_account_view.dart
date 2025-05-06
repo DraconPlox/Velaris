@@ -90,31 +90,7 @@ class DeleteAccountView extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () async {
-                            /*
-                            bool resultado = await deleteAccountController.eliminarUsuario();
-
-                            if (resultado) {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginView()),
-                                    (Route<dynamic> route) => false, // esto elimina todas las rutas anteriores
-                              );
-                            } else {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text("Algo ha ocurrido en el proceso, intentalo mas tarde."),
-                                  backgroundColor: Colors.redAccent,
-                                ),
-                              );
-                            }
-                           */
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => DeleteConfirmLoginView()),
-                            );
+                            await deleteAccountController.eliminarUsuario(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,

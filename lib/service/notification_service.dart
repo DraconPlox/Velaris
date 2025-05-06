@@ -14,7 +14,7 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       100,
       'Recordatorio',
-      '¡Es hora de revisar la app!',
+      '¡No olvides apuntar el sueño de hoy!',
       _nextInstanceOfHourMadrid(hour.hour, hour.minute, madrid),
       const NotificationDetails(
         android: AndroidNotificationDetails(

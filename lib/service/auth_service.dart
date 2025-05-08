@@ -57,6 +57,10 @@ class AuthService {
   Future<User?> loginWithGoogle() async {
     try {
       await logout();
+    } on FirebaseAuthException catch (e) {
+      print('Error en login con Google: ${e.code} - ${e.message}');
+      return null;
+    } finally {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
 
@@ -70,9 +74,6 @@ class AuthService {
 
       final result = await _auth.signInWithCredential(credential);
       return result.user;
-    } on FirebaseAuthException catch (e) {
-      print('Error en login con Google: ${e.code} - ${e.message}');
-      return null;
     }
   }
 

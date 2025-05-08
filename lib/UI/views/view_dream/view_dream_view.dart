@@ -133,7 +133,6 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                                       color: Colors.transparent,
                                       child: Container(
                                         width: 300,
-                                        // Ajusta el ancho a lo que necesites
                                         padding: const EdgeInsets.all(20),
                                         decoration: BoxDecoration(
                                           color: Color(0xFF433865),

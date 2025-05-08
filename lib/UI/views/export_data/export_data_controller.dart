@@ -60,7 +60,12 @@ class ExportDataController {
       for (var dreamJson in dreamsJson) {
         content += '  {\n';
         dreamJson.forEach((key, value) {
-          content += '    "$key": "${value.toString().replaceAll('"', '\\"')}",\n';
+          if (value is String || value is DateTime){
+            content += '    "$key": "${value.toString().replaceAll('"', '"')}",\n';
+          }else{
+            content += '    "$key": ${value.toString().replaceAll('"', '"')},\n';
+          }
+
         });
         content = content.substring(0, content.length - 2); // Eliminar la última coma
         content += '\n  },\n';
@@ -100,7 +105,7 @@ class ExportDataController {
       print('Archivo exportado exitosamente.');
       final params = SaveFileDialogParams(sourceFilePath: file.path);
       await FlutterFileDialog.saveFile(params: params);
-      OpenFile.open(file.path); // Abrir el archivo
+      //OpenFile.open(file.path); // Abrir el archivo
       return true; // Retorna true si todo salió bien
     } else {
       print('Hubo un error al guardar el archivo.');
@@ -125,7 +130,7 @@ class ExportDataController {
 
     // Crear el nombre del archivo con fecha actual (ejemplo: export_dreams_2025_04_27.txt)
     String formattedDate = DateFormat('yyyy_MM_dd').format(DateTime.now());
-    String fileName = 'export_dreams_$formattedDate-${DateTime.now().millisecondsSinceEpoch}.$format';
+    String fileName = 'Velaris_export$formattedDate-${DateTime.now().millisecondsSinceEpoch}.$format';
     String filePath = '${directory.path}/$fileName';
     File file = File(filePath);
 

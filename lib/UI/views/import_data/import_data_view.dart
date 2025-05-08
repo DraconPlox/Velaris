@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 
 import 'import_data_controller.dart';
 
-class ImportDataView extends StatelessWidget {
+class ImportDataView extends StatefulWidget {
   ImportDataView({super.key});
+
+  @override
+  State<ImportDataView> createState() => _ImportDataViewState();
+}
+
+class _ImportDataViewState extends State<ImportDataView> {
   ImportDataController importDataController = ImportDataController();
+
   File? file;
 
   @override
@@ -39,7 +46,10 @@ class ImportDataView extends StatelessWidget {
               const SizedBox(height: kToolbarHeight + 24),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 30,
+                  ),
                   decoration: const BoxDecoration(
                     color: Color(0xFF2D2643),
                     borderRadius: BorderRadius.vertical(
@@ -51,18 +61,19 @@ class ImportDataView extends StatelessWidget {
                     children: [
                       const Text(
                         'Puedes importar tus sueños de otra app (O de un backup tuyo) desde un archivo con extensión .json. '
-                            'Cuidado: Hacer esto restaura todos los sueños que tienes guardados a los del archivo importado '
-                            'por lo que si no estás seguro, recomendamos hacer un backup antes desde el apartado de exportar datos.\n\n'
-                            'En caso de que no tengas un backup tuyo y quieras pasar tus sueños de otra app a la nuestra, '
-                            'tenemos un PDF que explica detalladamente la estructura del json para que funcione la importación sin errores. → ',
+                        'Cuidado: Hacer esto restaura todos los sueños que tienes guardados a los del archivo importado '
+                        'por lo que si no estás seguro, recomendamos hacer un backup antes desde el apartado de exportar datos.\n\n'
+                        'En caso de que no tengas un backup tuyo y quieras pasar tus sueños de otra app a la nuestra, '
+                        'tenemos un PDF que explica detalladamente la estructura del json para que funcione la importación sin errores.',
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
+                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           // Lógica para abrir el enlace
                         },
                         child: const Text(
-                          'Enlace',
+                          'PDF explicativo sobre JSONs',
                           style: TextStyle(
                             color: Colors.blueAccent,
                             decoration: TextDecoration.underline,
@@ -83,6 +94,17 @@ class ImportDataView extends StatelessWidget {
                       InkWell(
                         onTap: () async {
                           file = await importDataController.getFile();
+                          if (file == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'No se ha seleccionado un archivo con la extensión correcta. La extensión tiene que ser .json',
+                                ),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                          setState(() {});
                         },
                         child: Container(
                           height: 120,
@@ -91,36 +113,81 @@ class ImportDataView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: const Center(
-                            child: Icon(Icons.note_add, size: 50, color: Colors.white),
+                            child: Icon(
+                              Icons.note_add,
+                              size: 50,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      if (file != null)
+                        Text(
+                          file!.path.split(Platform.pathSeparator).last,
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
                       const Spacer(),
                       SizedBox(
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: file==null?null: () {
-                            print("eeee");
-                            if (file != null) {
-                              importDataController.importDreamsFromFile(file!);
-                            }
-                          },
+                          onPressed:
+                              file == null
+                                  ? null
+                                  : () async {
+                                    if (file != null) {
+                                      bool result = await importDataController
+                                          .importDreamsFromFile(file!);
+
+                                      if (result) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Se han insertado los datos correctamente',
+                                            ),
+                                            backgroundColor: Colors.green,
+
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Ha habido un error al insertar los datos.',
+                                            ),
+                                            backgroundColor: Colors.redAccent,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            backgroundColor: Colors.transparent, // Importante para mostrar el gradiente
+                            backgroundColor: Colors.transparent,
+                            // Importante para mostrar el gradiente
                             shadowColor: Colors.transparent,
                           ),
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: file==null?null: const LinearGradient(
-                                colors: [Color(0xFFAE6CFF), Color(0xFF7F5BFE)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
+                              gradient:
+                                  file == null
+                                      ? null
+                                      : const LinearGradient(
+                                        colors: [
+                                          Color(0xFFAE6CFF),
+                                          Color(0xFF7F5BFE),
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Container(

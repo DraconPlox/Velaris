@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../model/entity/dream.dart';
 import '../../../service/firestore_service.dart';
@@ -11,22 +10,26 @@ class ImportDataController {
 
   // Método para importar el archivo JSON
   Future<File?> getFile() async {
-    // Abrir el selector de archivos para elegir el archivo JSON
+    // Permitir seleccionar cualquier tipo de archivo
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
+      type: FileType.any,
     );
 
     if (result != null) {
-      File file = File(result.files.single.path!);
-
-      return file;
+      String? path = result.files.single.path;
+      if (path != null && path.endsWith('.json')) {
+        return File(path);
+      } else {
+        print('El archivo seleccionado no es un .json valido.');
+      }
     } else {
-      print('No se seleccionó ningún archivo.');
+      print('No se selecciono ningun archivo.');
     }
+
+    return null;
   }
 
-  Future<void> importDreamsFromFile(File file) async {
+  Future<bool> importDreamsFromFile(File file) async {
     try {
       // Leer el contenido del archivo
       String fileContent = await file.readAsString();
@@ -45,8 +48,10 @@ class ImportDataController {
       }
 
       print('Datos importados con éxito.');
+      return true;
     } catch (e) {
       print('Error al importar los datos: $e');
+      return false;
     }
   }
 }

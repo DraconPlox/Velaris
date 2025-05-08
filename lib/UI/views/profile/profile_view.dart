@@ -152,31 +152,99 @@ class _ProfileViewState extends State<ProfileView> {
                                         color: Colors.white,
                                       ),
                                       onPressed: () async {
-                                        if (await profileController
-                                            .deleteFriend(
-                                              widget.dreamUser?.id ?? "",
-                                            )) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Se ha eliminado el amigo de tu lista de amigos',
+                                        showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return Center(
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: Container(
+                                                  width: 300,
+                                                  padding: const EdgeInsets.all(20),
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFF433865),
+                                                    borderRadius: BorderRadius.circular(
+                                                      16,
+                                                    ),
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        "¿Estás seguro que deseas dejar de ser amigo con ${widget.dreamUser?.nickname}?",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.white,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      const SizedBox(height: 20),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(ctx).pop();
+                                                            },
+                                                            child: const Text(
+                                                              'Cancelar',
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              if (await profileController
+                                                                  .deleteFriend(
+                                                                widget.dreamUser?.id ?? "",
+                                                              )) {
+                                                                ScaffoldMessenger.of(
+                                                                  context,
+                                                                ).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                      'Se ha eliminado a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                                initialize();
+                                                              } else {
+                                                                ScaffoldMessenger.of(
+                                                                  context,
+                                                                ).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                      'Ha habido un error al eliminar a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                            style:
+                                                            ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                              Colors.red,
+                                                            ),
+                                                            child: const Text(
+                                                              'Eliminar',
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                          initialize();
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Ha habido un error al eliminar el amigo de tu lista de amigos',
-                                              ),
-                                            ),
-                                          );
-                                        }
+                                            );
+                                          },
+                                        );
                                       },
                                     )
                                     : pendingRequest
@@ -187,31 +255,99 @@ class _ProfileViewState extends State<ProfileView> {
                                         size: 35,
                                       ),
                                       onPressed: () async {
-                                        if (await profileController
-                                            .cancelFriendRequest(
-                                              widget.dreamUser?.id ?? "",
-                                            )) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Se ha eliminado la solicitud',
+                                        showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return Center(
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: Container(
+                                                  width: 300,
+                                                  padding: const EdgeInsets.all(20),
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFF433865),
+                                                    borderRadius: BorderRadius.circular(
+                                                      16,
+                                                    ),
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      const Text(
+                                                        '¿Estás seguro que deseas eliminar la solicitud?',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.white,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      const SizedBox(height: 20),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(ctx).pop();
+                                                            },
+                                                            child: const Text(
+                                                              'Cancelar',
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              if (await profileController
+                                                                  .cancelFriendRequest(
+                                                                widget.dreamUser?.id ?? "",
+                                                              )) {
+                                                                ScaffoldMessenger.of(
+                                                                  context,
+                                                                ).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                      'Se ha eliminado la solicitud',
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                                initialize();
+                                                              } else {
+                                                                ScaffoldMessenger.of(
+                                                                  context,
+                                                                ).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                      'Ha habido un error al eliminar la solicitud',
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                            style:
+                                                            ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                              Colors.red,
+                                                            ),
+                                                            child: const Text(
+                                                              'Eliminar',
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                          initialize();
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Ha habido un error al eliminar la solicitud',
-                                              ),
-                                            ),
-                                          );
-                                        }
+                                            );
+                                          },
+                                        );
                                       },
                                     )
                                     : IconButton(
@@ -249,7 +385,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                               ],
                             ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 6),
 
                         // Avatar y nombre alineados a la izquierda
                         Row(

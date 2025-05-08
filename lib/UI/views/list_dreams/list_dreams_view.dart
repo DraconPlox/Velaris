@@ -81,27 +81,6 @@ class _ListDreamsViewState extends State<ListDreamsView> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white12,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateDreamView()),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
       ),
       body: Stack(
         children: [
@@ -193,8 +172,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
                               child: DreamCard(
                                 id: mapDreams.values.toList()[i][j].id ?? "",
                                 titulo:
-                                    mapDreams.values.toList()[i][j].title ??
-                                    "",
+                                    mapDreams.values.toList()[i][j].title ?? "",
                                 descripcion:
                                     mapDreams.values
                                         .toList()[i][j]
@@ -235,6 +213,27 @@ class _ListDreamsViewState extends State<ListDreamsView> {
               color: Colors.black.withAlpha(150),
               child: Center(child: CircularProgressIndicator()),
             ),
+          // Boton flotante en la esquina inferior derecha
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white12,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: IconButton(
+                icon: const Icon(Icons.add, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateDreamView()),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
 

@@ -23,13 +23,19 @@ class RegisterController {
     DateTime dob,
   ) async {
     try {
-      // Registrar el usuario
-      UserCredential? userCredential = await authService.registerWithEmail(
-        email,
-        password,
-      );
+      String? uid;
+      if (FirebaseAuth.instance.currentUser == null) {
+        // Registrar el usuario
+        UserCredential? userCredential = await authService.registerWithEmail(
+          email,
+          password,
+        );
 
-      String? uid = userCredential?.user?.uid;
+        uid = userCredential?.user?.uid;
+      } else {
+        uid = FirebaseAuth.instance.currentUser!.uid;
+      }
+
       if (uid == null)
         throw Exception("No se pudo obtener el UID del usuario.");
 
@@ -42,6 +48,7 @@ class RegisterController {
         dob: dob,
         description: 'Esto es una descripción.',
         friends: [],
+        search_nickname: nickname.toLowerCase()
       );
 
       // Guardar en Firestore

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,10 +85,12 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Future<void> pickImage() async {
-    XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image
+    );
+    if (result != null) {
       setState(() {
-        pickedImage = File(image.path);
+        pickedImage = File(result.files.single.path!);
       });
     }
   }

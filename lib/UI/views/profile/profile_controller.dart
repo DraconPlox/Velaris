@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:velaris/model/entity/dream_user.dart';
@@ -90,11 +91,16 @@ class ProfileController {
     };
   }
 
-  sendFriendRequest(String id) async {
-    return await firestoreService.createFriendRequest(id);
+  Future<bool> sendFriendRequest(String id) async {
+    if (await firestoreService.createFriendRequest(id)) {
+      await callSendNotificationFunction(id);
+      return true;
+    }
+
+    return false;
   }
 
-  Future<bool>cancelFriendRequest(String id) async {
+  Future<bool> cancelFriendRequest(String id) async {
     return await firestoreService.deleteFriendRequest(id);
   }
 
@@ -108,5 +114,39 @@ class ProfileController {
 
   Future<bool> getIfFriend(String id) async {
     return await firestoreService.getIfFriend(id);
+  }
+
+  Future<void> callSendNotificationFunction(String id) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print('⚠️ No hay usuario autenticado. No puedo llamar la función.');
+      return;
+    }
+
+    if (id == null || id.isEmpty) {
+      print('⚠️ ID inválido: "$id"');
+      return;
+    }
+
+    /*final data = {
+      'title': 'Has recibido una solicitud de amistad',
+      'body': 'Ven a comprobarla',
+      'topic': 'user_$id',
+    };*/
+
+    print('ID de destino: "$id"');
+    //print('Enviando a Firebase: $data');
+
+    try {
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('sendToTopic');
+      await callable.call({
+        'title': 'Has recibido una solicitud de amistad',
+        'body': 'Ven a comprobarla',
+        'topic': 'user_$id',
+      });
+    } catch (e, stack) {
+      print('🔥 Error al llamar funcion: $e');
+      print('📌 Stacktrace: $stack');
+    }
   }
 }

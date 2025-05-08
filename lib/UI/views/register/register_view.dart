@@ -14,7 +14,8 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController password = TextEditingController();
   TextEditingController repeatPassword = TextEditingController();
   TextEditingController nickname = TextEditingController();
-  TextEditingController dob = TextEditingController();
+  TextEditingController dobText = TextEditingController();
+  String dob = "";
   DateTime? selectedDate;
   RegisterController registerController = RegisterController();
 
@@ -218,7 +219,7 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 const SizedBox(height: 4),
                 TextField(
-                  controller: dob,
+                  controller: dobText,
                   readOnly: true,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
@@ -257,8 +258,9 @@ class _RegisterViewState extends State<RegisterView> {
                     if (picked != null) {
                       setState(() {
                         selectedDate = picked;
-                        dob.text =
+                        dobText.text =
                             "${picked.day.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.year}";
+                        dob = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
                       });
                     }
                   },
@@ -304,15 +306,15 @@ class _RegisterViewState extends State<RegisterView> {
                         return;
                       }
           
-                      bool comprobacion = await registerController.register(
+                      bool result = await registerController.register(
                         email.text,
                         password.text,
                         nickname.text,
                         selectedGender ?? '',
-                        DateTime.parse(dob.text),
+                        DateTime.parse(dob),
                       );
           
-                      if (comprobacion) {
+                      if (result) {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

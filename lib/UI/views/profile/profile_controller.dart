@@ -108,6 +108,14 @@ class ProfileController {
     return await firestoreService.deleteFriend(id);
   }
 
+  Future<bool> bloqUser(String? id) async {
+    return await firestoreService.bloqUser(id);
+  }
+
+  Future<bool> desbloqUser(String id) async {
+    return await firestoreService.desbloqUser(id);
+  }
+
   Future<bool> getIfExistsPendingRequest(String id) async {
     return await firestoreService.getIfExistsPendingRequest(id);
   }
@@ -138,7 +146,8 @@ class ProfileController {
     //print('Enviando a Firebase: $data');
 
     try {
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('sendToTopic');
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
+          'sendToTopic');
       await callable.call({
         'title': 'Has recibido una solicitud de amistad',
         'body': 'Ven a comprobarla',

@@ -4,10 +4,12 @@ import '../../../model/entity/dream_user.dart';
 class UserCard extends StatelessWidget {
   final DreamUser user;
   final bool showButtons;
+  final bool hasBloq;
   final Function()? onCancel;
   final Function()? onAccept;
+  final Function()? onDesbloq;
 
-  const UserCard({Key? key, required this.user, required this.showButtons, this.onAccept, this.onCancel}) : super(key: key);
+  const UserCard({Key? key, required this.user, required this.showButtons, required this.hasBloq, this.onAccept, this.onCancel, this.onDesbloq}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,31 @@ class UserCard extends StatelessWidget {
                       ),
                       child: const Text(
                         'Rechazar',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ] else if (hasBloq) ...[
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: onDesbloq,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4D3D77),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: 4,
+                      ),
+                      child: const Text(
+                        'Desbloquear',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

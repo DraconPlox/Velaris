@@ -17,6 +17,8 @@ DreamUser _$DreamUserFromJson(Map<String, dynamic> json) => DreamUser(
   dob: const TimestampConverter().fromJson(json['dob']),
   friends:
       (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  blocked:
+      (json['blocked'] as List<dynamic>?)?.map((e) => e as String).toList(),
 );
 
 Map<String, dynamic> _$DreamUserToJson(DreamUser instance) => <String, dynamic>{
@@ -32,6 +34,7 @@ Map<String, dynamic> _$DreamUserToJson(DreamUser instance) => <String, dynamic>{
     const TimestampConverter().toJson,
   ),
   'friends': instance.friends,
+  'blocked': instance.blocked,
 };
 
 Json? _$JsonConverterToJson<Json, Value>(

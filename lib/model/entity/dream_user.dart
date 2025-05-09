@@ -15,6 +15,7 @@ class DreamUser {
   @TimestampConverter()
   DateTime? dob;
   List<String>? friends;
+  List<String>? blocked;
 
   DreamUser({
     this.id,
@@ -26,6 +27,7 @@ class DreamUser {
     this.profilePicture,
     this.dob,
     this.friends,
+    this.blocked,
   });
 
   @override
@@ -45,6 +47,7 @@ class DreamUser {
     String? profilePicture,
     DateTime? dob,
     List<String>? friends,
+    List<String>? blocked,
   }) {
     return DreamUser(
       id: id ?? this.id,
@@ -56,6 +59,7 @@ class DreamUser {
       profilePicture: profilePicture ?? this.profilePicture,
       dob: dob ?? this.dob,
       friends: friends ?? this.friends,
+      blocked: blocked ?? this.blocked,
     );
   }
 }

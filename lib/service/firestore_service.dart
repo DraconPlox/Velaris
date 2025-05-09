@@ -37,7 +37,14 @@ class FirestoreService {
         .where('id', whereIn: listaIds)
         .get();
 
-    // Luego puedes recorrer:
+    return usersSnapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();
+  }
+
+  Future<List<DreamUser>> getDreamUserBlocked(List<String> listaIds) async {
+    final usersSnapshot = await _getUserCollection()
+        .where('id', whereIn: listaIds)
+        .get();
+
     return usersSnapshot.docs.map((doc) => DreamUser.fromJson(doc.data())).toList();
   }
 
@@ -250,7 +257,7 @@ class FirestoreService {
       List<String> listaFriendsDreamUser = dreamUser.friends??[];
       List<String> listaFriendsMe = me.friends??[];
 
-      if (listaFriendsDreamUser.contains(FirebaseAuth.instance.currentUser!.uid)) listaFriendsDreamUser.remove(FirebaseAuth.instance.currentUser!.uid);
+      if (listaFriendsDreamUser.contains(me.id)) listaFriendsDreamUser.remove(me.id);
       if (listaFriendsMe.contains(dreamUser.id??"")) listaFriendsMe.remove(dreamUser.id??"");
 
       await updateDreamUser(dreamUser.copyWith(friends: listaFriendsDreamUser));
@@ -275,5 +282,33 @@ class FirestoreService {
 
     // Eliminar el documento del usuario
     await FirebaseFirestore.instance.collection('user').doc(uid).delete();
+  }
+
+  Future<bool> desbloqUser(String id) async {
+    DreamUser? dreamUser = await getDreamUser(
+        FirebaseAuth.instance.currentUser?.uid ?? "");
+
+    if (dreamUser != null) {
+      dreamUser.blocked?.remove(id);
+      await updateDreamUser(dreamUser);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> bloqUser(String? id) async {
+    DreamUser? dreamUser = await getDreamUser(
+        FirebaseAuth.instance.currentUser?.uid ?? "");
+
+    if (dreamUser != null || id != null) {
+      dreamUser?.blocked?.add(id!);
+      await updateDreamUser(dreamUser!);
+      await deleteFriend(id!);
+      await deleteFriendRequest(id);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

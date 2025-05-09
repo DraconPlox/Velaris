@@ -48,7 +48,8 @@ class RegisterController {
         dob: dob,
         description: 'Esto es una descripción.',
         friends: [],
-        search_nickname: nickname.toLowerCase()
+        search_nickname: nickname.toLowerCase(),
+        blocked: []
       );
 
       // Guardar en Firestore

@@ -45,11 +45,19 @@ class ViewFriendsController {
     return listaUsers;
   }
 
+  Future<List<DreamUser>> getUsersBlocked(List<String> listaIds) async {
+    return await firestoreService.getDreamUserBlocked(listaIds);
+  }
+
   Future<bool> acceptRequest(String id) async {
     return await firestoreService.acceptFriendRequest(id);
   }
 
   Future<void> declineRequest(String id) async {
     await firestoreService.deleteFriendRequest(id);
+  }
+
+  Future<bool> desbloqUser(String id) async {
+    return await firestoreService.desbloqUser(id);
   }
 }

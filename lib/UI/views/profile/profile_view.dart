@@ -31,6 +31,7 @@ class _ProfileViewState extends State<ProfileView> {
   Map<String, int> suenosLucidos = new Map<String, int>();
   bool pendingRequest = false;
   bool isFriend = false;
+  bool isBlocked = false;
 
   @override
   void initState() {
@@ -146,242 +147,733 @@ class _ProfileViewState extends State<ProfileView> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 isFriend
-                                    ? IconButton(
-                                      icon: Icon(
-                                        FontAwesomeIcons.userCheck,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (ctx) {
-                                            return Center(
-                                              child: Material(
-                                                color: Colors.transparent,
-                                                child: Container(
-                                                  width: 300,
-                                                  padding: const EdgeInsets.all(20),
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF433865),
-                                                    borderRadius: BorderRadius.circular(
-                                                      16,
-                                                    ),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        "¿Estás seguro que deseas dejar de ser amigo con ${widget.dreamUser?.nickname}?",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign: TextAlign.center,
-                                                      ),
-                                                      const SizedBox(height: 20),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(ctx).pop();
-                                                            },
-                                                            child: const Text(
-                                                              'Cancelar',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                              ),
+                                    ? Row(
+                                      children: [
+                                        if (!isBlocked)
+                                          IconButton(
+                                            icon: Icon(
+                                              FontAwesomeIcons.userCheck,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () async {
+                                              showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return Center(
+                                                    child: Material(
+                                                      color: Colors.transparent,
+                                                      child: Container(
+                                                        width: 300,
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                              20,
                                                             ),
+                                                        decoration: BoxDecoration(
+                                                          color: Color(
+                                                            0xFF433865,
                                                           ),
-                                                          ElevatedButton(
-                                                            onPressed: () async {
-                                                              if (await profileController
-                                                                  .deleteFriend(
-                                                                widget.dreamUser?.id ?? "",
-                                                              )) {
-                                                                ScaffoldMessenger.of(
-                                                                  context,
-                                                                ).showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                      'Se ha eliminado a ${widget.dreamUser?.nickname} de tu lista de amigos',
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                                initialize();
-                                                              } else {
-                                                                ScaffoldMessenger.of(
-                                                                  context,
-                                                                ).showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                      'Ha habido un error al eliminar a ${widget.dreamUser?.nickname} de tu lista de amigos',
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                              Navigator.of(context).pop();
-                                                            },
-                                                            style:
-                                                            ElevatedButton.styleFrom(
-                                                              backgroundColor:
-                                                              Colors.red,
-                                                            ),
-                                                            child: const Text(
-                                                              'Eliminar',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                16,
                                                               ),
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Text(
+                                                              "¿Estás seguro que deseas dejar de ser amigo con ${widget.dreamUser?.nickname}?",
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                                color:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
                                                             ),
+                                                            const SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(
+                                                                      ctx,
+                                                                    ).pop();
+                                                                  },
+                                                                  child: const Text(
+                                                                    'Cancelar',
+                                                                    style: TextStyle(
+                                                                      color:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                ElevatedButton(
+                                                                  onPressed: () async {
+                                                                    if (await profileController
+                                                                        .deleteFriend(
+                                                                          widget.dreamUser?.id ??
+                                                                              "",
+                                                                        )) {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text(
+                                                                            'Se ha eliminado a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                      initialize();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text(
+                                                                            'Ha habido un error al eliminar a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                    Navigator.of(
+                                                                      context,
+                                                                    ).pop();
+                                                                  },
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                  ),
+                                                                  child: const Text(
+                                                                    'Eliminar',
+                                                                    style: TextStyle(
+                                                                      color:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        IconButton(
+                                          icon: Icon(Icons.block, color: Colors.white),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return Center(
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      width: 300,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            20,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(
+                                                          0xFF433865,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              16,
+                                                            ),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            !isBlocked
+                                                            ? '¿Estás seguro que deseas bloquear a ${widget.dreamUser?.nickname}?'
+                                                            : '¿Estás seguro que deseas desbloquear a ${widget.dreamUser?.nickname}?',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign:
+                                                                TextAlign
+                                                                    .center,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    ctx,
+                                                                  ).pop();
+                                                                },
+                                                                child: const Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed: () async {
+                                                                  final userId = widget.dreamUser!.id;
+                                                                  if (!isBlocked) {
+                                                                    bool resultado = await profileController.bloqUser(userId);
+
+                                                                    if (resultado) {
+                                                                      isBlocked = true;
+                                                                      pendingRequest = false;
+                                                                      isFriend = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario bloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar bloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  } else {
+                                                                    bool resultado = await profileController.desbloqUser(userId??"");
+
+                                                                    if (resultado) {
+                                                                      isBlocked = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario desbloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar desbloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                  setState(() {});
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .red,
+                                                                ),
+                                                                child: const Text(
+                                                                  'Eliminar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             );
                                           },
-                                        );
-                                      },
+                                        )
+                                      ],
                                     )
                                     : pendingRequest
-                                    ? IconButton(
-                                      icon: Icon(
-                                        Icons.person_off_outlined,
-                                        color: Colors.white,
-                                        size: 35,
-                                      ),
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (ctx) {
-                                            return Center(
-                                              child: Material(
-                                                color: Colors.transparent,
-                                                child: Container(
-                                                  width: 300,
-                                                  padding: const EdgeInsets.all(20),
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF433865),
-                                                    borderRadius: BorderRadius.circular(
-                                                      16,
-                                                    ),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      const Text(
-                                                        '¿Estás seguro que deseas eliminar la solicitud?',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign: TextAlign.center,
+                                    ? Row(
+                                      children: [
+                                        if (!isBlocked)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.person_off_outlined,
+                                            color: Colors.white,
+                                            size: 35,
+                                          ),
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return Center(
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      width: 300,
+                                                      padding: const EdgeInsets.all(
+                                                        20,
                                                       ),
-                                                      const SizedBox(height: 20),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xFF433865),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              16,
+                                                            ),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         children: [
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(ctx).pop();
-                                                            },
-                                                            child: const Text(
-                                                              'Cancelar',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                              ),
+                                                          const Text(
+                                                            '¿Estás seguro que deseas eliminar la solicitud?',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Colors.white,
                                                             ),
+                                                            textAlign:
+                                                                TextAlign.center,
                                                           ),
-                                                          ElevatedButton(
-                                                            onPressed: () async {
-                                                              if (await profileController
-                                                                  .cancelFriendRequest(
-                                                                widget.dreamUser?.id ?? "",
-                                                              )) {
-                                                                ScaffoldMessenger.of(
-                                                                  context,
-                                                                ).showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                      'Se ha eliminado la solicitud',
-                                                                    ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    ctx,
+                                                                  ).pop();
+                                                                },
+                                                                child: const Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
                                                                   ),
-                                                                );
-                                                                initialize();
-                                                              } else {
-                                                                ScaffoldMessenger.of(
-                                                                  context,
-                                                                ).showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                      'Ha habido un error al eliminar la solicitud',
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                              Navigator.of(context).pop();
-                                                            },
-                                                            style:
-                                                            ElevatedButton.styleFrom(
-                                                              backgroundColor:
-                                                              Colors.red,
-                                                            ),
-                                                            child: const Text(
-                                                              'Eliminar',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
+                                                                ),
                                                               ),
-                                                            ),
+                                                              ElevatedButton(
+                                                                onPressed: () async {
+                                                                  if (await profileController
+                                                                      .cancelFriendRequest(
+                                                                        widget
+                                                                                .dreamUser
+                                                                                ?.id ??
+                                                                            "",
+                                                                      )) {
+                                                                    ScaffoldMessenger.of(
+                                                                      context,
+                                                                    ).showSnackBar(
+                                                                      SnackBar(
+                                                                        content: Text(
+                                                                          'Se ha eliminado la solicitud',
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                    initialize();
+                                                                  } else {
+                                                                    ScaffoldMessenger.of(
+                                                                      context,
+                                                                    ).showSnackBar(
+                                                                      SnackBar(
+                                                                        content: Text(
+                                                                          'Ha habido un error al eliminar la solicitud',
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop();
+                                                                },
+                                                                style:
+                                                                    ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                    ),
+                                                                child: const Text(
+                                                                  'Eliminar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             );
                                           },
-                                        );
-                                      },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.block, color: Colors.white),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return Center(
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      width: 300,
+                                                      padding:
+                                                      const EdgeInsets.all(
+                                                        20,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(
+                                                          0xFF433865,
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                          16,
+                                                        ),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            !isBlocked
+                                                                ? '¿Estás seguro que deseas bloquear a ${widget.dreamUser?.nickname}?'
+                                                                : '¿Estás seguro que deseas desbloquear a ${widget.dreamUser?.nickname}?',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                              Colors.white,
+                                                            ),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                            children: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    ctx,
+                                                                  ).pop();
+                                                                },
+                                                                child: const Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                    Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed: () async {
+                                                                  final userId = widget.dreamUser!.id;
+                                                                  if (!isBlocked) {
+                                                                    bool resultado = await profileController.bloqUser(userId);
+
+                                                                    if (resultado) {
+                                                                      isBlocked = true;
+                                                                      pendingRequest = false;
+                                                                      isFriend = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario bloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar bloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  } else {
+                                                                    bool resultado = await profileController.desbloqUser(userId??"");
+
+                                                                    if (resultado) {
+                                                                      isBlocked = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario desbloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar desbloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                  setState(() {});
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor:
+                                                                  Colors
+                                                                      .red,
+                                                                ),
+                                                                child: const Text(
+                                                                  'Eliminar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                    Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        )
+                                      ],
                                     )
-                                    : IconButton(
-                                      icon: Icon(
-                                        FontAwesomeIcons.userPlus,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () async {
-                                        if (await profileController
-                                            .sendFriendRequest(
-                                              widget.dreamUser?.id ?? "",
-                                            )) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Se ha enviado la solicitud',
-                                              ),
-                                            ),
-                                          );
-                                          initialize();
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Ha habido un error al enviar la solicitud',
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
+                                    : Row(
+                                      children: [
+                                        if (!isBlocked)
+                                        IconButton(
+                                          icon: Icon(
+                                            FontAwesomeIcons.userPlus,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () async {
+                                            if (await profileController
+                                                .sendFriendRequest(
+                                                  widget.dreamUser?.id ?? "",
+                                                )) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Se ha enviado la solicitud',
+                                                  ),
+                                                ),
+                                              );
+                                              initialize();
+                                            } else {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Ha habido un error al enviar la solicitud',
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.block, color: Colors.white),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return Center(
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      width: 300,
+                                                      padding:
+                                                      const EdgeInsets.all(
+                                                        20,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(
+                                                          0xFF433865,
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                          16,
+                                                        ),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            !isBlocked
+                                                                ? '¿Estás seguro que deseas bloquear a ${widget.dreamUser?.nickname}?'
+                                                                : '¿Estás seguro que deseas desbloquear a ${widget.dreamUser?.nickname}?',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                              Colors.white,
+                                                            ),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                            children: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    ctx,
+                                                                  ).pop();
+                                                                },
+                                                                child: const Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                    Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed: () async {
+                                                                  final userId = widget.dreamUser!.id;
+                                                                  if (!isBlocked) {
+                                                                    bool resultado = await profileController.bloqUser(userId);
+
+                                                                    if (resultado) {
+                                                                      isBlocked = true;
+                                                                      pendingRequest = false;
+                                                                      isFriend = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario bloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar bloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  } else {
+                                                                    bool resultado = await profileController.desbloqUser(userId??"");
+
+                                                                    if (resultado) {
+                                                                      isBlocked = false;
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Usuario desbloqueado con exito."),
+                                                                        ),
+                                                                      );
+                                                                      Navigator.of(
+                                                                        ctx,
+                                                                      ).pop();
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                        context,
+                                                                      ).showSnackBar(
+                                                                        SnackBar(
+                                                                          content: Text("Ha habido un error al intentar desbloquear al usuario."),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                  setState(() {});
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor:
+                                                                  Colors
+                                                                      .red,
+                                                                ),
+                                                                child: const Text(
+                                                                  'Eliminar',
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                    Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        )
+                                      ],
                                     ),
                               ],
                             ),
@@ -397,7 +889,8 @@ class _ProfileViewState extends State<ProfileView> {
                               )
                             else
                               UserProfilePicture(
-                                url: profileController.getUser()?.profilePicture,
+                                url:
+                                    profileController.getUser()?.profilePicture,
                               ),
                             SizedBox(width: 16),
                             Text(

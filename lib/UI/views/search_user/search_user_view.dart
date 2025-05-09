@@ -138,42 +138,64 @@ class _SearchUserViewState extends State<SearchUserView> {
                                   ),
                                 )
                                 : ListView(
-                              children: [
-                                for (int i = 0; i < dreamUserList.length; i++)
-                                  if (dreamUserList[i].id != dreamUser?.id) ...[
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ProfileView(
-                                              dreamUser: dreamUserList[i],
+                                  children: [
+                                    for (int i = 0; i < dreamUserList.length; i++)
+                                      if (dreamUser?.blocked != null)
+                                        if (() {
+                                          final currentUser = dreamUser!;
+                                          final isSameUser = dreamUserList[i].id == currentUser.id;
+                                          final isBlocked = currentUser.blocked!.contains(dreamUserList[i].id);
+                                          final yourBlocked = dreamUserList[i].blocked?.contains(currentUser.id);
+                                          return !(isSameUser || isBlocked || yourBlocked!);
+                                        }()) ...[
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (context) => ProfileView(
+                                                        dreamUser:
+                                                            dreamUserList[i],
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                  ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 12,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF3E2D66),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.25),
+                                                    blurRadius: 8,
+                                                    offset: const Offset(0, 4),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: UserCard(
+                                                user: dreamUserList[i],
+                                                showButtons: false,
+                                                hasBloq: false,
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF3E2D66),
-                                          borderRadius: BorderRadius.circular(16),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.25),
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 4),
-                                            ),
-                                          ],
-                                        ),
-                                        child: UserCard(user: dreamUserList[i], showButtons: false),
-                                      ),
-                                    ),
-                                    if (i < dreamUserList.length - 1)
-                                      const SizedBox(height: 16),
-                                  ]
-                              ],
-                            ),
+                                          if (i < dreamUserList.length - 1)
+                                            const SizedBox(height: 16),
+                                        ],
+                                  ],
+                                ),
                             if (loading)
                               Container(
                                 width: double.infinity,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:velaris/UI/views/view_friends/view_friends_controller.dart';
 import 'package:velaris/model/entity/dream_user.dart';
-
-import '../../../model/entity/dream_user.dart';
 import '../../widgets/navbar.dart';
 import '../../widgets/user_card.dart';
 import '../profile/profile_view.dart';
@@ -17,11 +15,14 @@ class ViewFriendsView extends StatefulWidget {
 class _ViewFriendsViewState extends State<ViewFriendsView> {
   ViewFriendsController viewFriendsController = ViewFriendsController();
   bool showFriends = true;
+  int listaUsers = 1;
   bool requestPending = false;
+  bool hasBloq = false;
   DreamUser? user;
   List<DreamUser>? listaAmigos;
   List<DreamUser>? listaSender;
   List<DreamUser>? listaReceive;
+  List<DreamUser>? listaBloqueados;
 
   @override
   void initState() {
@@ -32,10 +33,15 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
   Future<void> initialize() async {
     await viewFriendsController.initialize();
     user = viewFriendsController.getUser();
-    if (user?.friends?.isEmpty??true) {
+    if (user?.friends?.isEmpty ?? true) {
       listaAmigos = [];
     } else {
       listaAmigos = await viewFriendsController.getFriends(user?.friends ?? []);
+    }
+    if (user?.blocked?.isEmpty ?? true) {
+      listaBloqueados = [];
+    } else {
+      listaBloqueados = await viewFriendsController.getUsersBlocked(user?.blocked ?? []);
     }
     listaSender = await viewFriendsController.getRequestsSender();
     listaReceive = await viewFriendsController.getRequestsReceive();
@@ -90,6 +96,8 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                               onTap: () async {
                                 showFriends = true;
                                 requestPending = false;
+                                hasBloq = false;
+                                listaUsers = 1;
                                 setState(() {});
                               },
                               child: Container(
@@ -98,7 +106,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                 ),
                                 decoration: BoxDecoration(
                                   color:
-                                      showFriends
+                                      listaUsers == 1
                                           ? const Color(0xFF5E4AA5)
                                           : const Color(0xFF3E2D66),
                                   borderRadius: BorderRadius.circular(12),
@@ -121,6 +129,8 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                               onTap: () async {
                                 showFriends = false;
                                 requestPending = true;
+                                hasBloq = false;
+                                listaUsers = 2;
                                 setState(() {});
                               },
                               child: Container(
@@ -129,7 +139,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                 ),
                                 decoration: BoxDecoration(
                                   color:
-                                      !showFriends
+                                      listaUsers == 2
                                           ? const Color(0xFF5E4AA5)
                                           : const Color(0xFF3E2D66),
                                   borderRadius: BorderRadius.circular(12),
@@ -146,25 +156,58 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                               ),
                             ),
                           ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                showFriends = false;
+                                requestPending = false;
+                                hasBloq = true;
+                                listaUsers = 3;
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      listaUsers == 3
+                                          ? const Color(0xFF5E4AA5)
+                                          : const Color(0xFF3E2D66),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'Bloqueados',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
-                      showFriends
+                      listaUsers == 1
                           ? Expanded(
                             child: ListView.separated(
                               itemCount: listaAmigos?.length ?? 0,
                               separatorBuilder:
                                   (_, __) => const SizedBox(height: 16),
                               itemBuilder: (context, index) {
-
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder:
-                                            (context) =>
-                                                ProfileView(dreamUser: listaAmigos![index]),
+                                            (context) => ProfileView(
+                                              dreamUser: listaAmigos![index],
+                                            ),
                                       ),
                                     );
                                   },
@@ -190,26 +233,135 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                     child: UserCard(
                                       user: listaAmigos![index],
                                       showButtons: requestPending,
+                                      hasBloq: hasBloq,
                                     ),
                                   ),
                                 );
                               },
                             ),
                           )
-                          : Expanded(
+                          : listaUsers == 2
+                          ? Expanded(
                             child: Column(
                               children: [
-                                for (int i = 0; i < (listaReceive?.length??0); i++)
+                                for (int i = 0; i < (listaReceive?.length ?? 0); i++)
                                   GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) =>
-                                                ProfileView(dreamUser: listaReceive![i]),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => ProfileView(
+                                                dreamUser: listaReceive![i],
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 16,
                                       ),
-                                    );
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF3E2D66),
+                                        borderRadius: BorderRadius.circular(16),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(
+                                              0.25,
+                                            ),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: UserCard(
+                                        user: listaReceive![i],
+                                        showButtons: requestPending,
+                                        hasBloq: hasBloq,
+                                        onAccept: () async {
+                                          if (await viewFriendsController
+                                              .acceptRequest(
+                                                listaReceive?[i].id ?? "",
+                                              )) {
+                                            initialize();
+                                          } else {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Ha habido un problema a la hora de aceptar la solicitud',
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        onCancel: () async {
+                                          await viewFriendsController
+                                              .declineRequest(
+                                                listaReceive?[i].id ?? "",
+                                              );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                for (int i = 0; i < (listaSender?.length ?? 0); i++)
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => ProfileView(
+                                                dreamUser: listaSender![i],
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF3E2D66),
+                                        borderRadius: BorderRadius.circular(16),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(
+                                              0.25,
+                                            ),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: UserCard(
+                                        user: listaSender![i],
+                                        showButtons: false,
+                                        hasBloq: hasBloq,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          )
+                          : Expanded(
+                            child: ListView.separated(
+                              itemCount: listaBloqueados?.length ?? 0,
+                              separatorBuilder:
+                                  (_, __) => const SizedBox(height: 16),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    //No hace nada al estar bloqueado.
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
@@ -231,67 +383,19 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       ],
                                     ),
                                     child: UserCard(
-                                      user: listaReceive![i],
+                                      user: listaBloqueados![index],
                                       showButtons: requestPending,
-                                      onAccept: () async {
-                                        if (await viewFriendsController.acceptRequest(listaReceive?[i].id??"")) {
-                                          initialize();
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Ha habido un problema a la hora de aceptar la solicitud',
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      onCancel: () async {
-                                        await viewFriendsController.declineRequest(listaReceive?[i].id??"");
+                                      hasBloq: hasBloq,
+                                      onDesbloq: () async {
+                                        if (await viewFriendsController
+                                            .desbloqUser(
+                                          listaBloqueados?[index].id ?? "",
+                                        )) initialize();
                                       },
                                     ),
                                   ),
-                                ),
-                                for (int i = 0; i < (listaSender?.length??0); i++)
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) =>
-                                              ProfileView(dreamUser: listaSender![i]),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF3E2D66),
-                                        borderRadius: BorderRadius.circular(16),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.25),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: UserCard(
-                                        user: listaSender![i],
-                                        showButtons: false,
-                                      ),
-                                    ),
-                                  ),
-                              ],
+                                );
+                              },
                             ),
                           ),
                     ],

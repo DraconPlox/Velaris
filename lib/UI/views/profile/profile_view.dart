@@ -391,11 +391,14 @@ class _ProfileViewState extends State<ProfileView> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            UserProfilePicture(
-                              url:
-                                  widget.dreamUser?.profilePicture ??
-                                  profileController.getUser()?.profilePicture,
-                            ),
+                            if (widget.dreamUser != null)
+                              UserProfilePicture(
+                                url: widget.dreamUser!.profilePicture,
+                              )
+                            else
+                              UserProfilePicture(
+                                url: profileController.getUser()?.profilePicture,
+                              ),
                             SizedBox(width: 16),
                             Text(
                               nickname ?? "",

@@ -18,6 +18,18 @@ class _SearchUserViewState extends State<SearchUserView> {
   List<DreamUser> dreamUserList = [];
   String searchQuery = "";
   bool loading = false;
+  DreamUser? dreamUser;
+
+  @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  void initialize() async {
+    await searchUserController.initialize();
+    dreamUser = searchUserController.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,53 +137,43 @@ class _SearchUserViewState extends State<SearchUserView> {
                                     style: TextStyle(color: Colors.white70),
                                   ),
                                 )
-                                : ListView.separated(
-                                  itemCount: dreamUserList.length,
-                                  separatorBuilder:
-                                      (_, __) => const SizedBox(height: 16),
-                                  itemBuilder: (context, index) {
-                                    DreamUser user = dreamUserList[index];
-
-                                    return GestureDetector(
+                                : ListView(
+                              children: [
+                                for (int i = 0; i < dreamUserList.length; i++)
+                                  if (dreamUserList[i].id != dreamUser?.id) ...[
+                                    GestureDetector(
                                       onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder:
-                                                (context) => ProfileView(
-                                                  dreamUser: user,
-                                                ),
+                                            builder: (context) => ProfileView(
+                                              dreamUser: dreamUserList[i],
+                                            ),
                                           ),
                                         );
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 12,
-                                        ),
+                                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF3E2D66),
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
+                                          borderRadius: BorderRadius.circular(16),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.black.withOpacity(
-                                                0.25,
-                                              ),
+                                              color: Colors.black.withOpacity(0.25),
                                               blurRadius: 8,
                                               offset: const Offset(0, 4),
                                             ),
                                           ],
                                         ),
-                                        child: UserCard(user: user, showButtons: false,),
+                                        child: UserCard(user: dreamUserList[i], showButtons: false),
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                    if (i < dreamUserList.length - 1)
+                                      const SizedBox(height: 16),
+                                  ]
+                              ],
+                            ),
                             if (loading)
                               Container(
                                 width: double.infinity,

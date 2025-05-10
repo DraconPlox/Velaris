@@ -284,9 +284,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         hasBloq: hasBloq,
                                         onAccept: () async {
                                           if (await viewFriendsController
-                                              .acceptRequest(
-                                                listaReceive?[i].id ?? "",
-                                              )) {
+                                              .acceptRequest(listaReceive?[i].id ?? "", user?.nickname ?? "")) {
                                             initialize();
                                           } else {
                                             ScaffoldMessenger.of(

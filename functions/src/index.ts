@@ -3,19 +3,17 @@ import * as functions from "firebase-functions";
 
 admin.initializeApp();
 
-// Importa HttpsError desde firebase-functions
-const { HttpsError } = functions.https;
+export const sendToTopic = functions.https.onRequest(async (req, res) => {
+  if (req.method !== 'POST') {
+    res.status(405).send('Method Not Allowed');
+    return;
+  }
 
-exports.sendToTopic = functions.https.onCall(async (data: any, context) => {
-  console.log("Datos recibidos:", data);
-
-  const { topic, title, body } = data;
+  const { topic, title, body } = req.body;
 
   if (!topic || !title || !body) {
-    throw new functions.https.HttpsError(
-      'invalid-argument',
-      'Faltan parametros: topic, title o body'
-    );
+    res.status(400).send('Missing fields');
+    return;
   }
 
   const message = {
@@ -25,9 +23,9 @@ exports.sendToTopic = functions.https.onCall(async (data: any, context) => {
 
   try {
     const response = await admin.messaging().send(message);
-    return { success: true, messageId: response };
+    res.status(200).json({ success: true, messageId: response });
   } catch (error) {
-    console.error("Error al enviar mensaje:", error);
-    throw new functions.https.HttpsError('internal', 'Error al enviar mensaje');
+    console.error('Error al enviar mensaje:', error);
+    res.status(500).send('Error al enviar mensaje');
   }
 });

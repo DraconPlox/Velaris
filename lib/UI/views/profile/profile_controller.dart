@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:velaris/model/entity/dream_user.dart';
 import 'package:velaris/service/firestore_service.dart';
 
@@ -93,7 +96,7 @@ class ProfileController {
 
   Future<bool> sendFriendRequest(String id) async {
     if (await firestoreService.createFriendRequest(id)) {
-      await callSendNotificationFunction(id);
+      await sendToTopicHttp(id);
       return true;
     }
 
@@ -124,38 +127,25 @@ class ProfileController {
     return await firestoreService.getIfFriend(id);
   }
 
-  Future<void> callSendNotificationFunction(String id) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print('⚠️ No hay usuario autenticado. No puedo llamar la función.');
-      return;
-    }
-
-    if (id == null || id.isEmpty) {
-      print('⚠️ ID inválido: "$id"');
-      return;
-    }
-
-    /*final data = {
-      'title': 'Has recibido una solicitud de amistad',
-      'body': 'Ven a comprobarla',
-      'topic': 'user_$id',
-    };*/
-
-    print('ID de destino: "$id"');
-    //print('Enviando a Firebase: $data');
-
-    try {
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
-          'sendToTopic');
-      await callable.call({
+  Future<void> sendToTopicHttp(String id) async {
+    final url = Uri.parse(
+        'https://us-central1-velaris-5a288.cloudfunctions.net/sendToTopic'
+    );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'topic': 'user_$id',
         'title': 'Has recibido una solicitud de amistad',
         'body': 'Ven a comprobarla',
-        'topic': 'user_$id',
-      });
-    } catch (e, stack) {
-      print('🔥 Error al llamar funcion: $e');
-      print('📌 Stacktrace: $stack');
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      print('Enviado ok, messageId=${data['messageId']}');
+    } else {
+      print('Error HTTP ${response.statusCode}: ${response.body}');
     }
   }
 }

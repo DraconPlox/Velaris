@@ -22,7 +22,7 @@ class CalendarDreamsController {
   }
 
   void initialize() async {
-    sharedPreferencesService.init();
+    await sharedPreferencesService.init();
     if (sharedPreferencesService.hourActivation??true) {
       notificationService.scheduleDailyNotification(await getHour());
     }

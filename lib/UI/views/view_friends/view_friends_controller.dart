@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:velaris/model/entity/dream.dart';
 import 'package:velaris/model/entity/friend_request.dart';
 
@@ -49,7 +52,8 @@ class ViewFriendsController {
     return await firestoreService.getDreamUserBlocked(listaIds);
   }
 
-  Future<bool> acceptRequest(String id) async {
+  Future<bool> acceptRequest(String id, String nickname) async {
+    await sendToTopicHttp(id, nickname);
     return await firestoreService.acceptFriendRequest(id);
   }
 
@@ -59,5 +63,27 @@ class ViewFriendsController {
 
   Future<bool> desbloqUser(String id) async {
     return await firestoreService.desbloqUser(id);
+  }
+
+  Future<void> sendToTopicHttp(String id, String nickname) async {
+    final url = Uri.parse(
+        'https://us-central1-velaris-5a288.cloudfunctions.net/sendToTopic'
+    );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'topic': 'user_$id',
+        'title': '${nickname} ha aceptado la solicitud de amistad.',
+        'body': ' ',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      print('Enviado ok, messageId=${data['messageId']}');
+    } else {
+      print('Error HTTP ${response.statusCode}: ${response.body}');
+    }
   }
 }

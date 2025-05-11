@@ -291,24 +291,26 @@ class _EditProfileViewState extends State<EditProfileView> {
                             width: double.infinity,
                             child: GestureDetector(
                               onTap: () async {
-                                bool result = await editProfileController.updateUser(
-                                  pickedImage: pickedImage,
-                                  nickname: nameController.text,
-                                  description: descController.text,
-                                  selectedDate: selectedDate,
-                                  gender: selectedGender,
-                                );
+                                if (nameController.text != "" && descController.text != "") {
+                                  bool result = await editProfileController.updateUser(
+                                    pickedImage: pickedImage,
+                                    nickname: nameController.text,
+                                    description: descController.text,
+                                    selectedDate: selectedDate,
+                                    gender: selectedGender,
+                                  );
 
-                                if (result) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Datos actualizados exitosamente!'),
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Error al actualizar los datos')),
-                                  );
+                                  if (result) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Datos actualizados exitosamente!'),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Error al actualizar los datos')),
+                                    );
+                                  }
                                 }
                               },
                               child: Container(

@@ -47,6 +47,7 @@ class EditProfileController {
       await FirebaseFirestore.instance.collection('user').doc(user!.id).update(
         user!.copyWith(
           nickname: nickname,
+          search_nickname: nickname?.toLowerCase(),
           description: description,
           dob: selectedDate,
           gender: gender,

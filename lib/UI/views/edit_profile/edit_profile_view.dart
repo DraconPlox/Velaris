@@ -311,6 +311,10 @@ class _EditProfileViewState extends State<EditProfileView> {
                                       SnackBar(content: Text('Error al actualizar los datos')),
                                     );
                                   }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('El nombre o descripción no pueden estar vacios.')),
+                                  );
                                 }
                               },
                               child: Container(

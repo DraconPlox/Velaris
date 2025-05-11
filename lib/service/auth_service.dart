@@ -143,7 +143,8 @@ class AuthService {
               description: 'Esto es una descripción.',
               friends: [],
               profilePicture: user.photoURL,
-              search_nickname: user.displayName?.toLowerCase()
+              search_nickname: user.displayName?.toLowerCase(),
+              blocked: [],
           );
         }
 

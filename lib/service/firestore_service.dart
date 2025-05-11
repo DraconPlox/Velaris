@@ -130,9 +130,9 @@ class FirestoreService {
   }
 
   Future<List<DreamUser>> searchUsersByNickname(String query) async {
-    final lowerQuery = query.toLowerCase();
+    String lowerQuery = query.toLowerCase();
 
-    final snapshot = await _getUserCollection()
+    QuerySnapshot<Map<String, dynamic>> snapshot = await _getUserCollection()
         .where('search_nickname', isGreaterThanOrEqualTo: lowerQuery)
         .where('search_nickname', isLessThanOrEqualTo: lowerQuery + '\uf8ff')
         .get();
@@ -182,10 +182,17 @@ class FirestoreService {
   }
 
   Future<bool> getIfExistsPendingRequest(String receiveId) async {
-    final querySnapshot = await _getFriendRequestCollection()
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _getFriendRequestCollection()
         .where('senderId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .where('receiverId', isEqualTo: receiveId)
         .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      querySnapshot = await _getFriendRequestCollection()
+          .where('senderId', isEqualTo: receiveId)
+          .where('receiverId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+    }
 
     return querySnapshot.docs.isNotEmpty;
   }

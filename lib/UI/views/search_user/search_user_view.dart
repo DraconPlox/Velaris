@@ -142,11 +142,11 @@ class _SearchUserViewState extends State<SearchUserView> {
                                       for (int i = 0; i < dreamUserList.length; i++)
                                         if (dreamUser?.blocked != null)
                                           if (() {
-                                            final currentUser = dreamUser!;
-                                            final isSameUser = dreamUserList[i].id == currentUser.id;
-                                            final isBlocked = currentUser.blocked!.contains(dreamUserList[i].id);
-                                            final yourBlocked = dreamUserList[i].blocked?.contains(currentUser.id);
-                                            return !(isSameUser || isBlocked || yourBlocked!);
+                                            DreamUser currentUser = dreamUser!;
+                                            bool isSameUser = dreamUserList[i].id == currentUser.id;
+                                            bool? isBlocked = currentUser.blocked?.contains(dreamUserList[i].id);
+                                            bool? yourBlocked = dreamUserList[i].blocked?.contains(currentUser.id);
+                                            return !(isSameUser || (isBlocked??false) || (yourBlocked??false));
                                           }()) ...[
                                             GestureDetector(
                                               onTap: () {

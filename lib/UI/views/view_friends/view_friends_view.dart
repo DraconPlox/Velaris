@@ -41,7 +41,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
     if (user?.blocked?.isEmpty ?? true) {
       listaBloqueados = [];
     } else {
-      listaBloqueados = await viewFriendsController.getUsersBlocked(user?.blocked ?? []);
+      listaBloqueados = await viewFriendsController.getUsersBlocked(
+        user?.blocked ?? [],
+      );
     }
     listaSender = await viewFriendsController.getRequestsSender();
     listaReceive = await viewFriendsController.getRequestsReceive();
@@ -224,7 +226,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.25),
+                                            color: Colors.black.withOpacity(
+                                              0.25,
+                                            ),
                                             blurRadius: 8,
                                             offset: const Offset(0, 4),
                                           ),
@@ -244,7 +248,11 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                             ? Expanded(
                               child: Column(
                                 children: [
-                                  for (int i = 0; i < (listaReceive?.length ?? 0); i++)
+                                  for (
+                                    int i = 0;
+                                    i < (listaReceive?.length ?? 0);
+                                    i++
+                                  )
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -267,7 +275,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF3E2D66),
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: Colors.black.withOpacity(
@@ -284,7 +294,10 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                           hasBloq: hasBloq,
                                           onAccept: () async {
                                             if (await viewFriendsController
-                                                .acceptRequest(listaReceive?[i].id ?? "", user?.nickname ?? "")) {
+                                                .acceptRequest(
+                                                  listaReceive?[i].id ?? "",
+                                                  user?.nickname ?? "",
+                                                )) {
                                               initialize();
                                             } else {
                                               ScaffoldMessenger.of(
@@ -303,11 +316,16 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                                 .declineRequest(
                                                   listaReceive?[i].id ?? "",
                                                 );
+                                            initialize();
                                           },
                                         ),
                                       ),
                                     ),
-                                  for (int i = 0; i < (listaSender?.length ?? 0); i++)
+                                  for (
+                                    int i = 0;
+                                    i < (listaSender?.length ?? 0);
+                                    i++
+                                  )
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -330,7 +348,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF3E2D66),
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: Colors.black.withOpacity(
@@ -374,7 +394,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.25),
+                                            color: Colors.black.withOpacity(
+                                              0.25,
+                                            ),
                                             blurRadius: 8,
                                             offset: const Offset(0, 4),
                                           ),
@@ -387,8 +409,10 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         onDesbloq: () async {
                                           if (await viewFriendsController
                                               .desbloqUser(
-                                            listaBloqueados?[index].id ?? "",
-                                          )) initialize();
+                                                listaBloqueados?[index].id ??
+                                                    "",
+                                              ))
+                                            initialize();
                                         },
                                       ),
                                     ),

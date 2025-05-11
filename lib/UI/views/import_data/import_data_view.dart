@@ -19,7 +19,7 @@ class _ImportDataViewState extends State<ImportDataView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3E3657),
+      backgroundColor: const Color(0xFF2D2643),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,

@@ -18,7 +18,7 @@ class _EditEmailViewState extends State<EditEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -32,174 +32,175 @@ class _EditEmailViewState extends State<EditEmailView> {
       ),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Introduce tu correo actual, tu contraseña y el nuevo correo electrónico.',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                        const SizedBox(height: 30),
-                        const Text(
-                          'Contraseña:',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: password,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: 'Contraseña actual',
-                            filled: true,
-                            fillColor: const Color(0xFF1D1033),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            hintStyle: const TextStyle(color: Colors.white38),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Introduce tu correo actual, tu contraseña y el nuevo correo electrónico.',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'Correo actual:',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: currentEmail,
-                          decoration: InputDecoration(
-                            hintText: 'Correo actual',
-                            filled: true,
-                            fillColor: const Color(0xFF1D1033),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            hintStyle: const TextStyle(color: Colors.white38),
+                          const SizedBox(height: 30),
+                          const Text(
+                            'Contraseña:',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          style: const TextStyle(color: Colors.white),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'Nuevo correo:',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: newEmail,
-                          decoration: InputDecoration(
-                            hintText: 'Nuevo correo electrónico',
-                            filled: true,
-                            fillColor: const Color(0xFF1D1033),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            hintStyle: const TextStyle(color: Colors.white38),
-                          ),
-                          style: const TextStyle(color: Colors.white),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFDA44BB), Color(0xFF8921AA)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: password,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Contraseña actual',
+                              filled: true,
+                              fillColor: const Color(0xFF1D1033),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
                               ),
-                              borderRadius: BorderRadius.circular(25),
+                              hintStyle: const TextStyle(color: Colors.white38),
                             ),
-                            child: TextButton(
-                              onPressed:
-                                  _isLoading
-                                      ? null
-                                      : () async {
-                                        setState(() => _isLoading = true);
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Correo actual:',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: currentEmail,
+                            decoration: InputDecoration(
+                              hintText: 'Correo actual',
+                              filled: true,
+                              fillColor: const Color(0xFF1D1033),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintStyle: const TextStyle(color: Colors.white38),
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Nuevo correo:',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: newEmail,
+                            decoration: InputDecoration(
+                              hintText: 'Nuevo correo electrónico',
+                              filled: true,
+                              fillColor: const Color(0xFF1D1033),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintStyle: const TextStyle(color: Colors.white38),
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 30),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFFDA44BB), Color(0xFF8921AA)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: TextButton(
+                                onPressed:
+                                    _isLoading
+                                        ? null
+                                        : () async {
+                                          setState(() => _isLoading = true);
 
-                                        final (
-                                          success,
-                                          message,
-                                        ) = await editEmailController
-                                            .changeEmail(
-                                              currentEmail:
-                                                  currentEmail.text.trim(),
-                                              password: password.text.trim(),
-                                              newEmail: newEmail.text.trim(),
-                                            );
+                                          final (
+                                            success,
+                                            message,
+                                          ) = await editEmailController
+                                              .changeEmail(
+                                                currentEmail:
+                                                    currentEmail.text.trim(),
+                                                password: password.text.trim(),
+                                                newEmail: newEmail.text.trim(),
+                                              );
 
-                                        if (!mounted) return;
+                                          if (!mounted) return;
 
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(message),
-                                            backgroundColor:
-                                                success
-                                                    ? Colors.green
-                                                    : Colors.redAccent,
-                                          ),
-                                        );
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(message),
+                                              backgroundColor:
+                                                  success
+                                                      ? Colors.green
+                                                      : Colors.redAccent,
+                                            ),
+                                          );
 
-                                        setState(() => _isLoading = false);
+                                          setState(() => _isLoading = false);
 
-                                        if (success) {
-                                          currentEmail.clear();
-                                          password.clear();
-                                          newEmail.clear();
-                                        }
-                                      },
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
+                                          if (success) {
+                                            currentEmail.clear();
+                                            password.clear();
+                                            newEmail.clear();
+                                          }
+                                        },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Cambiar correo',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'Cambiar correo',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

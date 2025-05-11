@@ -32,7 +32,7 @@ class _DreamNotificationSettingViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -46,131 +46,132 @@ class _DreamNotificationSettingViewState
       ),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text(
-                          'Habilitar notificaciones:',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text(
+                            'Habilitar notificaciones:',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          value: notificationsEnabled,
+                          activeColor: const Color(0xFFDB63FF),
+                          onChanged: (value) {
+                            setState(() {
+                              notificationsEnabled = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                        const Text(
+                          'Hora que saldrá la notificación:',
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
-                        value: notificationsEnabled,
-                        activeColor: const Color(0xFFDB63FF),
-                        onChanged: (value) {
-                          setState(() {
-                            notificationsEnabled = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      const Text(
-                        'Hora que saldrá la notificación:',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                      const SizedBox(height: 16),
-                      InkWell(
-                        onTap: () async {
-                          final TimeOfDay? picked = await showTimePicker(
-                            context: context,
-                            initialTime: selectedTime,
-                          );
-                          if (picked != null && picked != selectedTime) {
-                            setState(() {
-                              selectedTime = picked;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1D1033),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                        const SizedBox(height: 16),
+                        InkWell(
+                          onTap: () async {
+                            final TimeOfDay? picked = await showTimePicker(
+                              context: context,
+                              initialTime: selectedTime,
+                            );
+                            if (picked != null && picked != selectedTime) {
+                              setState(() {
+                                selectedTime = picked;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1D1033),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            dreamNotificationSettingController.setHour(selectedTime);
-                            dreamNotificationSettingController.setHourActivation(notificationsEnabled);
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(
-                              SnackBar(
-                                content: Text("Ajustes actualizados correctamente."),
+                        const Spacer(),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              dreamNotificationSettingController.setHour(selectedTime);
+                              dreamNotificationSettingController.setHourActivation(notificationsEnabled);
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text("Ajustes actualizados correctamente."),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
                             ),
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                          ),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFAE6CFF), Color(0xFF7F5BFE)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFFAE6CFF), Color(0xFF7F5BFE)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Guardar cambios',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Guardar cambios',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

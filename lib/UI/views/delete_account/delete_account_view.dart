@@ -11,7 +11,7 @@ class DeleteAccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF2D2643),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -25,90 +25,91 @@ class DeleteAccountView extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '¡Cuidado! ',
-                              style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '¡Cuidado! ',
+                                style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                'Lamentamos que desees irte. Si quieres borrar tu cuenta, se borrarán todos tus datos desde tus sueños hasta la cuenta en sí. Recomendamos hacer un backup antes por si deseas mantener tus sueños. ¿Deseas hacerlo de todas formas?',
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFB85CFF),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            TextSpan(
-                              text:
-                              'Lamentamos que desees irte. Si quieres borrar tu cuenta, se borrarán todos tus datos desde tus sueños hasta la cuenta en sí. Recomendamos hacer un backup antes por si deseas mantener tus sueños. ¿Deseas hacerlo de todas formas?',
-                              style: TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB85CFF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                            child: const Text(
+                              'Cancelar',
+                              style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
-                          child: const Text(
-                            'Cancelar',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await deleteAccountController.eliminarUsuario(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await deleteAccountController.eliminarUsuario(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              'Borrar datos',
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          child: const Text(
-                            'Borrar datos',
-                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

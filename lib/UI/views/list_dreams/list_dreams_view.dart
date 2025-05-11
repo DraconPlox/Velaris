@@ -71,7 +71,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
     Map<DateTime, List<Dream>> mapDreams = groupDreamsByDate(listaDreams);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -85,126 +85,124 @@ class _ListDreamsViewState extends State<ListDreamsView> {
       body: Stack(
         children: [
           // Imagen de fondo
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-
           // Contenido principal
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-
-              // Zona violeta con la lista scrolleable
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.only(
-                      top: 12,
-                      left: 16,
-                      right: 16,
-                    ),
-                    children: [
-                      // Botón calendario arriba sin fondo
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.calendar_today,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CalendarDreamsView(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
                       ),
-                      const SizedBox(height: 16),
+                    ),
+                    child: ListView(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 16,
+                        right: 16,
+                      ),
+                      children: [
+                        // Botón calendario arriba sin fondo
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.calendar_today,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CalendarDreamsView(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
 
-                      if (mapDreams.isNotEmpty) ...[
-                        // Aqui iran las tarjetas de sueños
-                        for (int i = 0; i < mapDreams.length; i++) ...[
+                        if (mapDreams.isNotEmpty) ...[
+                          // Aqui iran las tarjetas de sueños
+                          for (int i = 0; i < mapDreams.length; i++) ...[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8, top: 8),
+                              child: Center(
+                                child: Text(
+                                  DateFormat(
+                                    "d MMM, yyyy",
+                                    'es_ES',
+                                  ).format(mapDreams.keys.toList()[i]),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    height: 1.5,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            for (
+                              int j = 0;
+                              j < mapDreams.values.toList()[i].length;
+                              j++
+                            )
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 16,
+                                ),
+                                child: DreamCard(
+                                  id: mapDreams.values.toList()[i][j].id ?? "",
+                                  titulo:
+                                      mapDreams.values.toList()[i][j].title ?? "",
+                                  descripcion:
+                                      mapDreams.values
+                                          .toList()[i][j]
+                                          .description ??
+                                      "",
+                                  lucido:
+                                      mapDreams.values.toList()[i][j].lucid ??
+                                      false,
+                                ),
+                              ),
+                          ],
+                        ] else ...[
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 8, top: 8),
+                            padding: const EdgeInsets.all(16),
                             child: Center(
                               child: Text(
-                                DateFormat(
-                                  "d MMM, yyyy",
-                                  'es_ES',
-                                ).format(mapDreams.keys.toList()[i]),
+                                "Todavia no hay sueños apuntados, ¡prueba creando uno nuevo!",
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  height: 1.5,
-                                  letterSpacing: 1,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white70,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                          for (
-                            int j = 0;
-                            j < mapDreams.values.toList()[i].length;
-                            j++
-                          )
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                bottom: 16,
-                              ),
-                              child: DreamCard(
-                                id: mapDreams.values.toList()[i][j].id ?? "",
-                                titulo:
-                                    mapDreams.values.toList()[i][j].title ?? "",
-                                descripcion:
-                                    mapDreams.values
-                                        .toList()[i][j]
-                                        .description ??
-                                    "",
-                                lucido:
-                                    mapDreams.values.toList()[i][j].lucid ??
-                                    false,
-                              ),
-                            ),
                         ],
-                      ] else ...[
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Center(
-                            child: Text(
-                              "Todavia no hay sueños apuntados, ¡prueba creando uno nuevo!",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white70,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
                       ],
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           if (loading)
             Container(

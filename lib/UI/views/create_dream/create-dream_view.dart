@@ -203,7 +203,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF2D2643),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -229,306 +229,306 @@ class _CreateDreamViewState extends State<CreateDreamView> {
       body: Stack(
         children: [
           // Imagen de fondo
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
-              'assets/images/background.png', // Cambia por tu ruta
+              'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-
           // Contenido principal
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              // Espacio para AppBar
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                // Espacio para AppBar
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: selectedDate,
-                                firstDate: DateTime(1980),
-                                lastDate: DateTime.now(),
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                builder: (context, child) {
-                                  return Theme(
-                                    data: ThemeData.dark().copyWith(
-                                      colorScheme: const ColorScheme.dark(
-                                        primary: Colors.deepPurple,
-                                        onPrimary: Colors.white,
-                                        surface: Color(0xFF2D2643),
-                                        onSurface: Colors.white,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                DateTime? picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: selectedDate,
+                                  firstDate: DateTime(1980),
+                                  lastDate: DateTime.now(),
+                                  initialEntryMode:
+                                      DatePickerEntryMode.calendarOnly,
+                                  builder: (context, child) {
+                                    return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                        colorScheme: const ColorScheme.dark(
+                                          primary: Colors.deepPurple,
+                                          onPrimary: Colors.white,
+                                          surface: Color(0xFF2D2643),
+                                          onSurface: Colors.white,
+                                        ),
+                                        dialogBackgroundColor: const Color(0xFF1D1033),
                                       ),
-                                      dialogBackgroundColor: const Color(0xFF1D1033),
-                                    ),
-                                    child: child!,
-                                  );
-                                },
-                              );
-                              if (picked != null && picked != selectedDate) {
-                                setState(() {
-                                  selectedDate = picked;
-                                });
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.white70,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  _isToday(selectedDate)
-                                      ? 'Hoy'
-                                      : '${selectedDate.day.toString().padLeft(2, '0')} '
-                                      '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          TextField(
-                            controller: titulo,
-                            maxLength: 100,
-                            focusNode: _focusNodeTitulo,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              counterStyle: TextStyle(color: Colors.white38),
-                              filled: true,
-                              fillColor: Color(0xFF2A1E4C),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 14,
+                                      child: child!,
+                                    );
+                                  },
+                                );
+                                if (picked != null && picked != selectedDate) {
+                                  setState(() {
+                                    selectedDate = picked;
+                                  });
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.white70,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    _isToday(selectedDate)
+                                        ? 'Hoy'
+                                        : '${selectedDate.day.toString().padLeft(2, '0')} '
+                                        '${_monthAbbr(selectedDate.month)}, ${selectedDate.year}',
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                ],
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
+                            ),
+                            SizedBox(height: 20),
+                            TextField(
+                              controller: titulo,
+                              maxLength: 100,
+                              focusNode: _focusNodeTitulo,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                counterStyle: TextStyle(color: Colors.white38),
+                                filled: true,
+                                fillColor: Color(0xFF2A1E4C),
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 14,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: 'Título',
+                                hintStyle: TextStyle(color: Colors.white38),
                               ),
-                              hintText: 'Título',
-                              hintStyle: TextStyle(color: Colors.white38),
+                              buildCounter:
+                                  (
+                                    BuildContext context, {
+                                    required int currentLength,
+                                    required bool isFocused,
+                                    required int? maxLength,
+                                  }) => null,
                             ),
-                            buildCounter:
-                                (
-                                  BuildContext context, {
-                                  required int currentLength,
-                                  required bool isFocused,
-                                  required int? maxLength,
-                                }) => null,
-                          ),
-                          SizedBox(height: 10),
-                          Divider(
-                            color: Colors.white30,
-                            thickness: 1,
-                            indent: 0,
-                            endIndent: 0,
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF2A1E4C),
-                              borderRadius: BorderRadius.circular(8),
+                            SizedBox(height: 10),
+                            Divider(
+                              color: Colors.white30,
+                              thickness: 1,
+                              indent: 0,
+                              endIndent: 0,
                             ),
-                            child: Container(
-                              height: 180,
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: Color(0xFF2A1E4C),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Scrollbar(
-                                thumbVisibility: true,
-                                child: TextField(
-                                  controller: descripcion,
-                                  maxLines: null,
-                                  expands: true,
-                                  focusNode: _focusNodeDescripcion,
-                                  style: TextStyle(color: Colors.white70),
-                                  keyboardType: TextInputType.multiline,
-                                  scrollPhysics: BouncingScrollPhysics(),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Descripción',
-                                    hintStyle: TextStyle(color: Colors.white38),
+                              child: Container(
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF2A1E4C),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                child: Scrollbar(
+                                  thumbVisibility: true,
+                                  child: TextField(
+                                    controller: descripcion,
+                                    maxLines: null,
+                                    expands: true,
+                                    focusNode: _focusNodeDescripcion,
+                                    style: TextStyle(color: Colors.white70),
+                                    keyboardType: TextInputType.multiline,
+                                    scrollPhysics: BouncingScrollPhysics(),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Descripción',
+                                      hintStyle: TextStyle(color: Colors.white38),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Divider(
-                            color: Colors.white30,
-                            thickness: 1,
-                            indent: 0,
-                            endIndent: 0,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Horario de sueño:',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () => _mostrarSelectorHoraInicio(),
-                                child: buildTimeBox(horaInicio),
-                              ),
-                              Text(
-                                '-',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => _mostrarSelectorHoraFinal(),
-                                child: buildTimeBox(horaFinal),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Caracteristica del sueño:',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: buildIconBox(
-                                  FontAwesomeIcons.rotateLeft,
-                                  'Recurrente',
-                                  'Recurrente',
-                                ),
-                              ),
-                              Expanded(
-                                child: buildIconBox(
-                                  FontAwesomeIcons.ghost,
-                                  'Pesadilla',
-                                  'Pesadilla',
-                                ),
-                              ),
-                              Expanded(
-                                child: buildIconBox(
-                                  Icons.accessibility,
-                                  'Parálisis del sueño',
-                                  'Parálisis del sueño',
-                                ),
-                              ),
-                              Expanded(
-                                child: buildIconBox(
-                                  FontAwesomeIcons.clock,
-                                  'Falso despertar',
-                                  'Falso despertar',
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Calidad de sueño:',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(5, (index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    estrellasSeleccionadas = index + 1;
-                                  });
-                                },
-                                child: Icon(
-                                  index < estrellasSeleccionadas
-                                      ? Icons.star
-                                      : Icons.star_border,
-                                  color: Colors.amber,
-                                  size: 32,
-                                ),
-                              );
-                            }),
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Text(
-                                '¿Ha sido lúcido?',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Spacer(),
-                              Checkbox(
-                                value: lucido,
-                                onChanged: (bool? newValue) {
-                                  setState(() {
-                                    lucido = newValue ?? false;
-                                  });
-                                },
-                                activeColor: Colors.white,
-                                checkColor: Colors.black,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: double.infinity,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFB84DFF), Color(0xFF5D5FEF)],
-                              ),
-                              borderRadius: BorderRadius.circular(15),
+                            SizedBox(height: 10),
+                            Divider(
+                              color: Colors.white30,
+                              thickness: 1,
+                              indent: 0,
+                              endIndent: 0,
                             ),
-                            child: TextButton(
-                              onPressed: () async {
-                                await createDreamController.createDream(
-                                  title: titulo.text,
-                                  date: selectedDate,
-                                  description: descripcion.text,
-                                  dreamStart: horaInicio,
-                                  dreamEnd: horaFinal,
-                                  tag: caracteristica,
-                                  rating: estrellasSeleccionadas,
-                                  lucid: lucido,
+                            SizedBox(height: 10),
+                            Text(
+                              'Horario de sueño:',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => _mostrarSelectorHoraInicio(),
+                                  child: buildTimeBox(horaInicio),
+                                ),
+                                Text(
+                                  '-',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => _mostrarSelectorHoraFinal(),
+                                  child: buildTimeBox(horaFinal),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Caracteristica del sueño:',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: buildIconBox(
+                                    FontAwesomeIcons.rotateLeft,
+                                    'Recurrente',
+                                    'Recurrente',
+                                  ),
+                                ),
+                                Expanded(
+                                  child: buildIconBox(
+                                    FontAwesomeIcons.ghost,
+                                    'Pesadilla',
+                                    'Pesadilla',
+                                  ),
+                                ),
+                                Expanded(
+                                  child: buildIconBox(
+                                    Icons.accessibility,
+                                    'Parálisis del sueño',
+                                    'Parálisis del sueño',
+                                  ),
+                                ),
+                                Expanded(
+                                  child: buildIconBox(
+                                    FontAwesomeIcons.clock,
+                                    'Falso despertar',
+                                    'Falso despertar',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Calidad de sueño:',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(5, (index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      estrellasSeleccionadas = index + 1;
+                                    });
+                                  },
+                                  child: Icon(
+                                    index < estrellasSeleccionadas
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    color: Colors.amber,
+                                    size: 32,
+                                  ),
                                 );
+                              }),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Text(
+                                  '¿Ha sido lúcido?',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Spacer(),
+                                Checkbox(
+                                  value: lucido,
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      lucido = newValue ?? false;
+                                    });
+                                  },
+                                  activeColor: Colors.white,
+                                  checkColor: Colors.black,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              width: double.infinity,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFFB84DFF), Color(0xFF5D5FEF)],
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextButton(
+                                onPressed: () async {
+                                  await createDreamController.createDream(
+                                    title: titulo.text,
+                                    date: selectedDate,
+                                    description: descripcion.text,
+                                    dreamStart: horaInicio,
+                                    dreamEnd: horaFinal,
+                                    tag: caracteristica,
+                                    rating: estrellasSeleccionadas,
+                                    lucid: lucido,
+                                  );
 
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Guardar',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Guardar',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

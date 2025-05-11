@@ -47,7 +47,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -58,166 +58,167 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         centerTitle: false,
       ),
+      bottomNavigationBar: Navbar(),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.all(20),
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfileView()),
-                          );
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            UserProfilePicture(url: dreamUser?.profilePicture),
-                            const SizedBox(width: 12), // Espacio entre imagen y texto
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    nickname??"",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    email??"",
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Divider(
-                        color: Colors.white30,
-                        thickness: 1,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
-                      if (!(hasProviderGoogle??false)) ...[
-                        AjustesItem(
-                          texto: 'Cambiar contraseña',
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPasswordView(),
-                            ),
-                          ),
-                        ),
-                        AjustesItem(
-                          texto: 'Cambiar correo',
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditEmailView(),
-                            ),
-                          ),
-                        ),
-                      ],
-                      AjustesItem(
-                        texto: 'Exportar datos',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ExportDataView(),
-                              ),
-                            ),
-                      ),
-                      AjustesItem(
-                        texto: 'Importar datos',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ImportDataView(),
-                              ),
-                            ),
-                      ),
-                      AjustesItem(
-                        texto: 'Cambiar ajustes de notificaciones',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => DreamNotificationSettingView(),
-                              ),
-                            ),
-                      ),
-                      AjustesItem(
-                        texto: 'Cerrar sesión',
-                        onTap: () => settingsController.cerrarSesion(context),
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.warning_amber,
-                            color: Colors.redAccent,
-                          ),
-                          title: const Text(
-                            'Borrar cuenta',
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    child: ListView(
+                      padding: const EdgeInsets.all(20),
+                      children: [
+                        InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => DeleteAccountView(),
-                              ),
+                              MaterialPageRoute(builder: (context) => ProfileView()),
                             );
                           },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              UserProfilePicture(url: dreamUser?.profilePicture),
+                              const SizedBox(width: 12), // Espacio entre imagen y texto
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      nickname??"",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      email??"",
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        Divider(
+                          color: Colors.white30,
+                          thickness: 1,
+                          indent: 0,
+                          endIndent: 0,
+                        ),
+                        if (!(hasProviderGoogle??false)) ...[
+                          AjustesItem(
+                            texto: 'Cambiar contraseña',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditPasswordView(),
+                              ),
+                            ),
+                          ),
+                          AjustesItem(
+                            texto: 'Cambiar correo',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditEmailView(),
+                              ),
+                            ),
+                          ),
+                        ],
+                        AjustesItem(
+                          texto: 'Exportar datos',
+                          onTap:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ExportDataView(),
+                                ),
+                              ),
+                        ),
+                        AjustesItem(
+                          texto: 'Importar datos',
+                          onTap:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImportDataView(),
+                                ),
+                              ),
+                        ),
+                        AjustesItem(
+                          texto: 'Cambiar ajustes de notificaciones',
+                          onTap:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => DreamNotificationSettingView(),
+                                ),
+                              ),
+                        ),
+                        AjustesItem(
+                          texto: 'Cerrar sesión',
+                          onTap: () => settingsController.cerrarSesion(context),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            leading: const Icon(
+                              Icons.warning_amber,
+                              color: Colors.redAccent,
+                            ),
+                            title: const Text(
+                              'Borrar cuenta',
+                              style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DeleteAccountView(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
-      bottomNavigationBar: Navbar(),
     );
   }
 }

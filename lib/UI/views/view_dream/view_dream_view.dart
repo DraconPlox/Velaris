@@ -35,7 +35,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF2D2643),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -60,242 +60,243 @@ class _ViewDreamViewState extends State<ViewDreamView> {
       ),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.only(
-                      top: 12,
-                      left: 16,
-                      right: 16,
-                    ),
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              FontAwesomeIcons.pencil,
-                              color: Colors.white,
+                    child: ListView(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 16,
+                        right: 16,
+                      ),
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                FontAwesomeIcons.pencil,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => EditDreamView(
+                                          dreamId: dream?.id ?? "",
+                                        ),
+                                  ),
+                                );
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => EditDreamView(
-                                        dreamId: dream?.id ?? "",
-                                      ),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(width: 12),
-                          IconButton(
-                            icon: Icon(
-                              FontAwesomeIcons.share,
-                              color: Colors.white,
+                            SizedBox(width: 12),
+                            IconButton(
+                              icon: Icon(
+                                FontAwesomeIcons.share,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Share.share(
+                                  'Título: ${dream?.title ?? ""}\n\nDescripción: ${dream?.description ?? ""}\n\nLucido: ${dream?.lucid}',
+                                );
+                              },
                             ),
-                            onPressed: () {
-                              Share.share(
-                                'Título: ${dream?.title ?? ""}\n\nDescripción: ${dream?.description ?? ""}\n\nLucido: ${dream?.lucid}',
-                              );
-                            },
-                          ),
-                          SizedBox(width: 12),
-                          IconButton(
-                            icon: Icon(
-                              FontAwesomeIcons.trashCan,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) {
-                                  return Center(
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: Container(
-                                        width: 300,
-                                        padding: const EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFF433865),
-                                          borderRadius: BorderRadius.circular(
-                                            16,
+                            SizedBox(width: 12),
+                            IconButton(
+                              icon: Icon(
+                                FontAwesomeIcons.trashCan,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) {
+                                    return Center(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: Container(
+                                          width: 300,
+                                          padding: const EdgeInsets.all(20),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFF433865),
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text(
+                                                '¿Estás seguro que deseas eliminar este sueño?',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(ctx).pop();
+                                                    },
+                                                    child: const Text(
+                                                      'Cancelar',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      await viewDreamController.deleteDream(dream?.id??"");
+                                                      Navigator.pop(ctx);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style:
+                                                        ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                        ),
+                                                    child: const Text(
+                                                      'Eliminar',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Text(
-                                              '¿Estás seguro que deseas eliminar este sueño?',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
-                                                  },
-                                                  child: const Text(
-                                                    'Cancelar',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () async {
-                                                    await viewDreamController.deleteDream(dream?.id??"");
-                                                    Navigator.pop(ctx);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                      ),
-                                                  child: const Text(
-                                                    'Eliminar',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.calendar_today,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            DateFormat(
-                              'd MMM, y',
-                              'es_ES',
-                            ).format(dream?.date ?? DateTime.now()),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Center(
-                        child: Text(
-                          dream?.title ?? "",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              DateFormat(
+                                'd MMM, y',
+                                'es_ES',
+                              ).format(dream?.date ?? DateTime.now()),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Center(
+                          child: Text(
+                            dream?.title ?? "",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                      ),
-                      const Divider(
-                        color: Colors.white30,
-                        thickness: 1,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        dream?.description ?? "",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                      const SizedBox(height: 16),
-                      const Divider(
-                        color: Colors.white30,
-                        thickness: 1,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
-                      Text(
-                        'Tags: ${dream?.tag ?? ""}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Text(
-                            'Lúcido:',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(width: 8),
-                          Checkbox(
-                            value: dream?.lucid ?? false,
-                            onChanged: (bool? value) {},
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Calidad de sueño:',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(5, (index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Icon(
-                              index < (dream?.rating ?? 0)
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: Colors.amber,
-                              size: 32,
+                        const Divider(
+                          color: Colors.white30,
+                          thickness: 1,
+                          indent: 0,
+                          endIndent: 0,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          dream?.description ?? "",
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        ),
+                        const SizedBox(height: 16),
+                        const Divider(
+                          color: Colors.white30,
+                          thickness: 1,
+                          indent: 0,
+                          endIndent: 0,
+                        ),
+                        Text(
+                          'Tags: ${dream?.tag ?? ""}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Text(
+                              'Lúcido:',
+                              style: TextStyle(color: Colors.white),
                             ),
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Horario de sueño: ${dream?.dreamStart?.hour ?? DateTime(0).hour}:${dream?.dreamStart?.minute ?? DateTime(0).minute} - ${dream?.dreamEnd?.hour ?? DateTime(0).hour}:${dream?.dreamEnd?.minute ?? DateTime(0).minute}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                            SizedBox(width: 8),
+                            Checkbox(
+                              value: dream?.lucid ?? false,
+                              onChanged: (bool? value) {},
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'Calidad de sueño:',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(5, (index) {
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                index < (dream?.rating ?? 0)
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: Colors.amber,
+                                size: 32,
+                              ),
+                            );
+                          }),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'Horario de sueño: ${dream?.dreamStart?.hour ?? DateTime(0).hour}:${dream?.dreamStart?.minute ?? DateTime(0).minute} - ${dream?.dreamEnd?.hour ?? DateTime(0).hour}:${dream?.dreamEnd?.minute ?? DateTime(0).minute}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           if (loading)
             Container(

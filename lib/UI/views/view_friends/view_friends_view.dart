@@ -51,7 +51,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -66,193 +66,147 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
       bottomNavigationBar: Navbar(),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                showFriends = true;
-                                requestPending = false;
-                                hasBloq = false;
-                                listaUsers = 1;
-                                setState(() {});
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      listaUsers == 1
-                                          ? const Color(0xFF5E4AA5)
-                                          : const Color(0xFF3E2D66),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Amigos',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                showFriends = false;
-                                requestPending = true;
-                                hasBloq = false;
-                                listaUsers = 2;
-                                setState(() {});
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      listaUsers == 2
-                                          ? const Color(0xFF5E4AA5)
-                                          : const Color(0xFF3E2D66),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Pendientes',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                showFriends = false;
-                                requestPending = false;
-                                hasBloq = true;
-                                listaUsers = 3;
-                                setState(() {});
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      listaUsers == 3
-                                          ? const Color(0xFF5E4AA5)
-                                          : const Color(0xFF3E2D66),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Bloqueados',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
                       ),
-                      const SizedBox(height: 20),
-                      listaUsers == 1
-                          ? Expanded(
-                            child: ListView.separated(
-                              itemCount: listaAmigos?.length ?? 0,
-                              separatorBuilder:
-                                  (_, __) => const SizedBox(height: 16),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => ProfileView(
-                                              dreamUser: listaAmigos![index],
-                                            ),
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  showFriends = true;
+                                  requestPending = false;
+                                  hasBloq = false;
+                                  listaUsers = 1;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        listaUsers == 1
+                                            ? const Color(0xFF5E4AA5)
+                                            : const Color(0xFF3E2D66),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Amigos',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF3E2D66),
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.25),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: UserCard(
-                                      user: listaAmigos![index],
-                                      showButtons: requestPending,
-                                      hasBloq: hasBloq,
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                             ),
-                          )
-                          : listaUsers == 2
-                          ? Expanded(
-                            child: Column(
-                              children: [
-                                for (int i = 0; i < (listaReceive?.length ?? 0); i++)
-                                  GestureDetector(
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  showFriends = false;
+                                  requestPending = true;
+                                  hasBloq = false;
+                                  listaUsers = 2;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        listaUsers == 2
+                                            ? const Color(0xFF5E4AA5)
+                                            : const Color(0xFF3E2D66),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Pendientes',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  showFriends = false;
+                                  requestPending = false;
+                                  hasBloq = true;
+                                  listaUsers = 3;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        listaUsers == 3
+                                            ? const Color(0xFF5E4AA5)
+                                            : const Color(0xFF3E2D66),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Bloqueados',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        listaUsers == 1
+                            ? Expanded(
+                              child: ListView.separated(
+                                itemCount: listaAmigos?.length ?? 0,
+                                separatorBuilder:
+                                    (_, __) => const SizedBox(height: 16),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder:
                                               (context) => ProfileView(
-                                                dreamUser: listaReceive![i],
+                                                dreamUser: listaAmigos![index],
                                               ),
                                         ),
                                       );
@@ -270,55 +224,142 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(
-                                              0.25,
-                                            ),
+                                            color: Colors.black.withOpacity(0.25),
                                             blurRadius: 8,
                                             offset: const Offset(0, 4),
                                           ),
                                         ],
                                       ),
                                       child: UserCard(
-                                        user: listaReceive![i],
+                                        user: listaAmigos![index],
                                         showButtons: requestPending,
                                         hasBloq: hasBloq,
-                                        onAccept: () async {
-                                          if (await viewFriendsController
-                                              .acceptRequest(listaReceive?[i].id ?? "", user?.nickname ?? "")) {
-                                            initialize();
-                                          } else {
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'Ha habido un problema a la hora de aceptar la solicitud',
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        onCancel: () async {
-                                          await viewFriendsController
-                                              .declineRequest(
-                                                listaReceive?[i].id ?? "",
-                                              );
-                                        },
                                       ),
                                     ),
-                                  ),
-                                for (int i = 0; i < (listaSender?.length ?? 0); i++)
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => ProfileView(
-                                                dreamUser: listaSender![i],
-                                              ),
+                                  );
+                                },
+                              ),
+                            )
+                            : listaUsers == 2
+                            ? Expanded(
+                              child: Column(
+                                children: [
+                                  for (int i = 0; i < (listaReceive?.length ?? 0); i++)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => ProfileView(
+                                                  dreamUser: listaReceive![i],
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
                                         ),
-                                      );
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF3E2D66),
+                                          borderRadius: BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(
+                                                0.25,
+                                              ),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: UserCard(
+                                          user: listaReceive![i],
+                                          showButtons: requestPending,
+                                          hasBloq: hasBloq,
+                                          onAccept: () async {
+                                            if (await viewFriendsController
+                                                .acceptRequest(listaReceive?[i].id ?? "", user?.nickname ?? "")) {
+                                              initialize();
+                                            } else {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Ha habido un problema a la hora de aceptar la solicitud',
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          onCancel: () async {
+                                            await viewFriendsController
+                                                .declineRequest(
+                                                  listaReceive?[i].id ?? "",
+                                                );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  for (int i = 0; i < (listaSender?.length ?? 0); i++)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => ProfileView(
+                                                  dreamUser: listaSender![i],
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF3E2D66),
+                                          borderRadius: BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(
+                                                0.25,
+                                              ),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: UserCard(
+                                          user: listaSender![i],
+                                          showButtons: false,
+                                          hasBloq: hasBloq,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            )
+                            : Expanded(
+                              child: ListView.separated(
+                                itemCount: listaBloqueados?.length ?? 0,
+                                separatorBuilder:
+                                    (_, __) => const SizedBox(height: 16),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      //No hace nada al estar bloqueado.
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.symmetric(
@@ -333,74 +374,34 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(
-                                              0.25,
-                                            ),
+                                            color: Colors.black.withOpacity(0.25),
                                             blurRadius: 8,
                                             offset: const Offset(0, 4),
                                           ),
                                         ],
                                       ),
                                       child: UserCard(
-                                        user: listaSender![i],
-                                        showButtons: false,
+                                        user: listaBloqueados![index],
+                                        showButtons: requestPending,
                                         hasBloq: hasBloq,
+                                        onDesbloq: () async {
+                                          if (await viewFriendsController
+                                              .desbloqUser(
+                                            listaBloqueados?[index].id ?? "",
+                                          )) initialize();
+                                        },
                                       ),
                                     ),
-                                  ),
-                              ],
+                                  );
+                                },
+                              ),
                             ),
-                          )
-                          : Expanded(
-                            child: ListView.separated(
-                              itemCount: listaBloqueados?.length ?? 0,
-                              separatorBuilder:
-                                  (_, __) => const SizedBox(height: 16),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    //No hace nada al estar bloqueado.
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF3E2D66),
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.25),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: UserCard(
-                                      user: listaBloqueados![index],
-                                      showButtons: requestPending,
-                                      hasBloq: hasBloq,
-                                      onDesbloq: () async {
-                                        if (await viewFriendsController
-                                            .desbloqUser(
-                                          listaBloqueados?[index].id ?? "",
-                                        )) initialize();
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

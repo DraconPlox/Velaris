@@ -59,7 +59,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1033),
+      backgroundColor: const Color(0xFF3E3657),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -74,60 +74,60 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
       body: Stack(
         children: [
           // Imagen de fondo
-          SizedBox(
-            width: double.infinity,
-            height: 200,
+          Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
+            bottom: 400,
           ),
-
           // Contenido principal
-          Column(
-            children: [
-              const SizedBox(height: kToolbarHeight + 24),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2D2643),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2643),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20),
+                        MyCalendarWidget(
+                          onDaySelected: (DateTime date) {
+                            setState(() {
+                              _selectedDay = date;
+                              filterDreamsByDate(_selectedDay);
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 80, top: 4),
+                            itemCount: selectedDreams.length,
+                            itemBuilder: (context, i) {
+                              return DreamCard(
+                                id: selectedDreams[i].id ?? "",
+                                titulo: selectedDreams[i].title ?? "",
+                                descripcion: selectedDreams[i].description ?? "",
+                                lucido: selectedDreams[i].lucid ?? false,
+                              );
+                            },
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 20),
-                      MyCalendarWidget(
-                        onDaySelected: (DateTime date) {
-                          setState(() {
-                            _selectedDay = date;
-                            filterDreamsByDate(_selectedDay);
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      Expanded(
-                        child: ListView.separated(
-                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 80, top: 4),
-                          itemCount: selectedDreams.length,
-                          itemBuilder: (context, i) {
-                            return DreamCard(
-                              id: selectedDreams[i].id ?? "",
-                              titulo: selectedDreams[i].title ?? "",
-                              descripcion: selectedDreams[i].description ?? "",
-                              lucido: selectedDreams[i].lucid ?? false,
-                            );
-                          },
-                          separatorBuilder: (context, index) => const SizedBox(height: 12),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           // Boton flotante en la esquina inferior derecha

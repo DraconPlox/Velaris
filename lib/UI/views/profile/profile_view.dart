@@ -32,6 +32,7 @@ class _ProfileViewState extends State<ProfileView> {
   bool pendingRequest = false;
   bool isFriend = false;
   bool isBlocked = false;
+  bool isSendingRequest = false;
 
   @override
   void initState() {
@@ -697,32 +698,49 @@ class _ProfileViewState extends State<ProfileView> {
                                               FontAwesomeIcons.userPlus,
                                               color: Colors.white,
                                             ),
-                                            onPressed: () async {
-                                              if (await profileController
-                                                  .sendFriendRequest(
-                                                    widget.dreamUser?.id ?? "",
-                                                  )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Se ha enviado la solicitud',
+                                            onPressed: isSendingRequest
+                                              ? null
+                                              : () async {
+                                              setState(() {
+                                                isSendingRequest = true;
+                                              });
+
+                                              if (!isSendingRequest || !await profileController.getIfExistsPendingRequest(widget.dreamUser?.id ?? "")) {
+                                                if (await profileController
+                                                    .sendFriendRequest(
+                                                  widget.dreamUser?.id ?? "",
+                                                )) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Se ha enviado la solicitud',
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                                initialize();
+                                                  );
+                                                  initialize();
+                                                } else {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Ha habido un error al enviar la solicitud',
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
                                               } else {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Ha habido un error al enviar la solicitud',
-                                                    ),
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Ya hay una solicitud pendiente de enviarse.',
                                                   ),
                                                 );
                                               }
+                                              setState(() {
+                                                isSendingRequest = false;
+                                              });
                                             },
                                           ),
                                           IconButton(

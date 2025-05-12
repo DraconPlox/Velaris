@@ -246,8 +246,12 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                             )
                             : listaUsers == 2
                             ? Expanded(
-                              child: Column(
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
                                 children: [
+                                  // Lista de solicitudes recibidas
                                   for (
                                     int i = 0;
                                     i < (listaReceive?.length ?? 0);
@@ -268,6 +272,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       child: Container(
                                         margin: const EdgeInsets.symmetric(
                                           horizontal: 16,
+                                          vertical: 8,
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
@@ -303,7 +308,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                               ScaffoldMessenger.of(
                                                 context,
                                               ).showSnackBar(
-                                                SnackBar(
+                                                const SnackBar(
                                                   content: Text(
                                                     'Ha habido un problema a la hora de aceptar la solicitud',
                                                   ),
@@ -321,6 +326,8 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                         ),
                                       ),
                                     ),
+
+                                  // Lista de solicitudes enviadas
                                   for (
                                     int i = 0;
                                     i < (listaSender?.length ?? 0);
@@ -341,6 +348,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                       child: Container(
                                         margin: const EdgeInsets.symmetric(
                                           horizontal: 16,
+                                          vertical: 8,
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,

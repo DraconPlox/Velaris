@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'import_data_controller.dart';
 
@@ -70,7 +71,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                         const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
-                            // Lógica para abrir el enlace
+                            launchUrl(Uri.parse("https://firebasestorage.googleapis.com/v0/b/velaris-5a288.firebasestorage.app/o/C%C3%B3mo%20importar%20sue%C3%B1os%20en%20Velaris.pdf?alt=media&token=bc40bad9-a2c3-4750-b3ef-7b203b3ca1d7"));
                           },
                           child: const Text(
                             'PDF explicativo sobre JSONs',

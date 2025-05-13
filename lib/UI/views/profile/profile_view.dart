@@ -93,6 +93,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ],
       ),
+      bottomNavigationBar: Navbar(selectedIndex: 4),
       body: Stack(
         children: [
           // Imagen de fondo
@@ -1093,7 +1094,6 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ],
       ),
-      bottomNavigationBar: Navbar(),
     );
   }
 }

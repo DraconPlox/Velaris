@@ -45,6 +45,7 @@ class _SearchUserViewState extends State<SearchUserView> {
         ),
         centerTitle: false,
       ),
+      bottomNavigationBar: const Navbar(selectedIndex: 3),
       body: Stack(
         children: [
           Positioned.fill(
@@ -217,7 +218,6 @@ class _SearchUserViewState extends State<SearchUserView> {
           ),
         ],
       ),
-      bottomNavigationBar: const Navbar(),
     );
   }
 }

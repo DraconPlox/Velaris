@@ -70,7 +70,7 @@ class _CalendarDreamsViewState extends State<CalendarDreamsView> {
         ),
         centerTitle: false,
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(selectedIndex: 0),
       body: Stack(
         children: [
           // Imagen de fondo

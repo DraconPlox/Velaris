@@ -58,7 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         centerTitle: false,
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(selectedIndex: 4),
       body: Stack(
         children: [
           Positioned.fill(

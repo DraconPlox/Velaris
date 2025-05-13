@@ -65,7 +65,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
         ),
         centerTitle: false,
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(selectedIndex: 2),
       body: Stack(
         children: [
           Positioned.fill(

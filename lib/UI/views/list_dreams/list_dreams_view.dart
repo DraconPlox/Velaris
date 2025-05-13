@@ -82,6 +82,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
         ),
         centerTitle: false,
       ),
+      bottomNavigationBar: Navbar(selectedIndex: 0),
       body: Stack(
         children: [
           // Imagen de fondo
@@ -234,9 +235,6 @@ class _ListDreamsViewState extends State<ListDreamsView> {
           ),
         ],
       ),
-
-      // BottomNavigationBar
-      bottomNavigationBar: Navbar(),
     );
   }
 }

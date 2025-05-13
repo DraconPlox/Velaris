@@ -60,7 +60,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         ),
         centerTitle: false,
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(selectedIndex: 1),
       body: Stack(
         children: [
           Positioned.fill(

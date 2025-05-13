@@ -12,7 +12,8 @@ import 'package:velaris/model/entity/dream_user.dart';
 import 'package:velaris/service/firestore_service.dart';
 
 class Navbar extends StatefulWidget {
-  const Navbar({super.key});
+  const Navbar({super.key, this.selectedIndex});
+  final int? selectedIndex;
 
   @override
   State<Navbar> createState() => _NavbarState();
@@ -56,7 +57,7 @@ class _NavbarState extends State<Navbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.bedtime, color: Colors.white70),
+                          icon: Icon(Icons.bedtime, color: widget.selectedIndex == 0 ? Colors.white : Colors.white54),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -64,13 +65,13 @@ class _NavbarState extends State<Navbar> {
                                 builder: (context) => CalendarDreamsView(),
                               ),
                               (Route<dynamic> route) =>
-                                  false, // esto elimina todas las rutas anteriores
+                                  false,
                             );
                           },
                         ),
-                        const Text(
+                        Text(
                           "Sueños",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: widget.selectedIndex == 0 ? Colors.white : Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),
@@ -81,9 +82,9 @@ class _NavbarState extends State<Navbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.bar_chart,
-                            color: Colors.white70,
+                            color: widget.selectedIndex == 1 ? Colors.white : Colors.white54,
                           ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
@@ -92,13 +93,13 @@ class _NavbarState extends State<Navbar> {
                                 builder: (context) => StatisticsView(),
                               ),
                               (Route<dynamic> route) =>
-                                  false, // esto elimina todas las rutas anteriores
+                                  false,
                             );
                           },
                         ),
-                        const Text(
+                        Text(
                           "Estadísticas",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: widget.selectedIndex == 1 ? Colors.white : Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),
@@ -109,7 +110,7 @@ class _NavbarState extends State<Navbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(FontAwesomeIcons.user, color: Colors.white70),
+                          icon: Icon(FontAwesomeIcons.user, color: widget.selectedIndex == 2 ? Colors.white : Colors.white54),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -117,13 +118,13 @@ class _NavbarState extends State<Navbar> {
                                 builder: (context) => ViewFriendsView(),
                               ),
                               (Route<dynamic> route) =>
-                                  false, // esto elimina todas las rutas anteriores
+                                  false,
                             );
                           },
                         ),
-                        const Text(
+                        Text(
                           "Lista amigos",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: widget.selectedIndex == 2 ? Colors.white : Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),
@@ -134,7 +135,7 @@ class _NavbarState extends State<Navbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.search, color: Colors.white70),
+                          icon: Icon(Icons.search, color: widget.selectedIndex == 3 ? Colors.white : Colors.white54),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -142,13 +143,13 @@ class _NavbarState extends State<Navbar> {
                                 builder: (context) => SearchUserView(),
                               ),
                               (Route<dynamic> route) =>
-                                  false, // esto elimina todas las rutas anteriores
+                                  false,
                             );
                           },
                         ),
-                        const Text(
+                        Text(
                           "Buscar",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: widget.selectedIndex == 3 ? Colors.white : Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),
@@ -159,7 +160,7 @@ class _NavbarState extends State<Navbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.settings, color: Colors.white70),
+                          icon: Icon(Icons.settings, color: widget.selectedIndex == 4 ? Colors.white : Colors.white54),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -167,13 +168,13 @@ class _NavbarState extends State<Navbar> {
                                 builder: (context) => SettingsView(),
                               ),
                               (Route<dynamic> route) =>
-                                  false, // esto elimina todas las rutas anteriores
+                                  false,
                             );
                           },
                         ),
-                        const Text(
+                        Text(
                           "Ajustes",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: widget.selectedIndex == 4 ? Colors.white : Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),

@@ -84,14 +84,14 @@ class ExportDataController {
         String formattedHoraFinal = dream.dreamEnd != null ? DateFormat('HH:mm', 'es_ES').format(dream.dreamEnd!) : 'Sin hora de finalización';
 
         return '''
-                Titulo: ${dreamJson['titulo'] ?? 'Sin titulo'}
-                Descripcion: ${dreamJson['descripcion'] ?? 'Sin descripcion'}
-                Caracteristica: ${dreamJson['caracteristica'] ?? 'Sin caracteristica'}
+                Título: ${dreamJson['titulo'] ?? 'Sin titulo'}
+                Descripción: ${dreamJson['descripcion'] ?? 'Sin descripcion'}
+                Característica: ${dreamJson['caracteristica'] ?? 'Sin caracteristica'}
                 Fecha: $formattedFecha
                 Hora de Inicio: $formattedHoraInicio
                 Hora de Final: $formattedHoraFinal
                 Calidad: ${dreamJson['calidad'] ?? 'Sin calidad'}
-                Lucido: ${dreamJson['lucido'] == true ? 'Sí' : 'No'}
+                Lúcido: ${dreamJson['lucido'] == true ? 'Sí' : 'No'}
                 ---------------
                 ''';
       })

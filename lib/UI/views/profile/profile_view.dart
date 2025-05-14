@@ -19,7 +19,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final labelsLucidez = ['Lucido', 'No lucido'];
+  final labelsLucidez = ['Lúcido', 'No lúcido'];
   final coloresLucidez = [Colors.greenAccent, Colors.redAccent];
 
   ProfileController profileController = ProfileController();
@@ -181,7 +181,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 MainAxisSize.min,
                                                             children: [
                                                               Text(
-                                                                "¿Estás seguro que deseas dejar de ser amigo con ${widget.dreamUser?.nickname}?",
+                                                                "¿Estás seguro de que deseas dejar de ser amigo de ${widget.dreamUser?.nickname}?",
                                                                 style: TextStyle(
                                                                   fontSize: 16,
                                                                   color:
@@ -227,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                         ).showSnackBar(
                                                                           SnackBar(
                                                                             content: Text(
-                                                                              'Se ha eliminado a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                              'Se ha eliminado a ${widget.dreamUser?.nickname} de tu lista de amigos.',
                                                                             ),
                                                                           ),
                                                                         );
@@ -238,7 +238,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                         ).showSnackBar(
                                                                           SnackBar(
                                                                             content: Text(
-                                                                              'Ha habido un error al eliminar a ${widget.dreamUser?.nickname} de tu lista de amigos',
+                                                                              'Ha habido un error al eliminar a ${widget.dreamUser?.nickname} de tu lista de amigos.',
                                                                             ),
                                                                           ),
                                                                         );
@@ -453,7 +453,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               MainAxisSize.min,
                                                           children: [
                                                             const Text(
-                                                              '¿Estás seguro que deseas eliminar la solicitud?',
+                                                              '¿Estás seguro de que deseas eliminar la solicitud?',
                                                               style: TextStyle(
                                                                 fontSize: 16,
                                                                 color: Colors.white,
@@ -498,7 +498,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                       ).showSnackBar(
                                                                         SnackBar(
                                                                           content: Text(
-                                                                            'Se ha eliminado la solicitud',
+                                                                            'Se ha eliminado la solicitud.',
                                                                           ),
                                                                         ),
                                                                       );
@@ -509,7 +509,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                       ).showSnackBar(
                                                                         SnackBar(
                                                                           content: Text(
-                                                                            'Ha habido un error al eliminar la solicitud',
+                                                                            'Ha habido un error al eliminar la solicitud.',
                                                                           ),
                                                                         ),
                                                                       );
@@ -716,7 +716,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                   ).showSnackBar(
                                                     SnackBar(
                                                       content: Text(
-                                                        'Se ha enviado la solicitud',
+                                                        'Se ha enviado la solicitud.',
                                                       ),
                                                     ),
                                                   );
@@ -727,7 +727,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                   ).showSnackBar(
                                                     SnackBar(
                                                       content: Text(
-                                                        'Ha habido un error al enviar la solicitud',
+                                                        'Ha habido un error al enviar la solicitud.',
                                                       ),
                                                     ),
                                                   );

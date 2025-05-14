@@ -19,7 +19,7 @@ class _StatisticsViewState extends State<StatisticsView> {
   Map<String, int> tagCounts = new Map<String, int>();
 
   final tagLabels = [
-    'Sin caracteristica',
+    'Sin característica',
     'Recurrente',
     'Pesadilla',
     'Parálisis del sueño',

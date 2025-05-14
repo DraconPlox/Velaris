@@ -130,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                         if (result == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Ha habido un error en el login, comprueba los datos o intentelo más tarde.'),
+                              content: Text('Ha habido un error en el login. Comprueba los datos o inténtalo más tarde.'),
                               backgroundColor: Colors.red,
                               duration: const Duration(seconds: 3),
                             ),

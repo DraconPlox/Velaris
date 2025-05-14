@@ -125,7 +125,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                       ),
                                       SizedBox(height: 20),
                                       Text(
-                                        'Aqui apareceran los usuarios que busques.\n¡Prueba a buscar alguno!',
+                                        'Aqui aparecerán los usuarios que busques.\n¡Prueba a buscar alguno!',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white),
                                       ),
@@ -134,7 +134,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                                   : dreamUserList.isEmpty
                                   ? Center(
                                     child: Text(
-                                      '¿Ya estas mezclando los sueños lucidos con la realidad? No hemos encontrado ningun usuario con ese nombre.',
+                                      '¿Ya estás mezclando los sueños lúcidos con la realidad? No hemos encontrado ningún usuario con ese nombre.',
                                       style: TextStyle(color: Colors.white70),
                                     ),
                                   )

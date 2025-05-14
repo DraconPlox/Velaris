@@ -32,6 +32,10 @@ class _ViewDreamViewState extends State<ViewDreamView> {
     setState(() {});
   }
 
+  String _formatTime(int? time) {
+    return time?.toString().padLeft(2, '0') ?? '00';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -287,7 +291,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Horario de sueño: ${dream?.dreamStart?.hour ?? DateTime(0).hour}:${dream?.dreamStart?.minute ?? DateTime(0).minute} - ${dream?.dreamEnd?.hour ?? DateTime(0).hour}:${dream?.dreamEnd?.minute ?? DateTime(0).minute}',
+                          'Horario de sueño: ${_formatTime(dream?.dreamStart?.hour)}:${_formatTime(dream?.dreamStart?.minute)} - ${_formatTime(dream?.dreamEnd?.hour)}:${_formatTime(dream?.dreamEnd?.minute)}',
                           style: TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 20),

@@ -135,7 +135,7 @@ class _DeleteConfirmLoginView extends State<DeleteConfirmLoginView> {
                                       context,
                                     ).showSnackBar(
                                       SnackBar(
-                                        content: Text("Algo ha ocurrido en el proceso, intentalo mas tarde."),
+                                        content: Text("Algo ha ocurrido en el proceso, inténtalo más tarde."),
                                       ),
                                     );
                                   }

@@ -310,7 +310,7 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                               ).showSnackBar(
                                                 const SnackBar(
                                                   content: Text(
-                                                    'Ha habido un problema a la hora de aceptar la solicitud',
+                                                    'Ha habido un problema al aceptar la solicitud.',
                                                   ),
                                                 ),
                                               );
@@ -419,8 +419,9 @@ class _ViewFriendsViewState extends State<ViewFriendsView> {
                                               .desbloqUser(
                                                 listaBloqueados?[index].id ??
                                                     "",
-                                              ))
+                                              )) {
                                             initialize();
+                                          }
                                         },
                                       ),
                                     ),

@@ -60,7 +60,7 @@ class DeleteAccountView extends StatelessWidget {
                               ),
                               TextSpan(
                                 text:
-                                'Lamentamos que desees irte. Si quieres borrar tu cuenta, se borrarán todos tus datos desde tus sueños hasta la cuenta en sí. Recomendamos hacer un backup antes por si deseas mantener tus sueños. ¿Deseas hacerlo de todas formas?',
+                                'Lamentamos que desees irte. Si quieres borrar tu cuenta, se borrarán todos tus datos, desde tus sueños hasta la cuenta en sí. Recomendamos hacer un backup antes, por si deseas mantener tus sueños. ¿Deseas hacerlo de todas formas?',
                                 style: TextStyle(color: Colors.white, fontSize: 15),
                               ),
                             ],

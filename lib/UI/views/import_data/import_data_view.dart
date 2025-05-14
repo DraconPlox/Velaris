@@ -61,11 +61,11 @@ class _ImportDataViewState extends State<ImportDataView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Puedes importar tus sueños de otra app (O de un backup tuyo) desde un archivo con extensión .json. '
-                          'Cuidado: Hacer esto restaura todos los sueños que tienes guardados a los del archivo importado '
-                          'por lo que si no estás seguro, recomendamos hacer un backup antes desde el apartado de exportar datos.\n\n'
-                          'En caso de que no tengas un backup tuyo y quieras pasar tus sueños de otra app a la nuestra, '
-                          'tenemos un PDF que explica detalladamente la estructura del json para que funcione la importación sin errores.',
+                          'Puedes importar tus sueños desde otra app (o desde un backup propio) usando un archivo con extensión .json. '
+                          'Cuidado: hacer esto restaurará todos los sueños que tienes guardados y los reemplazará por los del archivo importado. '
+                          'Si no estás seguro, te recomendamos hacer un backup antes desde el apartado de exportar datos.\n\n'
+                          'En caso de que no tengas un backup y quieras transferir tus sueños desde otra app a la nuestra, '
+                          'tenemos un PDF que explica detalladamente la estructura del archivo .json para que la importación funcione sin errores.',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         const SizedBox(height: 20),
@@ -99,7 +99,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'No se ha seleccionado un archivo con la extensión correcta. La extensión tiene que ser .json',
+                                    'No se ha seleccionado un archivo con la extensión correcta. El archivo debe tener la extensión .json.',
                                   ),
                                   backgroundColor: Colors.redAccent,
                                 ),

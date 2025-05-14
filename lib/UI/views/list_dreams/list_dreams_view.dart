@@ -187,7 +187,7 @@ class _ListDreamsViewState extends State<ListDreamsView> {
                             padding: const EdgeInsets.all(16),
                             child: Center(
                               child: Text(
-                                "Todavia no hay sueños apuntados, ¡prueba creando uno nuevo!",
+                                "Aún no hay sueños guardados. ¡Crea uno nuevo para empezar!",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,

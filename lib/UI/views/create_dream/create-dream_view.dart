@@ -408,7 +408,7 @@ class _CreateDreamViewState extends State<CreateDreamView> {
                             ),
                             SizedBox(height: 20),
                             Text(
-                              'Caracteristica del sueño:',
+                              'Característica del sueño:',
                               style: TextStyle(color: Colors.white),
                             ),
                             Row(

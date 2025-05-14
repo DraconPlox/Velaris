@@ -52,7 +52,7 @@ class StatisticsController {
 
   Map<String, int> getDreamsPorTag(List<Dream> dreams) {
     final Map<String, int> tagCounts = {
-      'Sin caracteristica': 0,
+      'Sin característica': 0,
       'Recurrente': 0,
       'Pesadilla': 0,
       'Parálisis del sueño': 0,
@@ -63,7 +63,7 @@ class StatisticsController {
       final tag = dream.tag?.toLowerCase().trim();
 
       if (tag == null || tag.isEmpty) {
-        tagCounts['Sin caracteristica'] = tagCounts['Sin caracteristica']! + 1;
+        tagCounts['Sin característica'] = tagCounts['Sin característica']! + 1;
       } else if (tag.contains('recurrente')) {
         tagCounts['Recurrente'] = tagCounts['Recurrente']! + 1;
       } else if (tag.contains('pesadilla')) {
@@ -73,7 +73,7 @@ class StatisticsController {
       } else if (tag.contains('falso despertar')) {
         tagCounts['Falso despertar'] = tagCounts['Falso despertar']! + 1;
       } else {
-        tagCounts['Sin caracteristica'] = tagCounts['Sin caracteristica']! + 1;
+        tagCounts['Sin característica'] = tagCounts['Sin característica']! + 1;
       }
     }
 

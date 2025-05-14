@@ -280,28 +280,28 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () async {
                       if (password.text != repeatPassword.text) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Las contraseñas no coinciden')),
+                          const SnackBar(content: Text('Las contraseñas no coinciden.')),
                         );
                         return;
                       }
           
                       if (password.text.length < 6) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('La contraseña debe tener al menos 6 caracteres')),
+                          const SnackBar(content: Text('La contraseña debe tener al menos 6 caracteres.')),
                         );
                         return;
                       }
           
                       if (selectedDate == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Selecciona tu fecha de nacimiento')),
+                          const SnackBar(content: Text('Selecciona tu fecha de nacimiento.')),
                         );
                         return;
                       }
 
                       if (await registerController.existeNickname(nickname.text)) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ya existe un usuario con ese nickname')),
+                          const SnackBar(content: Text('Ya existe un usuario con ese nickname.')),
                         );
                         return;
                       }

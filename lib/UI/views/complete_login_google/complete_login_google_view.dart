@@ -185,7 +185,7 @@ class _CompleteLoginGoogleView extends State<CompleteLoginGoogleView> {
 
                       if (selectedGender == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Selecciona tu genero')),
+                          const SnackBar(content: Text('Selecciona tu género')),
                         );
                         return;
                       } else {

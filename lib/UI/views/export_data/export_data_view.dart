@@ -54,8 +54,7 @@ class _ExportDataViewState extends State<ExportDataView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Actualmente guardamos tus datos en Firebase pero siempre estan disponibles para cuando los desees. '
-                              'Se exportaran los sueños en tu dispositivo en este formato:',
+                          'Actualmente guardamos tus datos en Firebase, pero siempre están disponibles para cuando los desees. Se exportarán los sueños en tu dispositivo en este formato:',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         const SizedBox(height: 30),

@@ -89,8 +89,8 @@ class ProfileController {
     }
 
     return {
-      'Lucido': lucidos,
-      'No lucido': noLucidos,
+      'Lúcido': lucidos,
+      'No lúcido': noLucidos,
     };
   }
 

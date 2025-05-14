@@ -346,7 +346,7 @@ class _EditDreamViewState extends State<EditDreamView> {
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide.none,
                                 ),
-                                hintText: 'Titulo',
+                                hintText: 'Título',
                                 hintStyle: TextStyle(color: Colors.white38),
                               ),
                               buildCounter:
@@ -390,7 +390,7 @@ class _EditDreamViewState extends State<EditDreamView> {
                                     scrollPhysics: BouncingScrollPhysics(),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Descripcion',
+                                      hintText: 'Descripción',
                                       hintStyle: TextStyle(color: Colors.white38),
                                     ),
                                   ),
@@ -431,7 +431,7 @@ class _EditDreamViewState extends State<EditDreamView> {
                             ),
                             SizedBox(height: 20),
                             Text(
-                              'Caracteristica del sueño:',
+                              'Característica del sueño:',
                               style: TextStyle(color: Colors.white),
                             ),
                             Row(

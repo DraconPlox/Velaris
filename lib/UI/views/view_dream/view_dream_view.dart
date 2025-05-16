@@ -252,7 +252,7 @@ class _ViewDreamViewState extends State<ViewDreamView> {
                           endIndent: 0,
                         ),
                         Text(
-                          'Tags: ${dream?.tag ?? ""}',
+                          'Caracteristica: ${dream?.tag ?? ""}',
                           style: TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 12),
